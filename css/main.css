@@ -1,3 +1,36 @@
+.selector-for-some-widget {
+  box-sizing: border-box; }
 
+.navbar-light {
+  background-color: #f63541 !important; }
+
+.container {
+  width: 65%;
+  background-color: black; }
+
+.col-sm-6 .col-md-3 {
+  padding: -5px; }
+
+.caption {
+  text-align: right;
+  color: #8d8984; }
+
+h1 {
+  color: #aaaaaa;
+  position: relative;
+  left: 5px;
+  font-size: 25px; }
+
+h3 {
+  font-size: 15px; }
+
+h5 {
+  font-size: 10px; }
+
+h6 {
+  font-size: 10px; }
+
+p .btn {
+  display: inline; }
 
 /*# sourceMappingURL=main.css.map */

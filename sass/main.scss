@@ -1,0 +1,47 @@
+//Variables
+$red: #f63541;
+$yellow: #fad503;
+$lightgray: #8d8984;
+$regulargray: #aaaaaa;
+$black: #1b1d28;
+$white:#fff;
+$primaryFont: 'Atila Normal',sans-serif;
+$secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
+
+
+
+.selector-for-some-widget {
+  box-sizing: border-box;
+}
+.navbar-light {
+    background-color:$red !important;
+}
+.container{
+    width:65%;
+    background-color: black;
+}
+.col-sm-6 .col-md-3 {
+    padding: -5px;
+}
+.caption{
+text-align: right;
+color: $lightgray;
+}
+h1{
+    color:$regulargray;
+    position: relative;
+    left:5px;
+    font-size: 25px;
+}
+h3{
+    font-size:15px; 
+}
+h5{
+    font-size: 10px;
+}
+h6{
+    font-size: 10px;
+}
+p .btn{
+display: inline;
+}

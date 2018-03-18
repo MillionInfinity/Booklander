@@ -1,0 +1,41 @@
+{
+    "user": [
+        {
+            "uid": "1",
+            "name": "null"
+       }
+     
+    ],
+    "bookTypes": [
+        {
+            "id": "1",
+            "name": "library",
+            "authorName":"null",
+            "image":"2.png"
+        },
+        {
+            "id": "2",
+            "name": "borrowed",
+            "image":"3.png"
+        },
+        {
+            "id": "3",
+            "name": "bought",
+            "image": "4.png"
+        }
+    ],
+    "books": [
+        {
+            "typeId": "1",
+            "name": "library",
+            "authorName": "null",
+            "image": "1.pnj",
+            "read": false,
+            "description": "null",
+            "place": "null",
+            "uid": "Cream",
+            "due-date": "null"
+        }
+        
+    ]
+}

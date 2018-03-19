@@ -1,39 +1,38 @@
 "use strict";
 console.log("my mainjs");
 let $ = require('jquery'),
-    config = require("./config"),
+    firebase= require("./config"),
     user = require("./user"),
     books = require("./books"),
     fapi = require("./api"),
-    search= require("./search");
-
+    search= require("./search"),
+    xhr= require("./fbook"),
+    DOMbuild=require("./user-add"),
+    interaction=require("./user-interaction");
 
 function createUserObj(a) {
     let userObj = {
         name: '',
-        location: '',
+        email: '',
         uid: user.getUser()
     };
-    console.log("userObjMilion", userObj);
+    console.log("userObj", userObj);
     return userObj;
 }
-
 //login//
-$("#login").click(function (){
-    console.log("user clicked login");
+$("#login").click(function () {
+    console.log("clicked auth");
     user.googleLogIn()
         .then((result) => {
-            console.log("UID result from login: ", result.user.uid);
             user.setUser(result.user.uid);
-            // $("#secondaryLogin").addClass("d-none");
             $("#login");
-            $("#logout");
-            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle">`);
+            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" width="50">`);
             // console.log("login complete!");
             sendToFirebase();
         });
-        });
+});
 function sendToFirebase() {
     let userBuild = createUserObj();
-    user.addUser(userBuild);
-}  
+
+    interaction.addUser(userBuild);
+}    

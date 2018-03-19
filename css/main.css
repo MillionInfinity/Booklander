@@ -62,7 +62,8 @@ p .btn {
 
 .nav-sidebar {
   position: relative;
-  top: 150px; }
+  top: 150px;
+  color: #fff; }
 
 #login {
   position: relative;

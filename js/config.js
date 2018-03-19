@@ -11,18 +11,16 @@ require("firebase/auth");
 require("firebase/database");
 
 var config={
-apiKey:fData,
+apiKey:fData.apiKey,
 authDomain:fData.authDomain,
  dataBaseURL: fData.databaseURL
 };
 
 firebase.initializeApp(config);
-
-firebase.myConfig= () => {
+firebase.myConfig = () => {
     console.log ("myConfig",config);
       return config;
 };
 // console.log("this is",config);
-
 
 module.exports= firebase;

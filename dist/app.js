@@ -10282,19 +10282,17 @@ require("firebase/auth");
 require("firebase/database");
 
 var config={
-apiKey:fData,
+apiKey:fData.apiKey,
 authDomain:fData.authDomain,
  dataBaseURL: fData.databaseURL
 };
 
 firebase.initializeApp(config);
-
-firebase.myConfig= () => {
+firebase.myConfig = () => {
     console.log ("myConfig",config);
       return config;
 };
 // console.log("this is",config);
-
 
 module.exports= firebase;
 
@@ -10318,33 +10316,19 @@ function createUserObj(a) {
     console.log("userObjMilion", userObj);
     return userObj;
 }
-function buildUserObj(UID) {
-    let userInfo = {
-        //    email: user.email,
-        //    fullName: user.value,
-        zipCode: "",
-        uid: user.getUser()
-
-    };
-    console.log("userInfo", userInfo);
-    console.log("i cant figureout");
-    return userInfo;
-}
-
 
 //login//
-
 $("#login").click(function (){
-    // console.log("user clicked login");
+    console.log("user clicked login");
     user.googleLogIn()
         .then((result) => {
             console.log("UID result from login: ", result.user.uid);
             user.setUser(result.user.uid);
-            $("#secondaryLogin").addClass("d-none");
+            // $("#secondaryLogin").addClass("d-none");
             $("#login");
             $("#logout");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle">`);
-            console.log("login complete!");
+            // console.log("login complete!");
             sendToFirebase();
         });
         });
@@ -10369,23 +10353,16 @@ module.exports = { getBooks };
 },{"../lib/node_modules/jquery":119}],7:[function(require,module,exports){
 "use strict";
 console.log("iam user");
- 
+ //VARIABLES AND AS ASSUMPTIONS // 
         let $ = require('jquery'),
             firebase = require("./config");
     
-        var currentUser = null;
+        var currentUser = {
+            uid:null
+        };
         let provider = new firebase.auth.GoogleAuthProvider();
-        // var user = firebase.auth().currentUser;
-
-
-    
-
-
-
-
-
-                
-        
+        var user = firebase.auth().currentUser;
+// GOOGLE USERS // 
         function googleLogIn() {
             return firebase.auth().signInWithPopup(provider);
         }
@@ -10402,19 +10379,37 @@ console.log("iam user");
             currentUser = val;
         }
 
-       
-firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
+      //Get the currently signed-in user
+firebase.auth().onAuthStateChanged((user)=> {  //.onAuthStateChanged is a firebase method from firebase
     console.log("onAuthStateChanged", user);
     if (user) {
-        currentUser = user.uid;
+        currentUser =user.uid;
+        console.log("current user Logged in?", currentUser);
     } else {
         currentUser = null;
-        console.log("you need to sign in");
+        console.log("hmmmm i am  sorry, no user in",currentUser);
     }
 });
-
+//////////////////////////
+//CREATING A USER INFORMAION//
+var name, email, photoUrl, uid, emailVerified;
+/////////////////////////
+function buildUser(UID) {
+    let userObj = {
+        // email: .email,
+        // fullName: .value,
+        name : user.displayName,
+        email : user.email,
+        photoUrl : user.photoURL,
+        emailVerified : user.emailVerified,
+        // uid = user.uid,
+        uid:getUser()
+    };
+    return userObj;
+}
+//ADDING USER INF. TO FIREBASE 
 function addUser(Obj) {
-    console.log("add user to firebase", Obj);
+    // console.log("add user to firebase", Obj);
     return $.ajax({
         url: `${firebase.myConfig().databaseURL}/userInfo.json`,
         type: 'POST',
@@ -10426,7 +10421,7 @@ function addUser(Obj) {
     });
 }
 
-     module.exports = { googleLogIn, logOut, setUser, getUser, addUser};
+module.exports = { googleLogIn, logOut, setUser, getUser, addUser, buildUser};
 },{"./config":4,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 /**

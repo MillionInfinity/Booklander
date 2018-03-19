@@ -87,6 +87,18 @@ display: inline;
     left:-15px;
    margin:15px;
 }
+.profPic{
+    height:100px;
+    width: 100px;
+    align-self: center;
+    position: relative;
+    left:-5px;
+    top:-50px;
+}
+
+.login{
+    text-align: right;
+}
 
 @media (min-width: 768px) {
     .main {

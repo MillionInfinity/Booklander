@@ -1,41 +1,52 @@
 {
-    "user": [
+    "user-info": [
         {
-            "uid": "1",
-            "name": "null"
+          "name": "",
+          "uid": ""
        }
-     
-    ],
-    "bookTypes": [
+         ],
+    "book_types": [
         {
-            "id": "1",
+            "id": 1,
             "name": "library",
-            "authorName":"null",
-            "image":"2.png"
+            "image": "3.png"
         },
         {
-            "id": "2",
+            "id": 2,
             "name": "borrowed",
             "image":"3.png"
         },
         {
-            "id": "3",
+            "id": 3,
             "name": "bought",
             "image": "4.png"
         }
     ],
     "books": [
         {
-            "typeId": "1",
-            "name": "library",
-            "authorName": "null",
+            "id":1,
+            "uid": "null",
+            "title_id": 1,
+            "author_id": 1,
             "image": "1.pnj",
             "read": false,
             "description": "null",
             "place": "null",
-            "uid": "Cream",
-            "due-date": "null"
+            "book_type":"",
+            "due_date": "null"
+
         }
-        
-    ]
+    ],
+    "author": [
+        {
+            "id": 1,
+            "name": "null"
+        }    
+    ],
+    "title": [
+        {
+           "id": 1,
+           "title": "null"
+        }
+        ]    
 }

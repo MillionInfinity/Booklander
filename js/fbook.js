@@ -3,9 +3,10 @@ console.log("hello xhr");
 
 // THIS ARE MY ARMY IN FIREBASE.WE CALL THEM VIRIABLES
 let firebase= require("./config"),
-$ = require('jquery');
-require("firebase/auth");
-require("firebase/database");
+          $ = require('jquery');
+
+        require("firebase/auth");
+        require("firebase/database");
 
 //WE ARE GOING TO USE THIS WEAPONS (method)..i never use this words before.kkk
 function getbooks(user){

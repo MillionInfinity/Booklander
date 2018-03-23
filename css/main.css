@@ -10,7 +10,7 @@
 
 .container {
   width: 65%;
-  background-color: black; }
+  background-color: #e8e9d8; }
 
 .col-sm-6 .col-md-3 {
   margin: 5px -2px 0px 0px;
@@ -54,7 +54,7 @@ p .btn {
   overflow-x: hidden;
   overflow-y: auto;
   /* Scrollable contents if viewport is shorter than content. */
-  background-color: #fad503;
+  background-color: #8a856a;
   border-right: 1px solid #eee; }
 
 .sidebar {
@@ -64,15 +64,83 @@ p .btn {
   position: relative;
   top: 150px; }
 
+#logout,
 #login {
   position: relative;
   left: -15px;
   margin: 15px; }
+
+li a {
+  color: #fff; }
 
 @media (min-width: 768px) {
   .main {
     padding-right: 40px;
     padding-left: 20px;
     /* 180 + 40 */ } }
+orm {
+  width: 25%; }
+
+nav {
+  margin-top: .5rem;
+  margin-bottom: 1.5rem; }
+
+.nav__links {
+  margin-bottom: 0;
+  padding-left: 1.5rem; }
+
+li {
+  display: block;
+  padding-left: .2rem;
+  width: 9rem; }
+
+a {
+  line-height: 6rem;
+  display: block;
+  color: #000;
+  text-decoration: none; }
+  a.last {
+    border-right: 0; }
+  a:hover {
+    color: #b5a04b; }
+  .uiContainer
+  a--wrapper {
+    padding-right: 0;
+    background-color: #FEFAC0; }
+  a input {
+    font-size: 2em; }
+  a__song-list {
+    height: 538px;
+    padding-right: 0;
+    overflow: scroll; }
+  a .book-list {
+    list-style-type: none; }
+  a li {
+    margin-bottom: 1rem; }
+  a__item--data {
+    padding-left: 0; }
+
+li {
+  display: inline-block;
+  padding-right: 1.25rem;
+  padding-left: 1.25rem;
+  border-right: 2px solid #000; }
+  li:last-of-type {
+    border-right: none; }
+  li:first-of-type {
+    padding-left: 0; }
+
+.song-title {
+  color: #66635a;
+  font-size: 2.5re;
+  margin-bottom: .5rem; }
+
+.delete-btn {
+  background: grey;
+  width: 80px;
+  padding: 0; }
+
+.is-hidden {
+  display: none; }
 
 /*# sourceMappingURL=main.css.map */

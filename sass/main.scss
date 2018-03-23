@@ -1,9 +1,9 @@
 //Variables
 $red: #f63541;
-$yellow: #fad503;
+$yellow: #8a856a;;
 $lightgray: #8d8984;
 $regulargray: #aaaaaa;
-$black: #1b1d28;
+$black: #e8e9d8;
 $white:#fff;
 $primaryFont: 'Atila Normal',sans-serif;
 $secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
@@ -26,7 +26,7 @@ header{
 
 .container{
     width:65%;
-    background-color: black;
+    background-color:$black;
 }
 .col-sm-6 .col-md-3{
     
@@ -82,15 +82,103 @@ display: inline;
     position: relative;
     top:150px;
 }
+#logout,
 #login{
     position: relative;
     left:-15px;
    margin:15px;
 }
 
+li a{
+    color:$white;
+}
 @media (min-width: 768px) {
     .main {
         padding-right: 40px;
         padding-left: 20px; /* 180 + 40 */
     }
+}
+orm{
+ width:25%;
+}
+
+$nav-color: #d3c693;
+
+nav{
+//   background-color: $nav-color;
+  margin-top: .5rem;
+  margin-bottom: 1.5rem;
+}
+.nav__links{
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+  li{
+    display: block;
+    padding-left: .2rem;
+    width: 9rem;
+    //  border-right: 2px solid #000;
+}
+    a{
+      line-height: 6rem;
+      display: block;
+     
+      color: #000;
+      text-decoration: none;
+
+      &.last{
+        border-right: 0;
+      }
+      &:hover{
+        color: darken( $nav-color, 20% )
+    }
+  
+.uiContainer
+  &--wrapper{
+    padding-right: 0;
+    background-color: #FEFAC0;
+  }
+    input{
+      font-size: 2em
+    } 
+  &__song-list{
+    height: 538px;
+    padding-right: 0;
+    overflow: scroll;
+    }
+    .book-list{
+      list-style-type: none;
+    }
+      li{
+        margin-bottom: 1rem
+      }
+      &__item--data{
+        padding-left: 0;
+      }}
+        li{
+          display: inline-block;
+          padding-right: 1.25rem;
+          padding-left: 1.25rem;
+          border-right: 2px solid #000;
+        
+          &:last-of-type{
+            border-right: none;
+          }
+          &:first-of-type{
+            padding-left: 0;
+}}
+      .song-title{
+        color: #66635a;
+        font-size: 2.5re;
+        margin-bottom: .5rem;
+      }
+      .delete-btn{
+        background: grey;
+        width: 80px;
+        padding: 0;
+      }
+
+
+.is-hidden{
+    display: none;
 }

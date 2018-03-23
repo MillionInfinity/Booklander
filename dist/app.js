@@ -10269,17 +10269,19 @@ return jQuery;
 
 },{}],3:[function(require,module,exports){
 "use strict";
+console.log("book-interaction");
 let $ = require('jquery'),
     firebase = require("./config");
+// console.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getbooks(user) {
-    console.log("url", firebase.getFBsettings().databaseURL);
+    console.log("find this url ", firebase.getFBsettings().dataBaseURL);
     console.log("user", user);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books.json?orderBy="uid"&equalTo="${user}"`
+        url: `${firebase.getFBsettings().dataBaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
         // url: `https://mybook-5c071.firebaseio.com/user.json?orderBy="uid"&equalTo="${user}"`
     }).done((bookData) => {
-        console.log("bookData in promise", bookData);
+        console.log("i can able to promise my data", bookData);
         return bookData;
     });
 }
@@ -10288,12 +10290,12 @@ function getbooks(user) {
 function addBook(bookFormObj) {
     console.log("addBook", bookFormObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book.json`,
         type: 'POST',
         data: JSON.stringify(bookFormObj),
         dataType: 'json'
-    }).done((bookId) => {
-        return bookId;
+    }).done((bookID) => {
+        return bookID;
     });
 }
 // POST - Submits data to be processed to a specified resource.
@@ -10301,7 +10303,7 @@ function addBook(bookFormObj) {
 
 function deletebook(bookId) {
     $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         method: "DELETE"
     }).done((data) => {
         return data;
@@ -10310,7 +10312,7 @@ function deletebook(bookId) {
 
 function getbook(bookId) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
     }).done((bookData) => {
         return bookData;
     }).fail((error) => {
@@ -10320,7 +10322,7 @@ function getbook(bookId) {
 
 function editbook(bookFormObj, bookId) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         type: 'PUT',
         data: JSON.stringify(bookFormObj)
     }).done((data) => {
@@ -10329,6 +10331,10 @@ function editbook(bookFormObj, bookId) {
 }
 
 module.exports = { getbooks, addBook, getbook, deletebook, editbook };
+
+
+
+
 
 
 
@@ -10348,27 +10354,24 @@ let $ = require('jquery');
 function makeBookList(bookList) {
     console.log(bookList);
     let booksDisplay =
-        $(`<div class="thumbnail">
-    <img id=""/>
-    <h3></h3>
-    <h6><h6>
-    <h5></h5>
-
+        $(`<div class="uiContainer__book-list box col s12">
+    <ul class="book-list">
+    </ul>
   </div>`);
-    $("container").html(booksDisplay);
+    $(".uiContainer--wrapper").html(booksDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<p>", { class: "book-list__item" }),
+            bookListItem = $("<li>", { class: "book-list__item" }),
             title = $("<span/>", { class: "book-title" }).text(currentBook.title),
-            bookListData = $("<div/>", { class: "caption" }),
+            bookListData = $("<ul/>", { class: "book-list__item--data" }),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
 
         bookListData.append(
-            `<h3>${currentBook.title}</h3>
-                    <h6>${currentBook.author}</h6>
-                    <h5>${currentBook.dueDate}</h5>`);
+            `<li>${currentBook.title}</li>
+                    <li>${currentBook.author}</li>
+                    <li>${currentBook.dueDate}</li>`);
 
         $(".book-list").append(bookListItem.append(title));
         $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
@@ -10465,6 +10468,7 @@ $("#login").click(function () {
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
             loadBooksToDOM();
+            sendToFirebase();
         });
 });
 
@@ -10478,17 +10482,34 @@ $("#logout").click(() => {
 $("#viewBook").click(() => {
     console.log("i want to see");
     loadBooksToDOM();
+    sendToFirebase();
 });
+
+function createUserObj(a) {
+    let userObj = {
+        name: '',
+        email: '',
+        uid: user.getUser()
+    };
+    console.log("userObj", userObj);
+    return userObj;
+}
+function sendToFirebase() {
+    let userBuild = createUserObj();
+    interaction.addUser(userBuild);
+    console.log("sent to on main firebase", userBuild);
+}
+
 // =============LOGIN AND LOGOUT ENDS======================//
 
 //==================BOOKS start======================//
 function loadBooksToDOM() {
     // console.log("load some books is on progress,");
     let currentUser = user.getUser(); //add once we have login
-    console.log("currentUser in loadBooks", currentUser);
+    console.log("currentUser is loading books", currentUser);
     books.getbooks(currentUser)
         .then((bookData) => {
-            console.log("got data", bookData);
+            console.log("got bookdata", bookData);
             booksDom.makeBookList(bookData);
         });
 }
@@ -10509,7 +10530,7 @@ function buildBookObj() {
     return bookObj;
 }
 
-// Load the new song form
+// Load the new book form
 $("#add-book").click(function () {
     console.log("get your book");
     var bookForm = booksDom.bookForm()
@@ -10544,18 +10565,19 @@ function getFBDetails(user) {
 function addUser(userObj) {
     console.log("add user tofirebase", userObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
+        console.log("userID",userID);
         return userID;
     });
 }
 
 function updateUserFB(userObj) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user/${userObj.userID}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/user/${userObj.userID}.json`,
         type: 'PUT',
         data: JSON.stringify(userObj),
         dataType: 'json'

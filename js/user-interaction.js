@@ -20,18 +20,19 @@ function getFBDetails(user) {
 function addUser(userObj) {
     console.log("add user tofirebase", userObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
+        console.log("userID",userID);
         return userID;
     });
 }
 
 function updateUserFB(userObj) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user/${userObj.userID}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/user/${userObj.userID}.json`,
         type: 'PUT',
         data: JSON.stringify(userObj),
         dataType: 'json'

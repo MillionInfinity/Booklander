@@ -1,3 +1,4 @@
+"use strict";
 console.log("print on to dom");
 let $ = require('jquery');
 

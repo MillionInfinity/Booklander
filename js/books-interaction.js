@@ -1,16 +1,17 @@
 "use strict";
-
+console.log("book-interaction");
 let $ = require('jquery'),
     firebase = require("./config");
+// console.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getbooks(user) {
-    console.log("url", firebase.getFBsettings().databaseURL);
-    // console.log("user", user);
+    console.log("find this url ", firebase.getFBsettings().dataBaseURL);
+    console.log("user", user);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books.json?orderBy="uid"&equalTo="${user}"`
+        url: `${firebase.getFBsettings().dataBaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
         // url: `https://mybook-5c071.firebaseio.com/user.json?orderBy="uid"&equalTo="${user}"`
     }).done((bookData) => {
-        console.log("bookData in promise", bookData);
+        console.log("i can able to promise my data", bookData);
         return bookData;
     });
 }
@@ -19,7 +20,7 @@ function getbooks(user) {
 function addBook(bookFormObj) {
     console.log("addBook", bookFormObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book.json`,
         type: 'POST',
         data: JSON.stringify(bookFormObj),
         dataType: 'json'
@@ -32,7 +33,7 @@ function addBook(bookFormObj) {
 
 function deletebook(bookId) {
     $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         method: "DELETE"
     }).done((data) => {
         return data;
@@ -41,7 +42,7 @@ function deletebook(bookId) {
 
 function getbook(bookId) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
     }).done((bookData) => {
         return bookData;
     }).fail((error) => {
@@ -51,7 +52,7 @@ function getbook(bookId) {
 
 function editbook(bookFormObj, bookId) {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/books/${bookId}.json`,
+        url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         type: 'PUT',
         data: JSON.stringify(bookFormObj)
     }).done((data) => {

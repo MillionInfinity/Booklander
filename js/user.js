@@ -10,7 +10,7 @@ let $ = require('jquery'),
         uid: null,
         displayName: null,
         email: null,
-        fbID: null
+        bookId: null
     };
 
 firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
@@ -21,7 +21,7 @@ firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a
         currentUser.uid = null;
         currentUser.displayName = null;
         currentUser.email = null;
-        currentUser.fbID = null;
+        currentUser.bookId = null;
 
         console.log("NO USER LOGGED IN", currentUser);
     }

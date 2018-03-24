@@ -51,6 +51,7 @@ function createUserObj(a) {
     let userObj = {
         name: '',
         email: '',
+        bookId: '',
         uid: user.getUser()
     };
     console.log("userObj", userObj);
@@ -69,7 +70,7 @@ function loadBooksToDOM() {
     // console.log("load some books is on progress,");
     let currentUser = user.getUser(); //add once we have login
     console.log("currentUser is loading books", currentUser);
-    books.getbooks(currentUser)
+    books.getbook(currentUser)
         .then((bookData) => {
             console.log("got bookdata", bookData);
             booksDom.makeBookList(bookData);
@@ -86,7 +87,6 @@ function buildBookObj() {
         read: $("form-read").val(),
         type: $("form-read").val(),
         description: $("form-description").val(),
-
         uid: user.getUser() // include uid to the object only if a user is logged in.
     };
     return bookObj;

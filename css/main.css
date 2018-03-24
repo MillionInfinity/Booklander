@@ -6,14 +6,18 @@
   position: fixed;
   width: 100%;
   z-index: 23;
+  top: -12px;
   margin-bottom: 1px; }
 
 .container {
-  width: 65%;
+  position: relative;
+  top: 53px;
+  left: 9px;
+  width: 68%;
   background-color: #e8e9d8; }
 
 .col-sm-6 .col-md-3 {
-  margin: 5px -2px 0px 0px;
+  margin: 0px -2px 0px 0px;
   border: solid #da0971 1px;
   border-radius: 10px; }
 
@@ -31,7 +35,7 @@ h1 {
   font-size: 25px; }
 
 h3 {
-  padding-top: 5px;
+  padding-top: 15px;
   font-size: 15px; }
 
 h5 {
@@ -46,6 +50,7 @@ p .btn {
 
 .sidebar {
   position: fixed;
+  min-width: 17%;
   top: 55px;
   bottom: 0;
   left: 0;
@@ -58,16 +63,20 @@ p .btn {
   border-right: 1px solid #eee; }
 
 .sidebar {
-  width: 180px; }
+  width: 170px; }
 
 .nav-sidebar {
   position: relative;
-  top: 150px; }
+  top: 15px; }
 
-#logout,
+#logout {
+  position: relative;
+  left: -42px;
+  margin: 15px; }
+
 #login {
   position: relative;
-  left: -15px;
+  left: -25px;
   margin: 15px; }
 
 li a {
@@ -95,14 +104,15 @@ li {
   width: 9rem; }
 
 a {
-  line-height: 6rem;
+  line-height: 3rem;
   display: block;
   color: #000;
   text-decoration: none; }
   a.last {
     border-right: 0; }
   a:hover {
-    color: #b5a04b; }
+    color: #b5a04b;
+    text-decoration: none; }
   .uiContainer
   a--wrapper {
     padding-right: 0;
@@ -116,21 +126,21 @@ a {
   a .book-list {
     list-style-type: none; }
   a li {
-    margin-bottom: 1rem; }
+    margin-bottom: 0.4rem; }
   a__item--data {
     padding-left: 0; }
 
 li {
   display: inline-block;
   padding-right: 1.25rem;
-  padding-left: 1.25rem;
-  border-right: 2px solid #000; }
+  padding-left: .8rem;
+  border-bottom: 1px solid #7e7b72; }
   li:last-of-type {
     border-right: none; }
   li:first-of-type {
     padding-left: 0; }
 
-.song-title {
+.book-title {
   color: #66635a;
   font-size: 2.5re;
   margin-bottom: .5rem; }

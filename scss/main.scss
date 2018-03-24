@@ -13,24 +13,33 @@ $secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
 .selector-for-some-widget {
   box-sizing: border-box;
 }
+// .row{
+//   position:flex;
+//   top:150px;
+
+// }
 header{
-    // padding: 20px;
+    // padding-top:-10px ;
 }
 .navbar-light {
     background-color:$red !important;
    position:fixed;
    width: 100%;
     z-index: 23;
+    top:-12px;
     margin-bottom: 1px;
 }
 
 .container{
-    width:65%;
+  position: relative;
+    top: 53px;
+    left:9px;
+    width:68%;
     background-color:$black;
 }
 .col-sm-6 .col-md-3{
     
-    margin: 5px -2px 0px 0px;
+    margin: 0px -2px 0px 0px;
     border: solid rgb(218, 9, 113) 1px;
     border-radius: 10px;
     
@@ -49,7 +58,7 @@ h1{
     font-size: 25px;
 }
 h3{
-    padding-top: 5px;
+    padding-top: 15px;
     font-size:15px; 
 }
 h5{
@@ -64,6 +73,7 @@ display: inline;
 }
 .sidebar {
     position: fixed;
+    min-width:17%;
     top: 55px;
     bottom: 0;
     left: 0;
@@ -76,16 +86,20 @@ display: inline;
     border-right: 1px solid #eee;
 }
 .sidebar {
-     width: 180px;
+     width: 170px;
 }
 .nav-sidebar{
     position: relative;
-    top:150px;
+    top:15px;
 }
-#logout,
+#logout{
+     position: relative;
+    left:-42px;
+   margin:15px;
+}
 #login{
     position: relative;
-    left:-15px;
+    left:-25px;
    margin:15px;
 }
 
@@ -120,7 +134,7 @@ nav{
     //  border-right: 2px solid #000;
 }
     a{
-      line-height: 6rem;
+      line-height: 3rem;
       display: block;
      
       color: #000;
@@ -130,7 +144,8 @@ nav{
         border-right: 0;
       }
       &:hover{
-        color: darken( $nav-color, 20% )
+        color: darken( $nav-color, 20% );
+        text-decoration:none;
     }
   
 .uiContainer
@@ -150,7 +165,7 @@ nav{
       list-style-type: none;
     }
       li{
-        margin-bottom: 1rem
+        margin-bottom: .4rem
       }
       &__item--data{
         padding-left: 0;
@@ -158,8 +173,8 @@ nav{
         li{
           display: inline-block;
           padding-right: 1.25rem;
-          padding-left: 1.25rem;
-          border-right: 2px solid #000;
+          padding-left: .8rem;
+          border-bottom: 1px solid rgb(126, 123, 114);
         
           &:last-of-type{
             border-right: none;
@@ -167,7 +182,7 @@ nav{
           &:first-of-type{
             padding-left: 0;
 }}
-      .song-title{
+      .book-title{
         color: #66635a;
         font-size: 2.5re;
         margin-bottom: .5rem;

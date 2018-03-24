@@ -4,18 +4,32 @@ let $ = require('jquery'),
     firebase = require("./config");
 // console.log("firebase", firebase.getFBsettings().dataBaseURL);
 
-function getbooks(user) {
-    console.log("find this url ", firebase.getFBsettings().dataBaseURL);
-    console.log("user", user);
-    return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-        // url: `https://mybook-5c071.firebaseio.com/user.json?orderBy="uid"&equalTo="${user}"`
+function getBook() {
+       return $.ajax({
+       url: `${firebase.getFBsettings().dataBaseURL}/book.json`
     }).done((bookData) => {
-        console.log("i can able to promise my data", bookData);
+       console.log("i can able to promise all kinds of books", bookData);
+       return bookData;
+    });
+}
+
+function getAllTypeBook() {
+    return $.ajax({
+        url: `${firebase.getFBsettings().dataBaseURL}/book-type.json`
+    }).done((bookData) => {
+        console.log("i can able to promise all kinds of books", bookData);
         return bookData;
     });
 }
-// getbooks(user);
+
+function getUserBook() {
+    return $.ajax({
+        url: `${firebase.getFBsettings().dataBaseURL}/book.json`
+    }).done((bookData) => {
+        console.log("i can able to promise all kinds of books", bookData);
+        return bookData;
+    });
+}
 
 function addBook(bookFormObj) {
     console.log("addBook", bookFormObj);
@@ -31,7 +45,7 @@ function addBook(bookFormObj) {
 // POST - Submits data to be processed to a specified resource.
 // addBook();
 
-function deletebook(bookId) {
+function deleteBook(bookId) {
     $.ajax({
         url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         method: "DELETE"
@@ -40,7 +54,7 @@ function deletebook(bookId) {
     });
 }
 
-function getbook(bookId) {
+function getBook(bookId) {
     return $.ajax({
         url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
     }).done((bookData) => {
@@ -50,7 +64,7 @@ function getbook(bookId) {
     });
 }
 
-function editbook(bookFormObj, bookId) {
+function editBook(bookFormObj, bookId) {
     return $.ajax({
         url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
         type: 'PUT',
@@ -60,7 +74,7 @@ function editbook(bookFormObj, bookId) {
     });
 }
 
-module.exports = { getbooks, addBook, getbook, deletebook, editbook };
+module.exports = { getBook, getAllTypeBook, getUserBook, addBook,  deleteBook, editBook };
 
 
 

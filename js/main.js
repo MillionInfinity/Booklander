@@ -11,7 +11,8 @@ let $ = require('jquery'),
     fapi = require("./api"),
     search = require("./search"),
     interaction = require("./user-interaction"),
-    booksDom = require("./booksDom");
+    booksDom = require("./booksDom"),
+    eventBooks= require("./eventBooks");
 
 
 ///==================USER LOGIN LOGOUT STARTS====================//

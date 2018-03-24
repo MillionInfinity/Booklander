@@ -10268,13 +10268,13 @@ return jQuery;
           module.exports = {getKey};
 
 },{}],3:[function(require,module,exports){
-"use strict";
-console.log("book-interaction");
+ "use strict";
+           console.log("book-interaction");
 let $ = require('jquery'),
-    firebase = require("./config"),
-    aBook={},
-    myBookArr=[];
-// console.log("firebase", firebase.getFBsettings().dataBaseURL);
+            firebase = require("./config"),
+            aBook={},
+            myBookArr=[];
+        // console.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getBook() {
               return $.ajax({
@@ -10337,15 +10337,7 @@ function deleteBook(bookId) {
             });
 }
 
-// function getBook(bookId) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
-//     }).done((bookData) => {
-//         return bookData;
-//     }).fail((error) => {
-//         return error;
-//     });
-// }
+
 function addBook(bookObj) {
                 console.log("addBook", bookObj);
                 return $.ajax({
@@ -10358,23 +10350,24 @@ function addBook(bookObj) {
                 });
             }
 function addUserBook(bookObj) {
-    console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookObj) => {
-        console.log("use book obj", bookObj);
-        return bookObj;
-    });
+            console.log("addBook", bookObj);
+            return $.ajax({
+                url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+                type: 'POST',
+                data: JSON.stringify(bookObj),
+                dataType: 'json'
+            }).done((bookObj) => {
+                console.log("use book obj", bookObj);
+                return bookObj;
+            });
 }
 
-function editBook(bookFormObj, bookId) {
+
+function editBook(bookObj, bookId) {
             return $.ajax({
                 url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
                 type: 'PUT',
-                data: JSON.stringify(bookFormObj)
+                data: JSON.stringify(bookObj)
              }).done((data) => {
                 return data;
             });
@@ -10406,7 +10399,8 @@ function editBook(bookFormObj, bookId) {
 },{"./config":5,"jquery":1}],4:[function(require,module,exports){
 "use strict";
 console.log("print on to dom");
-let $ = require('jquery');
+let $ = require('jquery'),
+    user=require("./user");
 
 
 
@@ -10464,9 +10458,31 @@ function bookForm(book, bookId) {
         resolve(form);
     });
 }
+function buildBookObj() {
+    let bookObj = {
+        title: $("#form-title").val(),
+        author: $("#form-author").val(),
+        dueDate: $("#form-dueDate").val(),
+        image: $("#form-image").val(),
+        place: $("#form-place").val(),
+        type: $("form-type").val(),
+        description: $("form-description").val(),
+        read: false,
+        uid: user.getUser()
+    };
+    return bookObj;
+}
+// Load the new book form
+$("#add-book").click(function (builObj) {
+    console.log(" print mymy book");
+    var booktoForm =bookForm()
+        .then((booktoForm) => {
+            $(".uiContainer--wrapper").html(booktoForm);
+        });
+});
 
-module.exports = { makeBookList, bookForm };
-},{"jquery":1}],5:[function(require,module,exports){
+module.exports = { makeBookList, bookForm, buildBookObj};
+},{"./user":10,"jquery":1}],5:[function(require,module,exports){
 "use strict";
 console.log("i configarate");
 
@@ -10504,6 +10520,51 @@ let $ = require('jquery'),
     booksDom =require("./booksDom"),
     interaction=require("./user-interaction"),
     user = require("./user");
+
+
+
+// var form = document.getElementById("addForm");
+// var song = document.getElementById("items");
+
+// //form submit event//
+// form.addEventListener('submit', addItem);
+// //delete event//
+// song.addEventListener('click', removeItem);
+// //add item//
+// function addItem(s) {
+//     s.preventDefault();
+//     var newItem = document.getElementById('item').value;
+
+//     //create new li element//
+//     var li = document.createElement('li');
+//     //add class//
+//     li.className = 'list-group-item';
+//     //add text node with input value//
+//     li.appendChild(document.createTextNode(newItem));
+//     //create del button element//
+//     var deleteBtn = document.createElement('button');
+//     //add classes to del button//
+//     deleteBtn.className = 'btn btn-danger btn-sm floate-right delete';
+
+//     //append text node//
+//     deleteBtn.appendChild(document.createTextNode('X'));
+
+//     //append button to li//
+//     li.appendChild(deleteBtn);
+
+//     //Append li to list//
+//     song.appendChild(li);
+// }
+// function removeItem(s) {
+//     if (s.target.classList.contains('delete')) {
+//         if (confirm('are you sure?')) {
+//             var li = s.target.parentElement;
+//             song.removeChild(li);
+
+//         }
+//     }
+
+// }
 },{"./books-interaction":3,"./booksDom":4,"./config":5,"./user":10,"./user-interaction":9,"jquery":1}],7:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
@@ -10584,29 +10645,7 @@ function loadBooksToDOM() {
         });
 }
 
-function buildBookObj() {
-    let bookObj = {
-        title: $("#form--title").val(),
-        author: $("#form--author").val(),
-        dueDate: $("#form--dueDate").val(),
-        image: $("#form--image").val(),
-        place: $("#form--place").val(),
-        read: $("form-read").val(),
-        type: $("form-read").val(),
-        description: $("form-description").val(),
-        uid: user.getUser() // include uid to the object only if a user is logged in.
-    };
-    return bookObj;
-}
 
-// Load the new book form
-$("#add-book").click(function () {
-    console.log("get your book");
-    var bookForm = booksDom.bookForm()
-        .then((bookForm) => {
-            $(".uiContainer--wrapper").html(bookForm);
-        });
-});
 
 //==================BOOKS ENDS======================//
 },{"./api":2,"./books-interaction":3,"./booksDom":4,"./config":5,"./eventBooks":6,"./search":8,"./user":10,"./user-interaction":9,"jquery":1}],8:[function(require,module,exports){

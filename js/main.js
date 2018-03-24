@@ -77,28 +77,6 @@ function loadBooksToDOM() {
         });
 }
 
-function buildBookObj() {
-    let bookObj = {
-        title: $("#form--title").val(),
-        author: $("#form--author").val(),
-        dueDate: $("#form--dueDate").val(),
-        image: $("#form--image").val(),
-        place: $("#form--place").val(),
-        read: $("form-read").val(),
-        type: $("form-read").val(),
-        description: $("form-description").val(),
-        uid: user.getUser() // include uid to the object only if a user is logged in.
-    };
-    return bookObj;
-}
 
-// Load the new book form
-$("#add-book").click(function () {
-    console.log("get your book");
-    var bookForm = booksDom.bookForm()
-        .then((bookForm) => {
-            $(".uiContainer--wrapper").html(bookForm);
-        });
-});
 
 //==================BOOKS ENDS======================//

@@ -1,6 +1,7 @@
 "use strict";
 console.log("print on to dom");
-let $ = require('jquery');
+let $ = require('jquery'),
+    user=require("./user");
 
 
 
@@ -58,5 +59,27 @@ function bookForm(book, bookId) {
         resolve(form);
     });
 }
+function buildBookObj() {
+    let bookObj = {
+        title: $("#form-title").val(),
+        author: $("#form-author").val(),
+        dueDate: $("#form-dueDate").val(),
+        image: $("#form-image").val(),
+        place: $("#form-place").val(),
+        type: $("form-type").val(),
+        description: $("form-description").val(),
+        read: false,
+        uid: user.getUser()
+    };
+    return bookObj;
+}
+// Load the new book form
+$("#add-book").click(function (builObj) {
+    console.log(" print mymy book");
+    var booktoForm =bookForm()
+        .then((booktoForm) => {
+            $(".uiContainer--wrapper").html(booktoForm);
+        });
+});
 
-module.exports = { makeBookList, bookForm };
+module.exports = { makeBookList, bookForm, buildBookObj};

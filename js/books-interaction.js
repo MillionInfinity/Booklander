@@ -1,10 +1,10 @@
-"use strict";
-console.log("book-interaction");
+ "use strict";
+           console.log("book-interaction");
 let $ = require('jquery'),
-    firebase = require("./config"),
-    aBook={},
-    myBookArr=[];
-// console.log("firebase", firebase.getFBsettings().dataBaseURL);
+            firebase = require("./config"),
+            aBook={},
+            myBookArr=[];
+        // console.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getBook() {
               return $.ajax({
@@ -67,15 +67,7 @@ function deleteBook(bookId) {
             });
 }
 
-// function getBook(bookId) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
-//     }).done((bookData) => {
-//         return bookData;
-//     }).fail((error) => {
-//         return error;
-//     });
-// }
+
 function addBook(bookObj) {
                 console.log("addBook", bookObj);
                 return $.ajax({
@@ -88,23 +80,24 @@ function addBook(bookObj) {
                 });
             }
 function addUserBook(bookObj) {
-    console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookObj) => {
-        console.log("use book obj", bookObj);
-        return bookObj;
-    });
+            console.log("addBook", bookObj);
+            return $.ajax({
+                url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+                type: 'POST',
+                data: JSON.stringify(bookObj),
+                dataType: 'json'
+            }).done((bookObj) => {
+                console.log("use book obj", bookObj);
+                return bookObj;
+            });
 }
 
-function editBook(bookFormObj, bookId) {
+
+function editBook(bookObj, bookId) {
             return $.ajax({
                 url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
                 type: 'PUT',
-                data: JSON.stringify(bookFormObj)
+                data: JSON.stringify(bookObj)
              }).done((data) => {
                 return data;
             });

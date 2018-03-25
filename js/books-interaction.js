@@ -103,15 +103,15 @@ function editBook(bookObj, bookId) {
             });
         }
 
- module.exports = { getBook,
-                    getAllTypeBook, 
-                    getUserBook,
-                    ajaxCalls, 
-                    addBook, 
-                    addUserBook,
-                    getSameBook,
-                    deleteBook,
-                    editBook 
+module.exports = { getBook,
+                        getAllTypeBook,
+                        getUserBook,
+                        ajaxCalls,
+                        addBook,
+                        addUserBook,
+                        getSameBook,
+                        deleteBook,
+                        editBook 
                 };
 
 

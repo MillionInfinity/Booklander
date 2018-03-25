@@ -29,7 +29,7 @@ $("#login").click(function () {
             console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
-            loadBooksToDOM();
+            // loadBooksToDOM();
             sendToFirebase();
         });
 });
@@ -43,15 +43,14 @@ $("#logout").click(() => {
 
 $("#viewBook").click(() => {
     console.log("i want to see");
-    loadBooksToDOM();
+    // loadBooksToDOM();
     sendToFirebase();
 });
 
 function createUserObj(a) {
     let userObj = {
-        name: '',
+        name:'',
         email: '',
-        bookId: '',
         uid: user.getUser()
     };
     console.log("userObj", userObj);
@@ -66,17 +65,5 @@ function sendToFirebase() {
 // =============LOGIN AND LOGOUT ENDS======================//
 
 //==================BOOKS start======================//
-function loadBooksToDOM() {
-    // console.log("load some books is on progress,");
-    let currentUser = user.getUser(); //add once we have login
-    console.log("currentUser is loading books", currentUser);
-    books.getbook(currentUser)
-        .then((bookData) => {
-            console.log("got bookdata", bookData);
-            booksDom.makeBookList(bookData);
-        });
-}
-
-
 
 //==================BOOKS ENDS======================//

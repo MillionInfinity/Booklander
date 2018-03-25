@@ -1,0 +1,67 @@
+{
+    
+       "books": [
+        {   "bookId":"hawthornemayer001",
+            "title": "The Walk",
+            "author": "Mayer Hawthorne",
+            "place": "How Do You Do",
+            "image": "4.png",
+            "type": "library",
+            "due-date":"june, 6 2018",
+            "read":false,
+            "description":"i am going to read it after i read it"
+        },
+        { 
+            "bookId": "pottergrace001",
+            "title": "Medicine",
+            "author": "Grace Potter",
+            "place": "Grace Potter and the Nocturnals",
+            "image": "3.png",
+            "type": "borrowed",
+            "due-date": "March, 5 2018",
+            "read":false,
+            "description":"i will sleep after i wakeup"
+        },
+        {
+            "bookId": "topzz001",
+            "title": "Legs",
+            "author": "ZZ Top",
+            "place": "Eliminator",
+            "image": "3.png",
+            "type": "bought",
+            "due-date": "April, 14 2018",
+            "read":true,
+            "description":"why i am reading that book? i dont know"
+        }
+      
+    ],
+            "book-type": [
+                {
+                    "type": "library",
+                    "uid":"fbId"
+                },
+                {
+                   "type": "borrow",
+                   "uid": "fbId"
+                },
+                {
+                    "type": "bought",
+                    "uid": "fbId"
+                }
+            ],
+    "user_book": [
+            {
+           
+                "bookId": "topzz001",
+                "book-type":"library"
+            }
+        ],
+        "dueBook": [
+            {
+              
+                "bookId": "topzz001",
+                "book-type": "library"
+            }
+        ]
+    
+}

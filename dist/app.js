@@ -10373,15 +10373,15 @@ function editBook(bookObj, bookId) {
             });
         }
 
- module.exports = { getBook,
-                    getAllTypeBook, 
-                    getUserBook,
-                    ajaxCalls, 
-                    addBook, 
-                    addUserBook,
-                    getSameBook,
-                    deleteBook,
-                    editBook 
+module.exports = { getBook,
+                        getAllTypeBook,
+                        getUserBook,
+                        ajaxCalls,
+                        addBook,
+                        addUserBook,
+                        getSameBook,
+                        deleteBook,
+                        editBook 
                 };
 
 
@@ -10400,89 +10400,149 @@ function editBook(bookObj, bookId) {
 "use strict";
 console.log("print on to dom");
 let $ = require('jquery'),
-    user=require("./user");
+    user=require("./user"),
+    book =require("./books-interaction"),
+    firebase=require("./config"),
+// bookRef = firebase.database().ref().child('book');
+ bookRef = firebase.database().ref('book');
 
 
 
-function makeBookList(bookList) {
-    console.log(bookList);
-    let booksDisplay =
-        $(`<div class="uiContainer__book-list box col s12">
-    <ul class="book-list">
-    </ul>
-  </div>`);
-    $(".uiContainer--wrapper").html(booksDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<li>", { class: "book-list__item" }),
-            title = $("<span/>", { class: "book-title" }).text(currentBook.title),
-            bookListData = $("<ul/>", { class: "book-list__item--data" }),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-        // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
-
-        bookListData.append(
-            `<li>${currentBook.title}</li>
-                    <li>${currentBook.author}</li>
-                    <li>${currentBook.dueDate}</li>`);
-
-        $(".book-list").append(bookListItem.append(title));
-        $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
-    }
-}
-
-
-
-function bookForm(book, bookId) {
-    return new Promise((resolve, reject) => {
-        let bookItem = {
-            title: book ? book.title : "",
-            author: book ? book.author : "",
-            dueDate: book ? book.dueDate : "",
-            place: book ? book.place : "",
-            type: book ? book.type : "",
-            description: book ? book.description : "",
-            formTitle: book ? `Edit "${book.title}"` : "Add a new book",
-            btnText: book ? "save changes" : "save book",
-            btnId: book ? "save_edit_btn" : "save_new_btn"
-        },
-            form =
-                `<h3>${bookItem.formTitle}</h3>
-                <input type="text" id="form--title" placeholder="Title" value="${bookItem.title}"></input>
-                <input type="text" id="form--artist" placeholder="Author" value="${bookItem.author}"></input>
-                <input type="text" id="form--album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
-                <input type="text" id="form--title" placeholder="Place" value="${bookItem.place}"></input>
-                <input type="text" id="form--album" placeholder="Type" value="${bookItem.type}"></input>
-                <input type="text" id="form--year" placeholder="Description" value="${bookItem.description}"></input>
-                <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
-        resolve(form);
-    });
-}
 function buildBookObj() {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#form-dueDate").val(),
+        dueDate: $("#select-dueDate").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
-        type: $("form-type").val(),
+        read: $("form-read").val(),
+        type: $("select-type").val(),
         description: $("form-description").val(),
-        read: false,
-        uid: user.getUser()
+        status: false,
+        uid: user.getUser() 
     };
     return bookObj;
 }
-// Load the new book form
-$("#add-book").click(function (builObj) {
-    console.log(" print mymy book");
-    var booktoForm =bookForm()
-        .then((booktoForm) => {
-            $(".uiContainer--wrapper").html(booktoForm);
+
+// ======CLICK TO FIREBASE=============//
+
+$("#add-book").click(function () {
+    console.log("get your book");
+    var bookForm = buildBookObj();
+    book.addBook(bookObj).then((bookForm) => {
+    console.log("the book is sending to firebase",bookForm)
         });
 });
 
-module.exports = { makeBookList, bookForm, buildBookObj};
-},{"./user":10,"jquery":1}],5:[function(require,module,exports){
+//===============FIREBASE DONE==========//
+{/* <div class="container">
+    <h5 class="brand">
+        <span>Add</span> New Books</h5>
+    <div class="wrapper">
+        <form id="contactForm">
+            <p><label>Title</label><br><input type="text" name="title" id="title" required></p>
+                <p><label>Author</label><input type="text" name="author" id="author"></p>
+                    <p><label>Type</label><input type="text" name="type" id="type" required></p>
+                        <p><label>Phone Number</label><input type="text" name="dueDate" id="duedate"></p>
+                            <p class="full"><label>Description</label><textarea name="description" rows="5" id="description"></textarea></p>
+                            <p class="add-book"><button type="submit">Submit</button></p>
+                </form>
+            </div>
+        </div> */}
+// ================read==============//
+
+// function setStatus(bookID) {
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book/${bookID}.json`,
+//         type: 'PATCH',
+//         data: JSON.stringify({ status: true }),
+//         dataType: 'json'
+//     }).done((userID) => {
+//         return userID;
+//     }).fail((error) => {
+//         console.log("error", error);
+//         return error;
+//     });
+// }
+// $(document).on("click", ".check-in", function () {
+//     let checkintoReso = $(this).attr("id");
+//     console.log("check in", checkintoReso);
+//     setStatus(checkintoReso);
+//     // .then(() => {
+//     //   checkStatus();
+//     //   console.log("CHECK IN BUTTON CLICKED");
+
+// });
+
+// ------------------------------------
+
+
+//============== Load the new book form to firebase==========//
+// function loadBooksToDOM() {
+//     // console.log("load some books is on progress,")
+//     let currentUser = user.getUser(); //add once we have login
+//     console.log("currentUser is loading books", currentUser);
+//     book.getbook(currentUser)
+//         .then((bookData) => {
+//             console.log("got bookdata", bookData);
+//             makeBookList(bookData);
+//         });
+// }
+// function makeBookList(bookList) {
+//     console.log(bookList);
+//     let booksDisplay =
+//         $(`<div class="uiContainer__book-list box col s12">
+//     <ul class="book-list">
+//     </ul>
+//   </div>`);
+//     $(".items").html(booksDisplay);
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<li>", { class: "book-list__item" }),
+//             title = $("<span/>", { class: "book-title" }).text(currentBook.title),
+//             bookListData = $("<ul/>", { class: "book-list__item--data" }),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
+
+//         bookListData.append(
+//             `<li>${currentBook.title}</li>
+//                     <li>${currentBook.author}</li>
+//                     <li>${currentBook.dueDate}</li>`);
+
+//         $(".book-list").append(bookListItem.append(title));
+//         $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
+//     }
+// }
+
+// function bookForm(book, bookId) {
+//     return new Promise((resolve, reject) => {
+//         let bookItem = {
+//             title: book ? book.title : "",
+//             author: book ? book.author : "",
+//             dueDate: book ? book.dueDate : "",
+//             place: book ? book.place : "",
+//             type: book ? book.type : "",
+//             description: book ? book.description : "",
+//             formTitle: book ? `Edit "${book.title}"` : "Add a new book",
+//             btnText: book ? "save changes" : "save book",
+//             btnId: book ? "save_edit_btn" : "save_new_btn"
+//         },
+//             form =
+//                 `<h3>${bookItem.formTitle}</h3>
+//                 <input type="text" id="form--title" placeholder="Title" value="${bookItem.title}"></input>
+//                 <input type="text" id="form--Author" placeholder="Author" value="${bookItem.author}"></input>
+//                 <input type="text" id="form--album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+//                 <input type="text" id="form--title" placeholder="Place" value="${bookItem.place}"></input>
+//                 <input type="text" id="form--album" placeholder="Type" value="${bookItem.type}"></input>
+//                 <input type="text" id="form--year" placeholder="Description" value="${bookItem.description}"></input><br/>
+//                 <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
+//         resolve(form);
+//     });
+// }
+
+// module.exports = { makeBookList, bookForm};
+},{"./books-interaction":3,"./config":5,"./user":10,"jquery":1}],5:[function(require,module,exports){
 "use strict";
 console.log("i configarate");
 
@@ -10597,7 +10657,7 @@ $("#login").click(function () {
             console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
-            loadBooksToDOM();
+            // loadBooksToDOM();
             sendToFirebase();
         });
 });
@@ -10611,15 +10671,14 @@ $("#logout").click(() => {
 
 $("#viewBook").click(() => {
     console.log("i want to see");
-    loadBooksToDOM();
+    // loadBooksToDOM();
     sendToFirebase();
 });
 
 function createUserObj(a) {
     let userObj = {
-        name: '',
+        name:'',
         email: '',
-        bookId: '',
         uid: user.getUser()
     };
     console.log("userObj", userObj);
@@ -10634,18 +10693,6 @@ function sendToFirebase() {
 // =============LOGIN AND LOGOUT ENDS======================//
 
 //==================BOOKS start======================//
-function loadBooksToDOM() {
-    // console.log("load some books is on progress,");
-    let currentUser = user.getUser(); //add once we have login
-    console.log("currentUser is loading books", currentUser);
-    books.getbook(currentUser)
-        .then((bookData) => {
-            console.log("got bookdata", bookData);
-            booksDom.makeBookList(bookData);
-        });
-}
-
-
 
 //==================BOOKS ENDS======================//
 },{"./api":2,"./books-interaction":3,"./booksDom":4,"./config":5,"./eventBooks":6,"./search":8,"./user":10,"./user-interaction":9,"jquery":1}],8:[function(require,module,exports){
@@ -10721,11 +10768,12 @@ let $ = require('jquery'),
     books = require("./books-interaction"),
     fapi = require("./api"),
     interaction = require("./user-interaction"),
+    object="",
     provider = new firebase.auth.GoogleAuthProvider(),
     currentUser = {
         uid: null,
-        displayName: null,
-        email: null,
+        displayName:object.displayName,
+        email: object.email,
         bookId: null
     };
 
@@ -10803,8 +10851,8 @@ function checkUserFB(uid) {
 function makeUserObj(a) {
     let userObj = {
         uid: null,
-        displayName: null,
-        email: null,
+        displayName: currentUser.displayName,
+        email: currentUser.email,
         fbID:null
     };
     console.log("userObj", userObj);

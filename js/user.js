@@ -5,11 +5,12 @@ let $ = require('jquery'),
     books = require("./books-interaction"),
     fapi = require("./api"),
     interaction = require("./user-interaction"),
+    object="",
     provider = new firebase.auth.GoogleAuthProvider(),
     currentUser = {
         uid: null,
-        displayName: null,
-        email: null,
+        displayName:object.displayName,
+        email: object.email,
         bookId: null
     };
 
@@ -87,8 +88,8 @@ function checkUserFB(uid) {
 function makeUserObj(a) {
     let userObj = {
         uid: null,
-        displayName: null,
-        email: null,
+        displayName: currentUser.displayName,
+        email: currentUser.email,
         fbID:null
     };
     console.log("userObj", userObj);

@@ -8,46 +8,84 @@ let $ = require('jquery'),
     user = require("./user");
 
 
+function loadBookToDOM(){
+console.log("from eventBook to see books on dom");
+let currentUser=user.getUser();
+console.log("eventbook loadbook",currentUser);
+bookInter.getBook(currentUser)
+.then((bookData)=>{
+console.log("i get my data eventbook",bookData);
+booksDom.makeBookList(bookData);
+});
+}
+// loadBookToDOM();
 
-// var form = document.getElementById("addForm");
-// var song = document.getElementById("items");
+$(document).on("click", ".save_new_btn", function(){
+    console.log("click and save new book");
+    let bookObj=buildBookObj();
+    bookInter.addBook(bookObj)
+    .then((bookId)=>{
+    loadBookToDOM();
+});
+});
 
-// //form submit event//
-// form.addEventListener('submit', addItem);
-// //delete event//
-// song.addEventListener('click', removeItem);
-// //add item//
-// function addItem(s) {
-//     s.preventDefault();
-//     var newItem = document.getElementById('item').value;
+$(document).on("click", ".edit-btn", function () {
+    console.log("click edit book");
+    let bookID = $(this).data("edit-id");
+    bookInter.getBook(bookID)
+        .then((book) => {
+            return booksDom.bookForm(book, bookID);
+        })
+        .then((finishedForm) => {
+            $(".uiContainer--wrapper").html(finishedForm);
+        });
+});
 
-//     //create new li element//
-//     var li = document.createElement('li');
-//     //add class//
-//     li.className = 'list-group-item';
-//     //add text node with input value//
-//     li.appendChild(document.createTextNode(newItem));
-//     //create del button element//
-//     var deleteBtn = document.createElement('button');
-//     //add classes to del button//
-//     deleteBtn.className = 'btn btn-danger btn-sm floate-right delete';
+$(document).on("click", ".save_edit_btn", function () {
+    let bookObj = buildBookObj(),
+        bookID = $(this).attr("id");
+    console.log("do i have a bookID", bookID);
+    bookInter.editSong(bookObj, bookID)
+        .then((data) => {
+            loadBookToDOM();
+        });
+});
 
-//     //append text node//
-//     deleteBtn.appendChild(document.createTextNode('X'));
+$(document).on("click", ".delete-btn", function () {
+    console.log("you can delete a book", $(this).data("delete-id"));
+    let bookID = $(this).data("delete-id");
+    bookInter.deleteBook(bookID)
+        .then(() => {
+            loadBookToDOM();
+        });
+});
+        $("#all").click(function () {
+        $(".uiContainer--wrapper").html("");
+            loadBookToDOM();
+        });
 
-//     //append button to li//
-//     li.appendChild(deleteBtn);
 
-//     //Append li to list//
-//     song.appendChild(li);
-// }
-// function removeItem(s) {
-//     if (s.target.classList.contains('delete')) {
-//         if (confirm('are you sure?')) {
-//             var li = s.target.parentElement;
-//             song.removeChild(li);
+function buildBookObj() {
+    let bookObj = {
+        title: $("#form-title").val(),
+        author: $("#form-author").val(),
+        dueDate: $("#select-dueDate").val(),
+        image: $("#form-image").val(),
+        place: $("#form-place").val(),
+        read: $("form-read").val(),
+        type: $("select-type").val(),
+        description: $("form-description").val(),
+        status: false,
+        uid: user.getUser()
+    };
+    return bookObj;
+}
 
-//         }
-//     }
 
-// }
+$("#add-book").click(function () {
+    console.log("clicked to add book");
+    var bookForm = booksDom.bookForm()
+        .then((bookForm) => {
+            $(".container-add").html(bookForm);
+        });
+});

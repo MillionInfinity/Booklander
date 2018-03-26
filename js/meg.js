@@ -1,294 +1,111 @@
 "use strict";
 
-// // requires - key, configuration, user, 
-// let $ = require('../lib/node_modules/jquery'),
-//     firebase = require('./configure'),
-//     interaction = require('./interaction'),
-//     user = require('./user'),
-    // dbRef = firebase.database().ref().child('reservations');
 
 
+// // ======CLICK TO FIREBASE=============//
 
-//////////////////////////////
-// BUILD A USER INTO FIREBASE
-//////////////////////////////
-
-// USER OBJECT FOR FIREBASE 
-// let buildUserObject = (userName, userId, userImage) => {
-//     let userObject = {
-//         Name: userName,
-//         uid: userId,
-//         photo: userImage
-//     };
-//     return userObject;
-// };
-
-
-// ADDS USER TO FIREBASE
-// function addUser(userObject) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/users.json`,
-//         type: 'POST',
-//         data: JSON.stringify(userObject),
-//         dataType: 'json'
-//     }).done((userID) => {
-//         return userID;
-//     });
-// }
-// POST - Submits data to be processed to a specified resource. Takes one parameter.
-/////////////////////////////////////////////////////
-
-
-
-
-
-///////////////////////////////
-// ADD RESERVATION TO FIREBASE
-///////////////////////////////
-
-//BUILDS RESERVATION OBJECT
-// function buildResoObj() {
-//     let resoObj = {
-//         restaurant: $("#select-restaurant").val(),
-//         date: $("#select-date").val(),
-//         time: $("#select-time").val(),
-//         people: $("#select-people").val(),
-//         request: $("#select-request").val(),
-//         occasion: $("#select-occasion").val(),
-//         status: false,
-//         uid: user.getUser()
-//     };
-//     return resoObj;
-// }
-
-// ADDS RESERVATION TO FIREBASE
-// function addReso(resoFormObj) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/reservations.json`,
-//         type: 'POST',
-//         data: JSON.stringify(resoFormObj),
-//         dataType: 'json'
-//     }).done((resoID) => {
-//         return resoID;
-//     });
-// }
-
-
-// //CLICK RESERVE BUTTON TO SEND RESERVATION TO FIREBASE
-// $("#Reserve-btn").click(function () {
-//     let resObj = buildResoObj();
-//     addReso(resObj).then((resoID) => {
-//         console.log("the reserve table has been clicked", resObj);
-
+// $("#add-book").click(function () {
+//     console.log("get your book");
+//     var bookForm = buildBookObj();
+//     book.addBook(bookObj).then((bookForm) => {
+//         console.log("the book is sending to firebase", bookForm)
 //     });
 // });
 
-///////////////////////////////////////////////////////
+// // ===========format of my main dom page=========//
+
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             BookListItem = $("<li>", { class: "book-list__item" }),
+//             title = $("<span/>", { class: "book-title" }).text(currentSong.title),
+//             bookListData = $("<ul/>", { class: "song-list__item--data" }),
+//             songListEdit = $("<a>", { "data-edit-id": song, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//             songListDelete = $("<a>", { "data-delete-id": song, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
+
+
+//         function bookForm(book, bookId) {
+//             return new Promise((resolve, reject) => {
+//                 let bookItem = {
+//                     title: book ? book.title : "",
+//                     author: book ? book.author : "",
+//                     dueDate: book ? book.dueDate : "",
+//                     place: book ? book.place : "",
+//                     type: book ? book.type : "",
+//                     description: book ? book.description : "",
+//                     formTitle: book ? `Edit "${book.title}"` : "Add a new book",
+//                     btnText: book ? "save changes" : "save book",
+//                     btnId: book ? "save_edit_btn" : "save_new_btn"
+//                 },
+//                     form =
+//                         `<h3>${bookItem.formTitle}</h3>
+//                 <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
+//                 <input type="text" id="form-Author" placeholder="Author" value="${bookItem.author}"></input>
+//                 <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+//                 <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
+//                 <input type="text" id="form-album" placeholder="Type" value="${bookItem.type}"></input>
+//                 <input type="text" id="form-year" placeholder="Description" value="${bookItem.description}"></input><br/>
+//                 <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
+//                 resolve(form);
+//             });
+//         }
 
 
 
 
-//////////////////////////////////
-// SET CHECKIN STATUS IN FIREBASE
-//////////////////////////////////
+//         //         $(`<div class="uiContainer__book-list box col s12">
+//         //     <ul class="book-list">
+//         //     </ul>
+//         //   </div>`);
+//         //     $(".items").html(booksDisplay);
+//         //     for (let book in bookList) {
+//         //         let currentBook = bookList[book],
+//         //             bookListItem = $("<li>", { class: "book-list__item" }),
+//         //             title = $("<span/>", { class: "book-title" }).text(currentBook.title),
+//         //             bookListData = $("<ul/>", { class: "book-list__item--data" }),
+//         //             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//         //             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//         //         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
 
-// function setStatus(resoID) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/reservations/${resoID}.json`,
-   
-//      type: 'PATCH',
-//         data: JSON.stringify({ status: true }),
-//         dataType: 'json'
-//     }).done((userID) => {
-//         return userID;
-//     }).fail((error) => {
-//         console.log("error", error);
-//         return error;
-//     });
-// }
+//         //         bookListData.append(
+//         //             `<li>${currentBook.title}</li>
+//         //                     <li>${currentBook.author}</li>
+//         //                     <li>${currentBook.dueDate}</li>`);
 
-// // function checkStatus() {
-// //   console.log("checking in checkstatus function");
+//         //         $(".book-list").append(bookListItem.append(title));
+//         //         $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
+//         //     }
+//         // }
+
+//         module.exports = { makeBookList, bookForm };
+// //===============FIREBASE DONE==========//
+
+// // ================read==============//
+
+// // function setStatus(bookID) {
+// //     return $.ajax({
+// //         url: `${firebase.getFBsettings().databaseURL}/book/${bookID}.json`,
+// //         type: 'PATCH',
+// //         data: JSON.stringify({ status: true }),
+// //         dataType: 'json'
+// //     }).done((userID) => {
+// //         return userID;
+// //     }).fail((error) => {
+// //         console.log("error", error);
+// //         return error;
+// //     });
 // // }
+// // $(document).on("click", ".check-in", function () {
+// //     let checkintoReso = $(this).attr("id");
+// //     console.log("check in", checkintoReso);
+// //     setStatus(checkintoReso);
+// //     // .then(() => {
+// //     //   checkStatus();
+// //     //   console.log("CHECK IN BUTTON CLICKED");
 
+// // });
 
-// $(document).on("click", ".check-in", function () {
-//     let checkintoReso = $(this).attr("id");
-//     console.log("check in", checkintoReso);
-//     setStatus(checkintoReso);
-//     // .then(() => {
-//     //   checkStatus();
-//     //   console.log("CHECK IN BUTTON CLICKED");
-
-// });
-///////////////////////////////////////////////////////
-
-
-
-
-////////////////////////////////
-//GET RESERVATION FROM FIREBASE
-////////////////////////////////
-
-// var resoData = [];
-// let seeMore = document.getElementById("showcase");
-
-// // var rStatus;
-
-
-// function getReso(reso) {
-//     // console.log("AJAX", user.getUser());
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/reservations.json?orderBy="uid"&equalTo="${user.getUser()}"`,
-//     }).done((resoData) => {
-//         // console.log("resoData", resoData);
-//         return resoData;
-//     }).fail((error) => {
-//         return error;
-//     });
-// }
+// // ------------------------------------
 
 
 
-// let keys;
-// let listReservations;
-
-// function showReso() {
-//     getReso(event).then(function (rData) {
-//         // console.log("rData", rData);
-//         listResos(rData);
-
-
-//     });
-// }
-// // THIS CODE CONVERTs THE FB RESERVATION OBJECT INTO THEIR OWN ARRAYS
-// function listResos(rData) {
-//     console.log("rData: ", rData);
-//     // keys = Object.entries(rData).map(e => Object.assign(e[1], { key: e[0] }));
-//     // console.log("keys: ", keys);
-
-
-//     let seeResos = "";
-
-//     for (let reservation in rData) {
-//         // console.log("restaurants selected in firebase reservations: ", keys[a].restaurant);
-
-//         let rPlace = rData[reservation].restaurant;
-//         let rDate = rData[reservation].date;
-//         let rTime = rData[reservation].time;
-//         let rNum = rData[reservation].people;
-//         let rOcc = rData[reservation].occasion;
-//         let uglyID = reservation;
-
-//         // console.log("User's reservation: ", "place: ", rPlace, "date: ", rDate, "time: ", rTime, "party of ", rNum, "occasion: ", rOcc);
-
-
-//         seeResos += `
-// <div class="col s4">
-//   <div class="card small">
-//     <div class="card-stacked">
-//       <div class="card-content">
-//         <h5>${rPlace}</h5>
-//         <ul>
-//           <li><h6>Reservation</h6></li>
-//           <li>Date: ${rDate}</li>
-//           <li>Time: ${rTime}</li>
-//           <li>Party of ${rNum}</li>
-//           <li>Occasion: ${rOcc}</li>
-//         </ul>
-//       </div>
-//       <div class="card-action">
-//         <a id="${uglyID}" class="check-in">Check in</a><a id="${uglyID}" class="edit">Edit</a> <a class="delete-reso" id="${uglyID}">Cancel</a>
-//         <div id="snackbar">Your reservation has been deleted.</div>
-//       </div>
-//     </div>
-//   </div>
-//   </div>
-//   `;
-//     }
-//     seeMore.innerHTML = seeResos;
-// }
-
-// $("#userResos").click(function () {
-//     console.log("merp");
-//     showReso();
-// });
-
-
-// //////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-// ///////////////////////////////
-// // EDIT RESERVATION IN FIREBASE
-// ///////////////////////////////
-
-// function editReso(resoFormObj, resoId) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/reservations/${resoFormObj}.json`,
-//         type: 'PUT',
-//         data: JSON.stringify(resoFormObj)
-//     }).done((data) => {
-//         return data;
-//     });
-// }
-
-// $(document).on("click", ".edit", function () {
-//     console.log("EDIT BUTTON CLICKED");
-//     // checkStatus();
-// });
-// ////////////////////////////////
-
-
-
-// ////////////////////////////////////
-// // DELETE RESERVATION FROM FIREBASE
-// ////////////////////////////////////
-// function deleteReso(resoID) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/reservations/${resoID}.json`,
-//         type: 'DELETE',
-//         data: JSON.stringify(resoID),
-//         dataType: 'json'
-//     }).done((data) => {
-//         return data;
-//     });
-// }
-
-
-// $(document).on("click", ".delete-reso", function () {
-//     let cancelReso = $(this).attr("id");
-//     console.log("cancel", cancelReso);
-//     deleteReso(cancelReso)
-//         .then(() => {
-//             showReso();
-//             console.log("CANCEL IN BUTTON CLICKED");
-
-//         });
-// });
-
-
-// $(document).on("click", ".delete-reso", function () {
-//     console.log("toast function coming through");
-//     // Get the snackbar DIV
-//     var x = document.getElementById("snackbar");
-
-//     // Add the "show" class to DIV
-//     x.className = "show";
-
-//     // After 3 seconds, remove the show class from DIV
-//     setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
-// });
-
-// ///////////////////////////////////////////////////////
-
-
-
-
-
-// module.exports = { buildUserObject, addUser, addReso, deleteReso, showReso, editReso };

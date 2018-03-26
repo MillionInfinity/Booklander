@@ -52,14 +52,14 @@ color: $white;
   font-size: 35px;
   margin-left: -15px;
 }
-// .selector-for-some-widget {
-//   box-sizing: border-box;
-// }
-// // .row{
-// //   position:flex;
-// //   top:150px;
+.selector-for-some-widget {
+  box-sizing: border-box;
+}
+// .row{
+//   position:flex;
+//   top:150px;
 
-// // }
+// }
 // // header{
 // //     // padding-top:-10px ;
 // // }
@@ -197,11 +197,15 @@ nav{
         color: darken( $nav-color, 20% );
         text-decoration:none;
     }}
-  
+  .is-hidden{
+    display: none;
+}
+
 .uiContainer
 {
   &--wrapper{
     padding-right: 0;
+    height: 750px;
     // background-color: $regulargray;
   }
     input{
@@ -223,7 +227,7 @@ nav{
         // padding: 15px;
       }
       &__item--data{
-        // padding-left: 100px;
+        padding-left: 100px;
       }}
         li{
          background-color:#accc63 0.5;
@@ -248,6 +252,3 @@ nav{
         width: 80px;
         padding: 0;
       }
-.is-hidden{
-    display: none;
-}

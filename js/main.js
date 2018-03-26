@@ -29,7 +29,6 @@ $("#login").click(function () {
             console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
-            // loadBooksToDOM();
             sendToFirebase();
         });
 });
@@ -41,11 +40,11 @@ $("#logout").click(() => {
     $("#logout").addClass("is-hidden");
 });
 
-$("#viewBook").click(() => {
-    console.log("i want to see");
-    // loadBooksToDOM();
-    sendToFirebase();
-});
+// $("#add-book").click(() => {
+//     console.log("i want to see");
+//     // loadBooksToDOM();
+//     sendToFirebase();
+// });
 
 function createUserObj(a) {
     let userObj = {
@@ -64,6 +63,3 @@ function sendToFirebase() {
 
 // =============LOGIN AND LOGOUT ENDS======================//
 
-//==================BOOKS start======================//
-
-//==================BOOKS ENDS======================//

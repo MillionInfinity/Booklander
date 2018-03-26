@@ -35,6 +35,9 @@
   font-size: 35px;
   margin-left: -15px; }
 
+.selector-for-some-widget {
+  box-sizing: border-box; }
+
 nav {
   background-color: #accc63;
   margin-top: .5rem;
@@ -63,8 +66,12 @@ a {
     color: #8b8372;
     text-decoration: none; }
 
+.is-hidden {
+  display: none; }
+
 .uiContainer--wrapper {
-  padding-right: 0; }
+  padding-right: 0;
+  height: 750px; }
 .uiContainer input {
   font-size: 2em; }
 .uiContainer__book-list {
@@ -76,6 +83,8 @@ a {
   padding-bottom: 85px; }
 .uiContainer li {
   margin-bottom: .4rem; }
+.uiContainer__item--data {
+  padding-left: 100px; }
 
 li {
   background-color: #accc63 0.5;
@@ -95,8 +104,5 @@ li {
   background: grey;
   width: 80px;
   padding: 0; }
-
-.is-hidden {
-  display: none; }
 
 /*# sourceMappingURL=main.css.map */

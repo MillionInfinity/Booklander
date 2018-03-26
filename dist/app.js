@@ -10411,14 +10411,16 @@ function makeBookList(bookList){
                 <h1>Book of the Week</h1>
                      <div class="row">
                       <div class="col-sm-6 col-md-3">
-                      <div class="caption">
+                      <div class="thumbnail"><img src="" alt="book one" width="123"></div>
+                       <div class="caption">
                        </div>
-                 </div> 
+                       </div>
+          </div> 
     </div>`;
     $(".primaryCotainer").html(bookDisplay);
     for (let book in bookList){
                let currentBook = bookList[book],
-                   imgs = $("img", {class:"thumbnail"}),
+                //    imgs = $("img", {class:"thumbnail"}),
                    title=$("<h3>", {class:"book-title"}).text(currentBook.title),
                    author=$("<h6>",{class:"book-author"}).text(currentBook.author),
                    dueDate=$("<h5>",{class:"book-dueDate"}).text(currentBook.dueDate),
@@ -10427,7 +10429,7 @@ function makeBookList(bookList){
                    bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
                    bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
    
-        $(".caption").append(imgs).append(title).append(author).append(dueDate).append(read).append(bookListEdit).append(bookListDelete);  
+        $(".caption").append(title).append(author).append(dueDate).append(read).append(bookListEdit).append(bookListDelete);  
         console.log("my currentbook", currentBook);
     }
 }

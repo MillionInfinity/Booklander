@@ -25,7 +25,7 @@ $("#login").click(function () {
             // console.log("UID result from login: ", result.user.uid);
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
-            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle">`);
+            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
             console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
@@ -58,7 +58,7 @@ function createUserObj(a) {
 function sendToFirebase() {
     let userBuild = createUserObj();
     interaction.addUser(userBuild);
-    console.log("sent to on main firebase", userBuild);
+    console.log("my user is saved in firebase", userBuild);
 }
 
 // =============LOGIN AND LOGOUT ENDS======================//

@@ -10255,17 +10255,17 @@ return jQuery;
 
 },{}],2:[function(require,module,exports){
 "use strict";
+function getKey() {
+              return {
 
+                      apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
+                      authDomain: "my-capstone-new.firebaseapp.com",
+                      databaseURL: "https://my-capstone-new.firebaseio.com",
 
-          function getKey() {
-            return {
-              apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
-              authDomain: "my-capstone-new.firebaseapp.com",
-              databaseURL: "https://my-capstone-new.firebaseio.com"
-
-            };
-          }
-          module.exports = {getKey};
+       
+                  };
+    }
+             module.exports = { getKey };
 
 },{}],3:[function(require,module,exports){
  "use strict";
@@ -10407,17 +10407,18 @@ let $ = require('jquery'),
 
 function makeBookList(bookList){
     let bookDisplay =
-        ` <div class="container">
+        ` <div class="primaryCotainer">
+
                 <h1>Book of the Week</h1>
                      <div class="row">
                       <div class="col-sm-6 col-md-3">
                       <div class="thumbnail"><img src="" alt="book one" width="123"></div>
                        <div class="caption">
-                       </div>
-                       </div>
+                  </div>
+              </div>
           </div> 
     </div>`;
-    $(".primaryCotainer").html(bookDisplay);
+    $(".container").html(bookDisplay);
     for (let book in bookList){
                let currentBook = bookList[book],
                 //    imgs = $("img", {class:"thumbnail"}),
@@ -10433,7 +10434,7 @@ function makeBookList(bookList){
         console.log("my currentbook", currentBook);
     }
 }
-$(".primaryCotainer").html(function () {
+$(".container").html(function () {
     makeBookList();
     console.log();
 }); 
@@ -10536,25 +10537,28 @@ console.log("i configarate");
 let firebase = require("firebase/app"),
     apikeys = require("./api"),
     fData = apikeys.getKey();
-// fData=apikeys();
-console.log(fData);
+// console.log(fData);
+
 
 require("firebase/auth");
 require("firebase/database");
 
 var config = {
+
     apiKey: fData.apiKey,
     authDomain: fData.authDomain,
-    dataBaseURL: fData.databaseURL
+    databaseURL: fData.databaseURL
 };
+
 
 firebase.initializeApp(config);
 
 firebase.getFBsettings = () => {
-    console.log("myConfig", config);
+    console.log("getFBsettings", config);
     return config;
 };
-// console.log("this is",config);
+console.log("eyesus yegeba sew");
+
 
 
 module.exports = firebase;
@@ -10598,14 +10602,14 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book, bookID);
         })
         .then((finishedForm) => {
-            $(".uiContainer--wrapper").html(finishedForm);
+            $(".container").html(finishedForm);
         });
 });
 
 $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
-    console.log("do i have a bookID", bookID);
+    console.log("i am saving my a bookID", bookID);
     bookInter.editSong(bookObj, bookID)
         .then((data) => {
             loadBookToDOM();
@@ -10621,7 +10625,7 @@ $(document).on("click", ".delete-btn", function () {
         });
 });
         $("#all").click(function () {
-        $(".uiContainer--wrapper").html("");
+        $(".container").html("");
             loadBookToDOM();
         });
 
@@ -10678,7 +10682,7 @@ $("#login").click(function () {
             // console.log("UID result from login: ", result.user.uid);
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
-            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle">`);
+            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
             console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
@@ -10711,14 +10715,16 @@ function createUserObj(a) {
 function sendToFirebase() {
     let userBuild = createUserObj();
     interaction.addUser(userBuild);
-    console.log("sent to on main firebase", userBuild);
+    console.log("my user is saved in firebase", userBuild);
 }
 
 // =============LOGIN AND LOGOUT ENDS======================//
 
 
 },{"./api":2,"./books-interaction":3,"./booksDom":4,"./config":5,"./eventBooks":6,"./search":8,"./user":10,"./user-interaction":9,"jquery":1}],8:[function(require,module,exports){
+
 "use strict";
+
 },{}],9:[function(require,module,exports){
 "use strict";
 let $ = require("jquery"),
@@ -10784,122 +10790,124 @@ function loginUser(userObj) {
 module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
 },{"./config":5,"./user":10,"jquery":1}],10:[function(require,module,exports){
 "use strict";
+     console.log("iam user");
 
-let $ = require('jquery'),
-    firebase = require("./config"),
-    books = require("./books-interaction"),
-    fapi = require("./api"),
-    interaction = require("./user-interaction"),
-    object="",
-    provider = new firebase.auth.GoogleAuthProvider(),
-    currentUser = {
-        uid: null,
-        displayName:object.displayName,
-        email: object.email,
-        bookId: null
-    };
+    let $ = require('jquery'),
+         firebase = require("./config"),
+         books = require("./books-interaction"),
+         fapi = require("./api"),
+         interaction = require("./user-interaction"),
+         object="",
+         provider = new firebase.auth.GoogleAuthProvider(),
+         currentUser = {
+                 uid: null,
+                 displayName:null,
+                 email: null,
+                 bookId: null
+               };
 
-firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
-    console.log("onAuthStateChanged", user);
-    if (user) {
-        currentUser = user.uid;
-    } else {
-        currentUser.uid = null;
-        currentUser.displayName = null;
-        currentUser.email = null;
-        currentUser.bookId = null;
+    firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
+            console.log("onAuthStateChanged", user);
+           if (user) {
+                    currentUser = user.uid;
+                } else {
+                    currentUser.uid = null;
+                    currentUser.displayName = null;
+                    currentUser.email = null;
+                    currentUser.bookId = null;
+            
+                    console.log("NO USER LOGGED IN", currentUser);
+               }
+        });
 
-        console.log("NO USER LOGGED IN", currentUser);
-    }
-});
-
-function getUser() {
-    return currentUser;
-}
-
-function setUser(val) {
-    currentUser = val;
-}
-function getUserObj() {
-    return currentUser;
-}
-
-
-function setUserVars(obj) {
-    console.log("user.setUserVars: obj", obj);
-    return new Promise((resolve, reject) => {
-        currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
-        currentUser.email = obj.email ? obj.email : currentUser.email;
-        currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
-        currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
-        currentUser.book = obj.book ? obj.book : currentUser.book;
-        resolve(currentUser);
-    });
-}
-function showUser(obj) {
-    let userDetails = getUserObj();
-    console.log("user.showUser: userDetails:", userDetails);
-}
-
-function checkUserFB(uid) {
-    interaction.getFBDetails(uid)
-        .then((result) => {
-            let data = Object.values(result);
+    function getUser() {
+            return currentUser;
+        }
+    
+    function setUser(val) {
+            currentUser = val;
+        }
+     function getUserObj() {
+            return currentUser;
+        }
+    
+    function setUserVars(obj) {
+            console.log("user.setUserVars: obj", obj);
+            return new Promise((resolve, reject) => {
+                    // currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
+                    currentUser.email = obj.email ? obj.email : currentUser.email;
+                    currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
+                    currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
+                    currentUser.book = obj.book ? obj.book : currentUser.book;
+                    resolve(currentUser);
+                });
+        }
+     function showUser(obj) {
+            let userDetails = getUserObj();
+            console.log("user.showUser: userDetails:", userDetails);
+        }
+    
+    function checkUserFB(uid) {
+       interaction.getFBDetails(uid)
+          .then((result) => {
+    let data = Object.values(result);
             console.log("user: any data?", data.length);
-            if (data.length === 0) {
-                console.log("need to add this user to FB", data);
-                interaction.addUser(makeUserObj(uid))
-                    .then((result) => {
-                        console.log("user: user added", uid, result.name);
-                        let tmpUser = {
-                            fbID: result.name,
-                            uid: uid
-                        };
-                        return tmpUser;
-                    }).then((tmpUser) => {
-                        return setUserVars(tmpUser);
-                    });
-            } else {
-                console.log("user: already a user", data);
-                var key = Object.keys(result);
+       if (data.length === 0) {
+           console.log("need to add this user to FB", data);
+           interaction.addUser(makeUserObj(uid))
+               .then((result) => {
+           console.log("user: user added", uid, result.name);
+       let tmpUser = {
+            fbID: result.name,
+            uid: uid
+             };
+    return tmpUser;
+        }).then((tmpUser) => {
+            return setUserVars(tmpUser);
+        });
+    } else {
+        console.log("user: already a user", data);
+            var key = Object.keys(result);
                 data[0].fbID = key[0];
                 setUserVars(data[0]);
-            }
+                }
             $("#zip-container").removeClass("is-hidden");
         });
 
-}
+    }
 
-function makeUserObj(a) {
-    let userObj = {
-        uid: null,
+    function makeUserObj(a) {
+            let userObj = {
+                uid: null,
         displayName: currentUser.displayName,
-        email: currentUser.email,
-        fbID:null
-    };
+                email: currentUser.email,
+                fbID: null
+                            };
     console.log("userObj", userObj);
     return userObj;
 }
 
-function googleLogIn() {
-    return firebase.auth().signInWithPopup(provider);
-
-}
-function logOut() {
-    return firebase.auth().signOut();
-}
-
-
-
+    function googleLogIn() {
+            return firebase.auth().signInWithPopup(provider);
+        
+            }
+     function logOut() {
+            return firebase.auth().signOut();
+        }
+   
 
 
-module.exports = {
-    googleLogIn,
-    logOut, setUser,
-    getUser,
-    makeUserObj, checkUserFB,
-    showUser, setUserVars, getUserObj
-};
+    module.exports = {
+        googleLogIn,
+             logOut,
+             setUser,
+             getUser,
+             makeUserObj,
+             checkUserFB,
+             showUser,
+             setUserVars, 
+             getUserObj
+        };
 },{"./api":2,"./books-interaction":3,"./config":5,"./user-interaction":9,"jquery":1}],11:[function(require,module,exports){
 "use strict";
 /**

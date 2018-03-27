@@ -37,14 +37,14 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book, bookID);
         })
         .then((finishedForm) => {
-            $(".uiContainer--wrapper").html(finishedForm);
+            $(".container").html(finishedForm);
         });
 });
 
 $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
-    console.log("do i have a bookID", bookID);
+    console.log("i am saving my a bookID", bookID);
     bookInter.editSong(bookObj, bookID)
         .then((data) => {
             loadBookToDOM();
@@ -60,7 +60,7 @@ $(document).on("click", ".delete-btn", function () {
         });
 });
         $("#all").click(function () {
-        $(".uiContainer--wrapper").html("");
+        $(".container").html("");
             loadBookToDOM();
         });
 

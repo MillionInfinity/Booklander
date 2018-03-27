@@ -8,17 +8,18 @@ let $ = require('jquery'),
 
 function makeBookList(bookList){
     let bookDisplay =
-        ` <div class="container">
+        ` <div class="primaryCotainer">
+
                 <h1>Book of the Week</h1>
                      <div class="row">
                       <div class="col-sm-6 col-md-3">
                       <div class="thumbnail"><img src="" alt="book one" width="123"></div>
                        <div class="caption">
-                       </div>
-                       </div>
+                  </div>
+              </div>
           </div> 
     </div>`;
-    $(".primaryCotainer").html(bookDisplay);
+    $(".container").html(bookDisplay);
     for (let book in bookList){
                let currentBook = bookList[book],
                 //    imgs = $("img", {class:"thumbnail"}),
@@ -34,7 +35,7 @@ function makeBookList(bookList){
         console.log("my currentbook", currentBook);
     }
 }
-$(".primaryCotainer").html(function () {
+$(".container").html(function () {
     makeBookList();
     console.log();
 }); 

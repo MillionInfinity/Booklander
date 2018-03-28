@@ -50,17 +50,18 @@ let bookDisplay =
                 for (let book in bookList) {
                     let currentBook = bookList[book],
                         bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
-                        // image = $(class:"thumbnail").prepend($("<img>", {src:""})),
+                        //image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
                         title = $("<span>", { class: "book-titl" }).text(currentBook.title),
                         bookListData = $("<div/>", { class: "caption" }),
                         bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
                         bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
                         bookListData.append(
-                            `<h3>${currentBook.author}</h3>
+                            `<h5>${currentBook.author}</h5>
                              <h6>${currentBook.type}</h6>
                              <h5>${currentBook.place}</h5>`);
 
+                    //$(".row").append(bookListItem.append(image));
                     $(".row").append(bookListItem.append(title));
                     $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
                 }

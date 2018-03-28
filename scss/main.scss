@@ -195,16 +195,9 @@ margin: 5px;
    top:150px !important;
    margin-top: 50px;
  }
-#movies img, #movie img{
-  width:100%;
-}
-
-@media(min-width:960px){
-  #movies .col-md-3 .well{
-    height: 390px;
-  }
-
-  #movies .col-md-3 img{
-    height:240px;
-  }
+div.col-sm-6{
+background-color: #ffffff;
+border:1px solid #84ad52;
+margin:15px;
+min-height: 350px;
 }

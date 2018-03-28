@@ -10,16 +10,14 @@ let $ = require('jquery'),
 function getBook() {
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json`
+    }).done((bookData) => {
+        return bookData;
     });
-    // .done((bookData) => {
-    //     console.log("i can able to get all books without user", bookData);
-        // resolve (bookData);
-
-    // });
 }
 function getUserBook(user) {
-    return $.ajax({
+       return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+       
     }).done((resolve) => {
         return resolve;
     }).fail((error) => {
@@ -28,23 +26,20 @@ function getUserBook(user) {
 }
 
 function getLibBook(){
-    getBook().then((lib) => {
-            console.log("my lib",lib);
-        let librar = [];
-            for (var i = 0; i < lib.length; i++) {
-                var libType = lib[i].type;
-                if (libType === "library") {
-                    librar.push(libType);
-                } else {
-                    alert("Sorry! there is no library books there");
-                }
-
+    return getBook().then((lib) => {
+        const library = [];
+        for (let key in lib) {
+            if (lib[key].type === "library") {
+                library.push(lib[key]);
+            } else {
+                alert("sorry i couldnt find book");
             }
-            console.log("my lib books", librar);
-            return librar;
-        });
+        }
+        return library;
+    });
 }
-// getLibBook();
+
+
 
 function ajaxCalls(myBooks) {
     console.log("myBooks", myBooks);
@@ -67,9 +62,6 @@ function getSameBook(array) {
     return Promise.all(promiseArr);
 }
 
-// POST - Submits data to be processed to a specified resource.
-// addBook();
-
 function deleteBook(bookId) {
     $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
@@ -78,7 +70,6 @@ function deleteBook(bookId) {
         return data;
     });
 }
-
 
 function addBook(bookObj) {
     console.log("addBook", bookObj);

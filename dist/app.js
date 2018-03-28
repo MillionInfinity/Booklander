@@ -10337,16 +10337,14 @@ let $ = require('jquery'),
 function getBook() {
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json`
+    }).done((bookData) => {
+        return bookData;
     });
-    // .done((bookData) => {
-    //     console.log("i can able to get all books without user", bookData);
-        // resolve (bookData);
-
-    // });
 }
 function getUserBook(user) {
-    return $.ajax({
+       return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+       
     }).done((resolve) => {
         return resolve;
     }).fail((error) => {
@@ -10355,23 +10353,20 @@ function getUserBook(user) {
 }
 
 function getLibBook(){
-    getBook().then((lib) => {
-            console.log("my lib",lib);
-        let librar = [];
-            for (var i = 0; i < lib.length; i++) {
-                var libType = lib[i].type;
-                if (libType === "library") {
-                    librar.push(libType);
-                } else {
-                    alert("Sorry! there is no library books there");
-                }
-
+    return getBook().then((lib) => {
+        const library = [];
+        for (let key in lib) {
+            if (lib[key].type === "library") {
+                library.push(lib[key]);
+            } else {
+                alert("sorry i couldnt find book");
             }
-            console.log("my lib books", librar);
-            return librar;
-        });
+        }
+        return library;
+    });
 }
-// getLibBook();
+
+
 
 function ajaxCalls(myBooks) {
     console.log("myBooks", myBooks);
@@ -10394,9 +10389,6 @@ function getSameBook(array) {
     return Promise.all(promiseArr);
 }
 
-// POST - Submits data to be processed to a specified resource.
-// addBook();
-
 function deleteBook(bookId) {
     $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
@@ -10405,7 +10397,6 @@ function deleteBook(bookId) {
         return data;
     });
 }
-
 
 function addBook(bookObj) {
     console.log("addBook", bookObj);
@@ -10519,17 +10510,18 @@ let bookDisplay =
                 for (let book in bookList) {
                     let currentBook = bookList[book],
                         bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
-                        // image = $(class:"thumbnail").prepend($("<img>", {src:""})),
+                        //image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
                         title = $("<span>", { class: "book-titl" }).text(currentBook.title),
                         bookListData = $("<div/>", { class: "caption" }),
                         bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
                         bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
                         bookListData.append(
-                            `<h3>${currentBook.author}</h3>
+                            `<h5>${currentBook.author}</h5>
                              <h6>${currentBook.type}</h6>
                              <h5>${currentBook.place}</h5>`);
 
+                    //$(".row").append(bookListItem.append(image));
                     $(".row").append(bookListItem.append(title));
                     $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
                 }
@@ -10616,27 +10608,27 @@ let $ = require('jquery'),
 
 
 function loadBookToDOM(){
-console.log("from eventBook to see books on dom");
+// console.log("from eventBook to see books on dom");
 let currentUser=user.getUser();
-console.log("eventbook loadbook",currentUser);
+// console.log("eventbook loadbook",currentUser);
 bookInter.getBook(currentUser)
 .then((bookData)=>{
-console.log("i get my data eventbook",bookData);
+// console.log("i get my data eventbook",bookData);
 booksDom.makeBookList(bookData);
 });
 }
 
-function loadLibBookToDOM() {
-    // console.log("from eventBook library books" ,a);
-    let currentUser = user.getUser();
-    console.log("eventbook loadboo lib books", currentUser);
-    bookInter.getLibBook(currentUser)
-        .then((bookData) => {
-            console.log("i get my data eventbook", bookData);
-            booksDom.makeBookList(bookData);
-        });
+
+function loadLibBookToDOM(){
+            // console.log("from eventBook to see books on dom");
+            let currentUser=user.getUser();
+            // console.log("eventbook lib book is loading",currentUser);
+            bookInter.getLibBook(currentUser)
+            .then((books)=>{
+            // console.log("i get my lib data eventbook",book);
+            booksDom.makeBookList(books);
+            });
 }
-// loadLibBookToDOM();
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -10652,7 +10644,8 @@ $(document).on("click", ".edit-btn", function () {
     let bookID = $(this).data("edit-id");
     bookInter.getBook(bookID)
         .then((book) => {
-            return booksDom.bookForm(book, bookID);
+            const key = Object.keys(book)[0];
+            return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
             $(".container").html(finishedForm);
@@ -10684,8 +10677,7 @@ $(document).on("click", ".delete-btn", function () {
 
      $("#library").click(function(){
         $(".lib-book").html("");
-         bookInter.getLibBook();
-        //  loadLibBookToDOM();
+         loadLibBookToDOM();
        });
 
 function buildBookObj() {

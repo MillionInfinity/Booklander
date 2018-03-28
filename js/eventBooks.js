@@ -9,27 +9,27 @@ let $ = require('jquery'),
 
 
 function loadBookToDOM(){
-console.log("from eventBook to see books on dom");
+// console.log("from eventBook to see books on dom");
 let currentUser=user.getUser();
-console.log("eventbook loadbook",currentUser);
+// console.log("eventbook loadbook",currentUser);
 bookInter.getBook(currentUser)
 .then((bookData)=>{
-console.log("i get my data eventbook",bookData);
+// console.log("i get my data eventbook",bookData);
 booksDom.makeBookList(bookData);
 });
 }
 
-function loadLibBookToDOM() {
-    // console.log("from eventBook library books" ,a);
-    let currentUser = user.getUser();
-    console.log("eventbook loadboo lib books", currentUser);
-    bookInter.getLibBook(currentUser)
-        .then((bookData) => {
-            console.log("i get my data eventbook", bookData);
-            booksDom.makeBookList(bookData);
-        });
+
+function loadLibBookToDOM(){
+            // console.log("from eventBook to see books on dom");
+            let currentUser=user.getUser();
+            // console.log("eventbook lib book is loading",currentUser);
+            bookInter.getLibBook(currentUser)
+            .then((books)=>{
+            // console.log("i get my lib data eventbook",book);
+            booksDom.makeBookList(books);
+            });
 }
-// loadLibBookToDOM();
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -45,7 +45,8 @@ $(document).on("click", ".edit-btn", function () {
     let bookID = $(this).data("edit-id");
     bookInter.getBook(bookID)
         .then((book) => {
-            return booksDom.bookForm(book, bookID);
+            const key = Object.keys(book)[0];
+            return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
             $(".container").html(finishedForm);
@@ -77,8 +78,7 @@ $(document).on("click", ".delete-btn", function () {
 
      $("#library").click(function(){
         $(".lib-book").html("");
-         bookInter.getLibBook();
-        //  loadLibBookToDOM();
+         loadLibBookToDOM();
        });
 
 function buildBookObj() {

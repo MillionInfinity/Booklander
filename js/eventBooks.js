@@ -19,17 +19,17 @@ booksDom.makeBookList(bookData);
 });
 }
 
-// function loadLibBookToDOM() {
-//     console.log("from eventBook to see books on dom");
-//     let currentUser = user.getUser();
-//     console.log("eventbook loadbook", currentUser);
-//     bookInter.heyLibrary(currentUser)
-//         .then((bookData) => {
-//             console.log("i get my data eventbook", bookData);
-//             booksDom.makeBookList(bookData);
-//         });
-// }
-// loadBookToDOM();
+function loadLibBookToDOM() {
+    // console.log("from eventBook library books" ,a);
+    let currentUser = user.getUser();
+    console.log("eventbook loadboo lib books", currentUser);
+    bookInter.getLibBook(currentUser)
+        .then((bookData) => {
+            console.log("i get my data eventbook", bookData);
+            booksDom.makeBookList(bookData);
+        });
+}
+// loadLibBookToDOM();
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -74,10 +74,12 @@ $(document).on("click", ".delete-btn", function () {
             $(".uiContainer--wrapper").html("");
             loadBookToDOM();
         });
-    //     $("#library").click(function(){
-    //        $(".lib-book").html("");
-    //        loadLibBookToDOM();
-    //    });
+
+     $("#library").click(function(){
+        $(".lib-book").html("");
+         bookInter.getLibBook();
+        //  loadLibBookToDOM();
+       });
 
 function buildBookObj() {
     let bookObj = {

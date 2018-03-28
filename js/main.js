@@ -12,7 +12,9 @@ let $ = require('jquery'),
     search = require("./search"),
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
-    eventBooks= require("./eventBooks");
+    eventBooks= require("./eventBooks"),
+    meg=require("./meg"),
+    alarm = require("./alarm");
 
 
 ///==================USER LOGIN LOGOUT STARTS====================//

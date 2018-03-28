@@ -10255,6 +10255,63 @@ return jQuery;
 
 },{}],2:[function(require,module,exports){
 "use strict";
+console.log("Alarm! wake up early");
+
+
+
+        //     var alarmSound = new Audio();
+        //     alarmSound.src='alarm.mp3';
+        //      var alarmTimer='';
+
+
+
+
+        // function setAlarm (button){
+        //         var ms=document.getElementById("alarmTime").valueAsNumber;
+        //         if(isNaN(ms)){
+        //             alert('Invalid Date');
+        //             return;
+        // }
+        //         var alarm=new Date(ms);
+        //         var alarmTime = new Date(alarm.getUTCFullYear(),alarm.getUTCMonth(), alarm.getUTCDate(), alarm.getUTCHours(), alarm.getUTCMinutes, alarm.getUTCSeconds());
+        //         var differenceInMs = alarmTime.getTime()- (new Date ()).getTime();
+
+        // if(differenceInMs<0){
+        //     return;
+        // }
+        // alarmTimer= setTimeout(initAlarm, differenceInMs);
+
+        // button.innerText = 'cancel Alarm';
+        // button.setattribute('onclick', 'cancelAlarm(this)');
+        // }
+
+
+
+        // function cancelAlert(button){
+        //     button.innerText='Set Alert';
+        //     button.setattribute('onclick', 'setAlarm(this);');
+        //     clearTimeout(alarmTimer);
+        // }
+
+
+        //     function initAlarm(){
+        //     alarmSound.play();
+        //     document.getElementById('alarmOptions').style.display='';
+        // }
+
+        // function stopAlarm(){
+        //     alarmSound.pause();
+        //     alarmSound.currentTime =0;
+        // document.getElementById('alarmOptions').style.display='none';
+        // cancelAlert(document.getElementById('alarmButton'));
+        // }
+
+        // function snooze(){
+        //     stopAlarm();
+        //     setTimeout(initAlarm,36000);
+        // }
+},{}],3:[function(require,module,exports){
+"use strict";
 function getKey() {
               return {
 
@@ -10267,43 +10324,40 @@ function getKey() {
     }
              module.exports = { getKey };
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
  "use strict";
            console.log("book-interaction");
 let $ = require('jquery'),
             firebase = require("./config"),
             aBook={},
             myBookArr=[];
-        // console.log("firebase", firebase.getFBsettings().dataBaseURL);
+         let librar = [];
+        // cuseronsole.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getBook() {
               return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book.json`
+            url: `${firebase.getFBsettings().databaseURL}/book.json`
             }).done((bookData) => {
             console.log("i can able to get all books without user", bookData);
                return bookData;
             });
 }
 
-function getAllTypeBook() {
-            return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book-type.json`
-         }).done((bookData) => {
-            console.log("i can able to get with its type", bookData);
-            return bookData;
-            });
-}
+// function heyLibrary() {
+//     getBook().then((lib) => {
+//       for (var i = 0; i < lib.length; i++) {
+//             var libType = lib[i].type;
+//              if (lib[i]==="library") {
+//              librar.push(libType);
+//        } else {
+//               alert("Sorry! there is no library books there");
+//       }
+//           return libType;
+//         }
+//     });
+// } 
+// heyLibrary();
 
-function getUserBook(user) {
-              return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-         }).done((bookData) => {
-            console.log("get my user book", bookData);
-               return bookData;
-            }).fail((error) => {
-               return error;
-    });
-}
 function ajaxCalls(myBooks) {
             console.log("myBooks", myBooks);
             return $.ajax({
@@ -10330,7 +10384,7 @@ function getSameBook(array) {
 
 function deleteBook(bookId) {
             $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
+                url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
                 method: "DELETE"
             }).done((data) => {
                 return data;
@@ -10341,7 +10395,7 @@ function deleteBook(bookId) {
 function addBook(bookObj) {
                 console.log("addBook", bookObj);
                 return $.ajax({
-                    url: `${firebase.getFBsettings().dataBaseURL}/book.json`,
+                    url: `${firebase.getFBsettings().databaseURL}/book.json`,
                     type: 'POST',
                     data: JSON.stringify(bookObj),
                     dataType: 'json'
@@ -10352,7 +10406,7 @@ function addBook(bookObj) {
 function addUserBook(bookObj) {
             console.log("addBook", bookObj);
             return $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+                url: `${firebase.getFBsettings().databaseURL}/user.json`,
                 type: 'POST',
                 data: JSON.stringify(bookObj),
                 dataType: 'json'
@@ -10365,7 +10419,7 @@ function addUserBook(bookObj) {
 
 function editBook(bookObj, bookId) {
             return $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
+                url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
                 type: 'PUT',
                 data: JSON.stringify(bookObj)
              }).done((data) => {
@@ -10374,8 +10428,8 @@ function editBook(bookObj, bookId) {
         }
 
 module.exports = { getBook,
-                        getAllTypeBook,
-                        getUserBook,
+                        // heyLibrary,
+                        // getUserBook,
                         ajaxCalls,
                         addBook,
                         addUserBook,
@@ -10396,141 +10450,116 @@ module.exports = { getBook,
 
 
 
-},{"./config":5,"jquery":1}],4:[function(require,module,exports){
+},{"./config":6,"jquery":1}],5:[function(require,module,exports){
 "use strict";
 console.log("print on to dom");
-let $ = require('jquery'),
-    user=require("./user"),
-    book =require("./books-interaction"),
-    firebase=require("./config");
+let $ = require('jquery');
+    // user=require("./user"),
+    // book =require("./books-interaction"),
+    // firebase=require("./config");
 
 
-function makeBookList(bookList){
-    let bookDisplay =
-        ` <div class="primaryCotainer">
+// function makeBookList(book){
+//     console.log("book with phontip",book);
+//     let bookDisplay =
+//         ` <div class="primaryCotainer">
 
-                <h1>Book of the Week</h1>
-                     <div class="row">
-                      <div class="col-sm-6 col-md-3">
-                      <div class="thumbnail"><img src="" alt="book one" width="123"></div>
-                       <div class="caption">
-                  </div>
-              </div>
-          </div> 
-    </div>`;
-    $(".container").html(bookDisplay);
-    for (let book in bookList){
-               let currentBook = bookList[book],
-                //    imgs = $("img", {class:"thumbnail"}),
-                   title=$("<h3>", {class:"book-title"}).text(currentBook.title),
-                   author=$("<h6>",{class:"book-author"}).text(currentBook.author),
-                   dueDate=$("<h5>",{class:"book-dueDate"}).text(currentBook.dueDate),
-                   read=$("<h6>",{class:"book-read"}).text(currentBook.read),
-             //    description=$("<p>",{class:"book-desc"}).text(currentBook.read),
-                   bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-                   bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//                 <h1>Book of the Week</h1>
+//                      <div class="row">
+//                       <div class="col-sm-6 col-md-3">
+//                       <div class="thumbnail"><img src="" alt="book one" width="123"></div>
+//                        <div class="caption">
+//                   </div>
+//               </div>
+//           </div> 
+//     </div>`;
+//     $(".container").html(bookDisplay);
+//     for (let book in bookList){
+//                let currentBook = bookList[item],
+//                 //    imgs = $("img", {class:"thumbnail"}),
+//                    title=$("<h3>", {class:"book-title"}).text(currentBook.title),
+//                    author=$("<h6>",{class:"book-author"}).text(currentBook.author),
+//                    dueDate=$("<h5>",{class:"book-dueDate"}).text(currentBook.dueDate),
+//                    read=$("<h6>",{class:"book-read"}).text(currentBook.read),
+//              //    description=$("<p>",{class:"book-desc"}).text(currentBook.read),
+//                    bookListEdit = $("<a>", { "data-edit-id": item, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//                    bookListDelete = $("<a>", { "data-delete-id": item, class: "delete-btn waves-effect waves-light btn", text: "delete" });
    
-        $(".caption").append(title).append(author).append(dueDate).append(read).append(bookListEdit).append(bookListDelete);  
-        console.log("my currentbook", currentBook);
-    }
-}
-$(".container").html(function () {
-    makeBookList();
-    console.log();
-}); 
+//         $(".caption").append(title).append(author).append(dueDate).append(read).append(bookListEdit).append(bookListDelete);  
+//         console.log("my bookDom js line 35currentbook", currentBook);
+//     }
+// }
+// $(".container").html(function () {
+//     makeBookList();
+//     console.log();
+// }); 
+function makeBookList(bookList) {
+                console.log("bookDom makebooklist", bookList);
+let bookDisplay =
+ $(`<div class="uiContainer_book-list box col -md-3">
+     <h3>Book of the Week</h3>
+             <ul class="book-list">
+                    </ul>
+              
+                </div>`);
+                $(".uiContainer--wrapper").html(bookDisplay);
+                for (let book in bookList) {
+                    let currentBook = bookList[book],
+                        bookListItem = $("<li>", { class: "book-list_item"}),
+                        // image = $("<img src="" alt="Generic placeholder image">", { class: "book-image" }),
+                        title = $("<span>", { class: "book-titl" }).text(currentBook.title),
+                        bookListData = $("<ul/>", { class: "book-list_item--data" }),
+                        bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
+                        bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
-// makeBookList(bookList);
+                        bookListData.append(
+                            `<li>${currentBook.author}</li>
+                             <li>${currentBook.type}</li>
+                             <li>${currentBook.description}</li>`);
+
+                    $(".book-list").append(bookListItem.append(title));
+                    $(".book-list").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+                }
+
+            }
+   $(".uiContainer--wrapper").html(function(){
+      makeBookList();
+});
 
 function bookForm(book, bookId) {
-    return new Promise((resolve, reject) => {
-        let bookItem = {
-            title: book ? book.title : "",
-            author: book ? book.author : "",
-            dueDate: book ? book.dueDate : "",
-            place: book ? book.place : "",
-            type: book ? book.type : "",
-            description: book ? book.description : "",
-            formTitle: book ? `Edit "${book.title}"` : "Add a new book",
-            btnText: book ? "save changes" : "save book",
-            btnId: book ? "save_edit_btn" : "save_new_btn"
-        },
-            form =
-                `<h3>${bookItem.formTitle}</h3>
-                <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
-                <input type="text" id="form-Author" placeholder="Author" value="${bookItem.author}"></input>
-                <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
-                <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
-                <input type="text" id="form-album" placeholder="Type" value="${bookItem.type}"></input>
-                <input type="text" id="form-year" placeholder="Description" value="${bookItem.description}"></input><br/>
-                <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
-        resolve(form);
+            return new Promise((resolve, reject) => {
+                let bookItem = {
+                    title: book ? book.title : "",
+                    author: book ? book.author : "",
+                    dueDate: book ? book.dueDate : "",
+                    place: book ? book.place : "",
+                    type: book ? book.type : "",
+                    description: book ? book.description : "",
+                    formTitle: book ? `Edit "${book.title}"` : "Add a new book",
+                    btnText: book ? "save changes" : "save book",
+                    btnId: book ? "save_edit_btn" : "save_new_btn"
+                },
+                    form =
+                        `<h3>${bookItem.formTitle}</h3>
+                        <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
+                        <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
+                        <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+                        <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
+                        <input type="text" id="form-type" placeholder="Type" value="${bookItem.type}"></input>
+                        <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
+                        <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
+                resolve(form);
     });
 }
+
 module.exports = { makeBookList, bookForm };
 
 
 
-   // bookListItem =$("<li>",{class:"book-list_item"}),
-      //  title =$("<span/>",{class:"book-title"}).text(currentBook.title),
-    //    bookListData=$("<ul/>",{class:"book-list_item--data"}),
-      
-    //    bookListData.append(
-    //        `<li>${currentBook.title}<li>
-    //        <li>${currentBook.author}<li>
-    //        <li>${currentBook.dueDate}<li>
-    //        <li>${currentBook.read}<li>`);
-    //        $(".book-list").append(bookListItem.append(title));
-    //        $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
-    // }
-// }
+  
 
 
-
- // <div class="col-sm-6 col-md-3"> */} 
-                //     <div class="thumbnail"><img src="${book.img}" alt="book one" width="123"></div>
-                //         <div class="caption">
-                //             <h3 class="book-title">"${book.title}"</h3>
-                //             <h6 class="book-author">"${book.author}"</h6>
-                //             <h5 class="book-due-date>"${book.dueDate}"</h5>
-                //             <h6 class="book-read">"${book.read}"</h6>
-                //             <p class="book-desc">"${book.desc}"</p>
-                //             <p>
-                //                 <a href="#" class="btn btn-primary" role="button"><img src="imgs/b.png" alt="facebook" width="60px" height="50px"></a>
-                //                 <a href="#" class="btn btn-default" role="button">Delete</a>
-                //             </p>
-                //         </div>
-                //    </div>
-                //     <div class="co
-                //     l-sm-6 col-md-3">
-                //     <div class="thumbnail"><img src="${book.img1}" alt="book one" width="123"></div>
-                //         <div class="caption">
-                //             <h3 class="book-title">"${book.title1}"</h3>
-                //             <h6 class="book-author">"${book.author1}"</h6>
-                //             <h5 class="book-due-date>"${book.dueDate1}"</h5>
-                //             <h6 class="book-read">"${book.read1}"</h6>
-                //             <p class="book-desc">"${book.desc1}"</p>
-                //             <p>
-                //                 <a href="#" class="btn btn-primary" role="button"><img src="imgs/b.png" alt="facebook" width="60px" height="50px"></a>
-                //                 <a href="#" class="btn btn-default" role="button">Delete</a>
-                //             </p>
-                //         </div>
-                //    </div> 
-                //      <div class="col-sm-6 col-md-3">
-                //     <div class="thumbnail"><img src="${book.img2}" alt="book one" width="123"></div>
-                //         <div class="caption">
-                //             <h3 class="book-title">"${book.title2}"</h3>
-                //             <h6 class="book-author">"${book.author2}"</h6>
-                //             <h5 class="book-due-date>"${book.dueDate2}"</h5>
-                //             <h6 class="book-read">"${book.read2}"</h6>
-                //             <p class="book-desc">"${book.desc2}"</p>
-                //             <p>
-                //                 <a href="#" class="btn btn-primary" role="button"><img src="imgs/b.png" alt="facebook" width="60px" height="50px"></a>
-                //                 <a href="#" class="btn btn-default" role="button">Delete</a>
-                //             </p>
-                //         </div>
-                //    </div>
-
-},{"./books-interaction":3,"./config":5,"./user":10,"jquery":1}],5:[function(require,module,exports){
+},{"jquery":1}],6:[function(require,module,exports){
 "use strict";
 console.log("i configarate");
 
@@ -10562,7 +10591,7 @@ console.log("eyesus yegeba sew");
 
 
 module.exports = firebase;
-},{"./api":2,"firebase/app":119,"firebase/auth":120,"firebase/database":121}],6:[function(require,module,exports){
+},{"./api":3,"firebase/app":121,"firebase/auth":122,"firebase/database":123}],7:[function(require,module,exports){
 "use strict";
 console.log("event listners for book");
 let $ = require('jquery'),
@@ -10583,6 +10612,17 @@ console.log("i get my data eventbook",bookData);
 booksDom.makeBookList(bookData);
 });
 }
+
+// function loadLibBookToDOM() {
+//     console.log("from eventBook to see books on dom");
+//     let currentUser = user.getUser();
+//     console.log("eventbook loadbook", currentUser);
+//     bookInter.heyLibrary(currentUser)
+//         .then((bookData) => {
+//             console.log("i get my data eventbook", bookData);
+//             booksDom.makeBookList(bookData);
+//         });
+// }
 // loadBookToDOM();
 
 $(document).on("click", ".save_new_btn", function(){
@@ -10610,7 +10650,7 @@ $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
     console.log("i am saving my a bookID", bookID);
-    bookInter.editSong(bookObj, bookID)
+    bookInter.editBook(bookObj, bookID)
         .then((data) => {
             loadBookToDOM();
         });
@@ -10625,10 +10665,13 @@ $(document).on("click", ".delete-btn", function () {
         });
 });
         $("#all").click(function () {
-        $(".container").html("");
+            $(".uiContainer--wrapper").html("");
             loadBookToDOM();
         });
-
+    //     $("#library").click(function(){
+    //        $(".lib-book").html("");
+    //        loadLibBookToDOM();
+    //    });
 
 function buildBookObj() {
     let bookObj = {
@@ -10646,15 +10689,16 @@ function buildBookObj() {
     return bookObj;
 }
 
-
+let callback="";
 $("#add-book").click(function () {
     console.log("clicked to add book");
     var bookForm = booksDom.bookForm()
         .then((bookForm) => {
-            $(".container-add").html(bookForm);
+            $(".uiContainer--wrapper").html(bookForm);
         });
+    setTimeout(callback, 1000);
 });
-},{"./books-interaction":3,"./booksDom":4,"./config":5,"./user":10,"./user-interaction":9,"jquery":1}],7:[function(require,module,exports){
+},{"./books-interaction":4,"./booksDom":5,"./config":6,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
 
@@ -10669,7 +10713,9 @@ let $ = require('jquery'),
     search = require("./search"),
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
-    eventBooks= require("./eventBooks");
+    eventBooks= require("./eventBooks"),
+    meg=require("./meg"),
+    alarm = require("./alarm");
 
 
 ///==================USER LOGIN LOGOUT STARTS====================//
@@ -10721,12 +10767,228 @@ function sendToFirebase() {
 // =============LOGIN AND LOGOUT ENDS======================//
 
 
-},{"./api":2,"./books-interaction":3,"./booksDom":4,"./config":5,"./eventBooks":6,"./search":8,"./user":10,"./user-interaction":9,"jquery":1}],8:[function(require,module,exports){
+},{"./alarm":2,"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./search":10,"./user":12,"./user-interaction":11,"jquery":1}],9:[function(require,module,exports){
+"use strict";
+
+// let $ = require('jquery'),
+//     firebase = require("./config"),
+//     user = require("./user"),
+//     books = require("./books-interaction"),
+//     fapi = require("./api"),
+//     search = require("./search"),
+//     interaction = require("./user-interaction"),
+//     booksDom = require("./booksDom"),
+//     eventBooks = require("./eventBooks"),
+//         alarm = require("./alarm");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log("meg");
+// function getUserBook(user) {
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+//     }).then((response) => {
+//             console.log("meg response",response);
+//             let books = response.data;
+//             let output = '';
+//             $.each(books, (index, movie) => {
+//                 output += `
+//           <div class="col-md-3">
+//             <div class="well text-center">
+//               <img src="${movie.Poster}">
+//               <h5>${movie.Title}</h5>
+//               <a onclick="movieSelected('${movie.imdbID}')" class="btn btn-primary" href="#">Movie Details</a>
+//             </div>
+//           </div>
+//         `;
+//             });
+
+//             $('#movies').html(output);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// }
+// function movieSelected(id) {
+//     sessionStorage.setItem('movieId', id);
+//     window.location = 'movie.html';
+//     return false;
+// }
+
+// // function getMovie() {
+//     let movieId = sessionStorage.getItem('movieId');
+
+// //     axios.get('http://www.omdbapi.com?i=' + movieId)
+// //         .then((response) => {
+// //             console.log(response);
+//             let movie = response.data;
+
+//             let output = `
+//         <div class="row">
+//           <div class="col-md-4">
+//             <img src="${movie.Poster}" class="thumbnail">
+//           </div>
+//           <div class="col-md-8">
+//             <h2>${movie.Title}</h2>
+//             <ul class="list-group">
+//               <li class="list-group-item"><strong>Genre:</strong> ${movie.Genre}</li>
+//               <li class="list-group-item"><strong>Released:</strong> ${movie.Released}</li>
+//               <li class="list-group-item"><strong>Rated:</strong> ${movie.Rated}</li>
+//               <li class="list-group-item"><strong>IMDB Rating:</strong> ${movie.imdbRating}</li>
+//               <li class="list-group-item"><strong>Director:</strong> ${movie.Director}</li>
+//               <li class="list-group-item"><strong>Writer:</strong> ${movie.Writer}</li>
+//               <li class="list-group-item"><strong>Actors:</strong> ${movie.Actors}</li>
+//             </ul>
+//           </div>
+//         </div>
+//         <div class="row">
+//           <div class="well">
+//             <h3>Plot</h3>
+//             ${movie.Plot}
+//             <hr>
+//             <a href="http://imdb.com/title/${movie.imdbID}" target="_blank" class="btn btn-primary">View IMDB</a>
+//             <a href="index.html" class="btn btn-default">Go Back To Search</a>
+//           </div>
+//         </div>
+//       `;
+
+//             $('#movie').html(output);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// }
+
+
+
+// // ======CLICK TO FIREBASE=============//
+
+// $("#add-book").click(function () {
+//     console.log("get your book");
+//     var bookForm = buildBookObj();
+//     book.addBook(bookObj).then((bookForm) => {
+//         console.log("the book is sending to firebase", bookForm)
+//     });
+// });
+
+// // ===========format of my main dom page=========//
+
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             BookListItem = $("<li>", { class: "book-list__item" }),
+//             title = $("<span/>", { class: "book-title" }).text(currentSong.title),
+//             bookListData = $("<ul/>", { class: "song-list__item--data" }),
+//             songListEdit = $("<a>", { "data-edit-id": song, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//             songListDelete = $("<a>", { "data-delete-id": song, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
+
+
+//         function bookForm(book, bookId) {
+//             return new Promise((resolve, reject) => {
+//                 let bookItem = {
+//                     title: book ? book.title : "",
+//                     author: book ? book.author : "",
+//                     dueDate: book ? book.dueDate : "",
+//                     place: book ? book.place : "",
+//                     type: book ? book.type : "",
+//                     description: book ? book.description : "",
+//                     formTitle: book ? `Edit "${book.title}"` : "Add a new book",
+//                     btnText: book ? "save changes" : "save book",
+//                     btnId: book ? "save_edit_btn" : "save_new_btn"
+//                 },
+//                     form =
+//                         `<h3>${bookItem.formTitle}</h3>
+//                 <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
+//                 <input type="text" id="form-Author" placeholder="Author" value="${bookItem.author}"></input>
+//                 <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+//                 <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
+//                 <input type="text" id="form-album" placeholder="Type" value="${bookItem.type}"></input>
+//                 <input type="text" id="form-year" placeholder="Description" value="${bookItem.description}"></input><br/>
+//                 <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
+//                 resolve(form);
+//             });
+//         }
+
+
+
+
+//         //         $(`<div class="uiContainer__book-list box col s12">
+//         //     <ul class="book-list">
+//         //     </ul>
+//         //   </div>`);
+//         //     $(".items").html(booksDisplay);
+//         //     for (let book in bookList) {
+//         //         let currentBook = bookList[book],
+//         //             bookListItem = $("<li>", { class: "book-list__item" }),
+//         //             title = $("<span/>", { class: "book-title" }).text(currentBook.title),
+//         //             bookListData = $("<ul/>", { class: "book-list__item--data" }),
+//         //             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+//         //             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+//         //         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
+
+//         //         bookListData.append(
+//         //             `<li>${currentBook.title}</li>
+//         //                     <li>${currentBook.author}</li>
+//         //                     <li>${currentBook.dueDate}</li>`);
+
+//         //         $(".book-list").append(bookListItem.append(title));
+//         //         $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
+//         //     }
+//         // }
+
+//         module.exports = { makeBookList, bookForm };
+// //===============FIREBASE DONE==========//
+
+// // ================read==============//
+
+// // function setStatus(bookID) {
+// //     return $.ajax({
+// //         url: `${firebase.getFBsettings().databaseURL}/book/${bookID}.json`,
+// //         type: 'PATCH',
+// //         data: JSON.stringify({ status: true }),
+// //         dataType: 'json'
+// //     }).done((userID) => {
+// //         return userID;
+// //     }).fail((error) => {
+// //         console.log("error", error);
+// //         return error;
+// //     });
+// // }
+// // $(document).on("click", ".check-in", function () {
+// //     let checkintoReso = $(this).attr("id");
+// //     console.log("check in", checkintoReso);
+// //     setStatus(checkintoReso);
+// //     // .then(() => {
+// //     //   checkStatus();
+// //     //   console.log("CHECK IN BUTTON CLICKED");
+
+// // });
+
+// // ------------------------------------
+
+
+
+
+},{}],10:[function(require,module,exports){
 
 "use strict";
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
+console.log("user-interaction");
 let $ = require("jquery"),
     user = require("./user"),
     firebase = require("./config"),
@@ -10734,7 +10996,9 @@ let $ = require("jquery"),
 //DO YOU HAVE AN ID?
 
 
+
 function getFBDetails(user) {
+    console.log("user", user);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
     }).done((resolve) => {
@@ -10748,7 +11012,7 @@ function getFBDetails(user) {
 function addUser(userObj) {
     console.log("add user tofirebase", userObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+        url: `${firebase.getFBsettings().databaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
@@ -10760,7 +11024,7 @@ function addUser(userObj) {
 
 function updateUserFB(userObj) {
     return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user/${userObj.userID}.json`,
+        url: `${firebase.getFBsettings().databaseURL}/user/${userObj.userID}.json`,
         type: 'PUT',
         data: JSON.stringify(userObj),
         dataType: 'json'
@@ -10788,7 +11052,7 @@ function loginUser(userObj) {
 
 
 module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
-},{"./config":5,"./user":10,"jquery":1}],10:[function(require,module,exports){
+},{"./config":6,"./user":12,"jquery":1}],12:[function(require,module,exports){
 "use strict";
      console.log("iam user");
 
@@ -10797,35 +11061,37 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
          books = require("./books-interaction"),
          fapi = require("./api"),
          interaction = require("./user-interaction"),
-         object="",
-         provider = new firebase.auth.GoogleAuthProvider(),
-         currentUser = {
-                 uid: null,
-                 displayName:null,
-                 email: null,
-                 bookId: null
+        //  object="",
+         provider = new firebase.auth.GoogleAuthProvider();
+       let currentUser = {
+                      uid: null,
+                      displayName:null,
+                      email: null,
+                      bookId: null,
+                      fbID:null
                };
 
-    firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
-            console.log("onAuthStateChanged", user);
+    firebase.auth().onAuthStateChanged(function (user) {  
+            console.log("onAuthGoogle user", user);
            if (user) {
-                    currentUser = user.uid;
+                    currentUser.uid = user.uid;
                 } else {
                     currentUser.uid = null;
                     currentUser.displayName = null;
                     currentUser.email = null;
                     currentUser.bookId = null;
+                    currentUser.fbID=null;
             
                     console.log("NO USER LOGGED IN", currentUser);
                }
         });
 
     function getUser() {
-            return currentUser;
+            return currentUser.uid;
         }
     
     function setUser(val) {
-            currentUser = val;
+            currentUser.uid = val;
         }
      function getUserObj() {
             return currentUser;
@@ -10834,7 +11100,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
     function setUserVars(obj) {
             console.log("user.setUserVars: obj", obj);
             return new Promise((resolve, reject) => {
-                    // currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
+                    currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
                     currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
                     currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
@@ -10882,7 +11148,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
         displayName: currentUser.displayName,
                 email: currentUser.email,
                 fbID: null
-                            };
+            };
     console.log("userObj", userObj);
     return userObj;
 }
@@ -10908,7 +11174,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
              setUserVars, 
              getUserObj
         };
-},{"./api":2,"./books-interaction":3,"./config":5,"./user-interaction":9,"jquery":1}],11:[function(require,module,exports){
+},{"./api":3,"./books-interaction":4,"./config":6,"./user-interaction":11,"jquery":1}],13:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -10933,7 +11199,7 @@ exports.default = exports.firebase;
 
 
 
-},{"./src/firebaseApp":12}],12:[function(require,module,exports){
+},{"./src/firebaseApp":14}],14:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11298,7 +11564,7 @@ var appErrors = new util_1.ErrorFactory('app', 'Firebase', errors);
 
 
 
-},{"@firebase/util":102}],13:[function(require,module,exports){
+},{"@firebase/util":104}],15:[function(require,module,exports){
 (function (global){
 (function() {
   var firebase = require('@firebase/app').default;
@@ -11591,7 +11857,7 @@ c){a=new pl(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Xb,a),addAuthToken
 }).call(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"@firebase/app":11}],14:[function(require,module,exports){
+},{"@firebase/app":13}],16:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11650,7 +11916,7 @@ exports.OnDisconnect = onDisconnect_1.OnDisconnect;
 
 
 
-},{"./src/api/DataSnapshot":15,"./src/api/Database":16,"./src/api/Query":17,"./src/api/Reference":18,"./src/api/internal":20,"./src/api/onDisconnect":21,"./src/api/test_access":22,"./src/core/RepoManager":29,"./src/core/util/util":73,"@firebase/app":11,"@firebase/util":102}],15:[function(require,module,exports){
+},{"./src/api/DataSnapshot":17,"./src/api/Database":18,"./src/api/Query":19,"./src/api/Reference":20,"./src/api/internal":22,"./src/api/onDisconnect":23,"./src/api/test_access":24,"./src/core/RepoManager":31,"./src/core/util/util":75,"@firebase/app":13,"@firebase/util":104}],17:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11825,7 +12091,7 @@ exports.DataSnapshot = DataSnapshot;
 
 
 
-},{"../core/snap/indexes/PriorityIndex":51,"../core/util/Path":67,"../core/util/validation":74,"@firebase/util":102}],16:[function(require,module,exports){
+},{"../core/snap/indexes/PriorityIndex":53,"../core/util/Path":69,"../core/util/validation":76,"@firebase/util":104}],18:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11963,7 +12229,7 @@ exports.DatabaseInternals = DatabaseInternals;
 
 
 
-},{"../core/Repo":27,"../core/RepoManager":29,"../core/util/Path":67,"../core/util/libs/parser":72,"../core/util/util":73,"../core/util/validation":74,"./Reference":18,"@firebase/util":102,"tslib":124}],17:[function(require,module,exports){
+},{"../core/Repo":29,"../core/RepoManager":31,"../core/util/Path":69,"../core/util/libs/parser":74,"../core/util/util":75,"../core/util/validation":76,"./Reference":20,"@firebase/util":104,"tslib":126}],19:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12471,7 +12737,7 @@ exports.Query = Query;
 
 
 
-},{"../core/snap/indexes/KeyIndex":49,"../core/snap/indexes/PathIndex":50,"../core/snap/indexes/PriorityIndex":51,"../core/snap/indexes/ValueIndex":52,"../core/util/Path":67,"../core/util/util":73,"../core/util/validation":74,"../core/view/EventRegistration":82,"@firebase/util":102}],18:[function(require,module,exports){
+},{"../core/snap/indexes/KeyIndex":51,"../core/snap/indexes/PathIndex":52,"../core/snap/indexes/PriorityIndex":53,"../core/snap/indexes/ValueIndex":54,"../core/util/Path":69,"../core/util/util":75,"../core/util/validation":76,"../core/view/EventRegistration":84,"@firebase/util":104}],20:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12772,7 +13038,7 @@ SyncPoint_1.SyncPoint.__referenceConstructor = Reference;
 
 
 
-},{"../core/Repo":27,"../core/SyncPoint":34,"../core/util/NextPushId":65,"../core/util/Path":67,"../core/util/util":73,"../core/util/validation":74,"../core/view/QueryParams":83,"./Query":17,"./TransactionResult":19,"./onDisconnect":21,"@firebase/util":102,"tslib":124}],19:[function(require,module,exports){
+},{"../core/Repo":29,"../core/SyncPoint":36,"../core/util/NextPushId":67,"../core/util/Path":69,"../core/util/util":75,"../core/util/validation":76,"../core/view/QueryParams":85,"./Query":19,"./TransactionResult":21,"./onDisconnect":23,"@firebase/util":104,"tslib":126}],21:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12815,7 +13081,7 @@ exports.TransactionResult = TransactionResult;
 
 
 
-},{"@firebase/util":102}],20:[function(require,module,exports){
+},{"@firebase/util":104}],22:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12871,7 +13137,7 @@ exports.interceptServerData = function (ref, callback) {
 
 
 
-},{"../realtime/BrowserPollConnection":90,"../realtime/WebSocketConnection":94}],21:[function(require,module,exports){
+},{"../realtime/BrowserPollConnection":92,"../realtime/WebSocketConnection":96}],23:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12987,7 +13253,7 @@ exports.OnDisconnect = OnDisconnect;
 
 
 
-},{"../core/util/util":73,"../core/util/validation":74,"@firebase/util":102}],22:[function(require,module,exports){
+},{"../core/util/util":75,"../core/util/validation":76,"@firebase/util":104}],24:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13071,7 +13337,7 @@ exports.forceRestClient = function (forceRestClient) {
 
 
 
-},{"../core/PersistentConnection":25,"../core/RepoInfo":28,"../core/RepoManager":29,"../realtime/Connection":91}],23:[function(require,module,exports){
+},{"../core/PersistentConnection":27,"../core/RepoInfo":30,"../core/RepoManager":31,"../realtime/Connection":93}],25:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13158,7 +13424,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 
 
 
-},{"./util/util":73}],24:[function(require,module,exports){
+},{"./util/util":75}],26:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13377,7 +13643,7 @@ exports.CompoundWrite = CompoundWrite;
 
 
 
-},{"./snap/Node":45,"./snap/indexes/PriorityIndex":51,"./util/ImmutableTree":64,"./util/Path":67,"@firebase/util":102}],25:[function(require,module,exports){
+},{"./snap/Node":47,"./snap/indexes/PriorityIndex":53,"./util/ImmutableTree":66,"./util/Path":69,"@firebase/util":104}],27:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -14179,7 +14445,7 @@ exports.PersistentConnection = PersistentConnection;
 
 
 
-},{"../realtime/Connection":91,"./ServerActions":31,"./util/OnlineMonitor":66,"./util/Path":67,"./util/VisibilityMonitor":71,"./util/util":73,"@firebase/app":11,"@firebase/util":102,"tslib":124}],26:[function(require,module,exports){
+},{"../realtime/Connection":93,"./ServerActions":33,"./util/OnlineMonitor":68,"./util/Path":69,"./util/VisibilityMonitor":73,"./util/util":75,"@firebase/app":13,"@firebase/util":104,"tslib":126}],28:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -14362,7 +14628,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 
 
 
-},{"./ServerActions":31,"./util/util":73,"@firebase/util":102,"tslib":124}],27:[function(require,module,exports){
+},{"./ServerActions":33,"./util/util":75,"@firebase/util":104,"tslib":126}],29:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -14892,7 +15158,7 @@ exports.Repo = Repo;
 
 
 
-},{"../api/Database":16,"./AuthTokenProvider":23,"./PersistentConnection":25,"./ReadonlyRestClient":26,"./SnapshotHolder":32,"./SparseSnapshotTree":33,"./SyncTree":35,"./snap/nodeFromJSON":53,"./stats/StatsListener":56,"./stats/StatsManager":57,"./stats/StatsReporter":58,"./util/Path":67,"./util/ServerValues":68,"./util/util":73,"./view/EventQueue":81,"@firebase/util":102}],28:[function(require,module,exports){
+},{"../api/Database":18,"./AuthTokenProvider":25,"./PersistentConnection":27,"./ReadonlyRestClient":28,"./SnapshotHolder":34,"./SparseSnapshotTree":35,"./SyncTree":37,"./snap/nodeFromJSON":55,"./stats/StatsListener":58,"./stats/StatsManager":59,"./stats/StatsReporter":60,"./util/Path":69,"./util/ServerValues":70,"./util/util":75,"./view/EventQueue":83,"@firebase/util":104}],30:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15005,7 +15271,7 @@ exports.RepoInfo = RepoInfo;
 
 
 
-},{"../realtime/Constants":92,"./storage/storage":61,"@firebase/util":102}],29:[function(require,module,exports){
+},{"../realtime/Constants":94,"./storage/storage":63,"@firebase/util":104}],31:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15140,7 +15406,7 @@ exports.RepoManager = RepoManager;
 
 
 
-},{"./Repo":27,"./Repo_transaction":30,"./util/libs/parser":72,"./util/util":73,"./util/validation":74,"@firebase/util":102}],30:[function(require,module,exports){
+},{"./Repo":29,"./Repo_transaction":32,"./util/libs/parser":74,"./util/util":75,"./util/validation":76,"@firebase/util":104}],32:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15707,7 +15973,7 @@ Repo_1.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 
 
 
-},{"../api/DataSnapshot":15,"../api/Reference":18,"./Repo":27,"./snap/ChildrenNode":42,"./snap/indexes/PriorityIndex":51,"./snap/nodeFromJSON":53,"./util/Path":67,"./util/ServerValues":68,"./util/Tree":70,"./util/util":73,"./util/validation":74,"@firebase/util":102}],31:[function(require,module,exports){
+},{"../api/DataSnapshot":17,"../api/Reference":20,"./Repo":29,"./snap/ChildrenNode":44,"./snap/indexes/PriorityIndex":53,"./snap/nodeFromJSON":55,"./util/Path":69,"./util/ServerValues":70,"./util/Tree":72,"./util/util":75,"./util/validation":76,"@firebase/util":104}],33:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15780,7 +16046,7 @@ exports.ServerActions = ServerActions;
 
 
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15820,7 +16086,7 @@ exports.SnapshotHolder = SnapshotHolder;
 
 
 
-},{"./snap/ChildrenNode":42}],33:[function(require,module,exports){
+},{"./snap/ChildrenNode":44}],35:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15998,7 +16264,7 @@ exports.SparseSnapshotTree = SparseSnapshotTree;
 
 
 
-},{"./snap/indexes/PriorityIndex":51,"./util/CountedSet":62,"./util/Path":67}],34:[function(require,module,exports){
+},{"./snap/indexes/PriorityIndex":53,"./util/CountedSet":64,"./util/Path":69}],36:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16250,7 +16516,7 @@ exports.SyncPoint = SyncPoint;
 
 
 
-},{"./snap/ChildrenNode":42,"./view/CacheNode":75,"./view/View":84,"./view/ViewCache":85,"@firebase/util":102}],35:[function(require,module,exports){
+},{"./snap/ChildrenNode":44,"./view/CacheNode":77,"./view/View":86,"./view/ViewCache":87,"@firebase/util":104}],37:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16963,7 +17229,7 @@ exports.SyncTree = SyncTree;
 
 
 
-},{"./SyncPoint":34,"./WriteTree":36,"./operation/AckUserWrite":37,"./operation/ListenComplete":38,"./operation/Merge":39,"./operation/Operation":40,"./operation/Overwrite":41,"./snap/ChildrenNode":42,"./util/ImmutableTree":64,"./util/Path":67,"./util/util":73,"@firebase/util":102}],36:[function(require,module,exports){
+},{"./SyncPoint":36,"./WriteTree":38,"./operation/AckUserWrite":39,"./operation/ListenComplete":40,"./operation/Merge":41,"./operation/Operation":42,"./operation/Overwrite":43,"./snap/ChildrenNode":44,"./util/ImmutableTree":66,"./util/Path":69,"./util/util":75,"@firebase/util":104}],38:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17598,7 +17864,7 @@ exports.WriteTreeRef = WriteTreeRef;
 
 
 
-},{"./CompoundWrite":24,"./snap/ChildrenNode":42,"./snap/indexes/PriorityIndex":51,"./util/Path":67,"@firebase/util":102}],37:[function(require,module,exports){
+},{"./CompoundWrite":26,"./snap/ChildrenNode":44,"./snap/indexes/PriorityIndex":53,"./util/Path":69,"@firebase/util":104}],39:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17662,7 +17928,7 @@ exports.AckUserWrite = AckUserWrite;
 
 
 
-},{"../util/Path":67,"./Operation":40,"@firebase/util":102}],38:[function(require,module,exports){
+},{"../util/Path":69,"./Operation":42,"@firebase/util":104}],40:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17709,7 +17975,7 @@ exports.ListenComplete = ListenComplete;
 
 
 
-},{"../util/Path":67,"./Operation":40}],39:[function(require,module,exports){
+},{"../util/Path":69,"./Operation":42}],41:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17791,7 +18057,7 @@ exports.Merge = Merge;
 
 
 
-},{"../util/Path":67,"./Operation":40,"./Overwrite":41,"@firebase/util":102}],40:[function(require,module,exports){
+},{"../util/Path":69,"./Operation":42,"./Overwrite":43,"@firebase/util":104}],42:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17865,7 +18131,7 @@ exports.OperationSource = OperationSource;
 
 
 
-},{"@firebase/util":102}],41:[function(require,module,exports){
+},{"@firebase/util":104}],43:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17914,7 +18180,7 @@ exports.Overwrite = Overwrite;
 
 
 
-},{"../util/Path":67,"./Operation":40}],42:[function(require,module,exports){
+},{"../util/Path":69,"./Operation":42}],44:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18411,7 +18677,7 @@ PriorityIndex_1.setMaxNode(exports.MAX_NODE);
 
 
 
-},{"../util/SortedMap":69,"../util/util":73,"./IndexMap":43,"./LeafNode":44,"./Node":45,"./comparators":47,"./indexes/KeyIndex":49,"./indexes/PriorityIndex":51,"./snap":54,"@firebase/util":102,"tslib":124}],43:[function(require,module,exports){
+},{"../util/SortedMap":71,"../util/util":75,"./IndexMap":45,"./LeafNode":46,"./Node":47,"./comparators":49,"./indexes/KeyIndex":51,"./indexes/PriorityIndex":53,"./snap":56,"@firebase/util":104,"tslib":126}],45:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18594,7 +18860,7 @@ exports.IndexMap = IndexMap;
 
 
 
-},{"./Node":45,"./childSet":46,"./indexes/KeyIndex":49,"./indexes/PriorityIndex":51,"@firebase/util":102}],44:[function(require,module,exports){
+},{"./Node":47,"./childSet":48,"./indexes/KeyIndex":51,"./indexes/PriorityIndex":53,"@firebase/util":104}],46:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18863,7 +19129,7 @@ exports.LeafNode = LeafNode;
 
 
 
-},{"../util/util":73,"./snap":54,"@firebase/util":102}],45:[function(require,module,exports){
+},{"../util/util":75,"./snap":56,"@firebase/util":104}],47:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18908,7 +19174,7 @@ exports.NamedNode = NamedNode;
 
 
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19040,7 +19306,7 @@ exports.buildChildSet = function (childList, cmp, keyFn, mapSortFn) {
 
 
 
-},{"../util/SortedMap":69}],47:[function(require,module,exports){
+},{"../util/SortedMap":71}],49:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19070,7 +19336,7 @@ exports.NAME_COMPARATOR = NAME_COMPARATOR;
 
 
 
-},{"../util/util":73}],48:[function(require,module,exports){
+},{"../util/util":75}],50:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19130,7 +19396,7 @@ exports.Index = Index;
 
 
 
-},{"../../util/util":73,"../Node":45}],49:[function(require,module,exports){
+},{"../../util/util":75,"../Node":47}],51:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19226,7 +19492,7 @@ exports.KEY_INDEX = new KeyIndex();
 
 
 
-},{"../../util/util":73,"../Node":45,"./Index":48,"@firebase/util":102,"tslib":124}],50:[function(require,module,exports){
+},{"../../util/util":75,"../Node":47,"./Index":50,"@firebase/util":104,"tslib":126}],52:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19319,7 +19585,7 @@ exports.PathIndex = PathIndex;
 
 
 
-},{"../../util/util":73,"../ChildrenNode":42,"../Node":45,"../nodeFromJSON":53,"./Index":48,"@firebase/util":102,"tslib":124}],51:[function(require,module,exports){
+},{"../../util/util":75,"../ChildrenNode":44,"../Node":47,"../nodeFromJSON":55,"./Index":50,"@firebase/util":104,"tslib":126}],53:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19422,7 +19688,7 @@ exports.PRIORITY_INDEX = new PriorityIndex();
 
 
 
-},{"../../util/util":73,"../LeafNode":44,"../Node":45,"./Index":48,"tslib":124}],52:[function(require,module,exports){
+},{"../../util/util":75,"../LeafNode":46,"../Node":47,"./Index":50,"tslib":126}],54:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19513,7 +19779,7 @@ exports.VALUE_INDEX = new ValueIndex();
 
 
 
-},{"../../util/util":73,"../Node":45,"../nodeFromJSON":53,"./Index":48,"tslib":124}],53:[function(require,module,exports){
+},{"../../util/util":75,"../Node":47,"../nodeFromJSON":55,"./Index":50,"tslib":126}],55:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19616,7 +19882,7 @@ PriorityIndex_1.setNodeFromJSON(nodeFromJSON);
 
 
 
-},{"./ChildrenNode":42,"./IndexMap":43,"./LeafNode":44,"./Node":45,"./childSet":46,"./comparators":47,"./indexes/PriorityIndex":51,"@firebase/util":102}],54:[function(require,module,exports){
+},{"./ChildrenNode":44,"./IndexMap":45,"./LeafNode":46,"./Node":47,"./childSet":48,"./comparators":49,"./indexes/PriorityIndex":53,"@firebase/util":104}],56:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19673,7 +19939,7 @@ exports.validatePriorityNode = function (priorityNode) {
 
 
 
-},{"../util/util":73,"@firebase/util":102}],55:[function(require,module,exports){
+},{"../util/util":75,"@firebase/util":104}],57:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19717,7 +19983,7 @@ exports.StatsCollection = StatsCollection;
 
 
 
-},{"@firebase/util":102}],56:[function(require,module,exports){
+},{"@firebase/util":104}],58:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19764,7 +20030,7 @@ exports.StatsListener = StatsListener;
 
 
 
-},{"@firebase/util":102}],57:[function(require,module,exports){
+},{"@firebase/util":104}],59:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19808,7 +20074,7 @@ exports.StatsManager = StatsManager;
 
 
 
-},{"./StatsCollection":55}],58:[function(require,module,exports){
+},{"./StatsCollection":57}],60:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19878,7 +20144,7 @@ exports.StatsReporter = StatsReporter;
 
 
 
-},{"../util/util":73,"./StatsListener":56,"@firebase/util":102}],59:[function(require,module,exports){
+},{"../util/util":75,"./StatsListener":58,"@firebase/util":104}],61:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19963,7 +20229,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 
 
 
-},{"@firebase/util":102}],60:[function(require,module,exports){
+},{"@firebase/util":104}],62:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20016,7 +20282,7 @@ exports.MemoryStorage = MemoryStorage;
 
 
 
-},{"@firebase/util":102}],61:[function(require,module,exports){
+},{"@firebase/util":104}],63:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20070,7 +20336,7 @@ exports.SessionStorage = createStoragefor('sessionStorage');
 
 
 
-},{"./DOMStorageWrapper":59,"./MemoryStorage":60}],62:[function(require,module,exports){
+},{"./DOMStorageWrapper":61,"./MemoryStorage":62}],64:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20168,7 +20434,7 @@ exports.CountedSet = CountedSet;
 
 
 
-},{"@firebase/util":102}],63:[function(require,module,exports){
+},{"@firebase/util":104}],65:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20249,7 +20515,7 @@ exports.EventEmitter = EventEmitter;
 
 
 
-},{"@firebase/util":102}],64:[function(require,module,exports){
+},{"@firebase/util":104}],66:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20608,7 +20874,7 @@ exports.ImmutableTree = ImmutableTree;
 
 
 
-},{"./Path":67,"./SortedMap":69,"./util":73,"@firebase/util":102}],65:[function(require,module,exports){
+},{"./Path":69,"./SortedMap":71,"./util":75,"@firebase/util":104}],67:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20688,7 +20954,7 @@ exports.nextPushId = (function () {
 
 
 
-},{"@firebase/util":102}],66:[function(require,module,exports){
+},{"@firebase/util":104}],68:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20769,7 +21035,7 @@ exports.OnlineMonitor = OnlineMonitor;
 
 
 
-},{"./EventEmitter":63,"@firebase/util":102,"tslib":124}],67:[function(require,module,exports){
+},{"./EventEmitter":65,"@firebase/util":104,"tslib":126}],69:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21097,7 +21363,7 @@ exports.ValidationPath = ValidationPath;
 
 
 
-},{"./util":73,"@firebase/util":102}],68:[function(require,module,exports){
+},{"./util":75,"@firebase/util":104}],70:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21202,7 +21468,7 @@ exports.resolveDeferredValueSnapshot = function (node, serverValues) {
 
 
 
-},{"../SparseSnapshotTree":33,"../snap/LeafNode":44,"../snap/indexes/PriorityIndex":51,"../snap/nodeFromJSON":53,"./Path":67,"@firebase/util":102}],69:[function(require,module,exports){
+},{"../SparseSnapshotTree":35,"../snap/LeafNode":46,"../snap/indexes/PriorityIndex":53,"../snap/nodeFromJSON":55,"./Path":69,"@firebase/util":104}],71:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21862,7 +22128,7 @@ exports.SortedMap = SortedMap;
 
 
 
-},{}],70:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22091,7 +22357,7 @@ exports.Tree = Tree;
 
 
 
-},{"./Path":67,"@firebase/util":102}],71:[function(require,module,exports){
+},{"./Path":69,"@firebase/util":104}],73:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22174,7 +22440,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 
 
 
-},{"./EventEmitter":63,"@firebase/util":102,"tslib":124}],72:[function(require,module,exports){
+},{"./EventEmitter":65,"@firebase/util":104,"tslib":126}],74:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22336,7 +22602,7 @@ exports.parseURL = function (dataURL) {
 
 
 
-},{"../../RepoInfo":28,"../Path":67,"../util":73}],73:[function(require,module,exports){
+},{"../../RepoInfo":30,"../Path":69,"../util":75}],75:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22948,7 +23214,7 @@ exports.setTimeoutNonBlocking = function (fn, time) {
 
 
 
-},{"../storage/storage":61,"@firebase/logger":96,"@firebase/util":102}],74:[function(require,module,exports){
+},{"../storage/storage":63,"@firebase/logger":98,"@firebase/util":104}],76:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23332,7 +23598,7 @@ exports.validateObjectContainsKey = function (fnName, argumentNumber, obj, key, 
 
 
 
-},{"./Path":67,"./util":73,"@firebase/util":102}],75:[function(require,module,exports){
+},{"./Path":69,"./util":75,"@firebase/util":104}],77:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23411,7 +23677,7 @@ exports.CacheNode = CacheNode;
 
 
 
-},{}],76:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23503,7 +23769,7 @@ exports.Change = Change;
 
 
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23586,7 +23852,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 
 
 
-},{"./Change":76,"@firebase/util":102}],78:[function(require,module,exports){
+},{"./Change":78,"@firebase/util":104}],80:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23691,7 +23957,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 
 
 
-},{"./CacheNode":75}],79:[function(require,module,exports){
+},{"./CacheNode":77}],81:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23805,7 +24071,7 @@ exports.CancelEvent = CancelEvent;
 
 
 
-},{"@firebase/util":102}],80:[function(require,module,exports){
+},{"@firebase/util":104}],82:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23937,7 +24203,7 @@ exports.EventGenerator = EventGenerator;
 
 
 
-},{"../snap/Node":45,"./Change":76,"@firebase/util":102}],81:[function(require,module,exports){
+},{"../snap/Node":47,"./Change":78,"@firebase/util":104}],83:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24111,7 +24377,7 @@ exports.EventList = EventList;
 
 
 
-},{"../util/util":73}],82:[function(require,module,exports){
+},{"../util/util":75}],84:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24328,7 +24594,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 
 
 
-},{"../../api/DataSnapshot":15,"./Event":79,"@firebase/util":102}],83:[function(require,module,exports){
+},{"../../api/DataSnapshot":17,"./Event":81,"@firebase/util":104}],85:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24736,7 +25002,7 @@ exports.QueryParams = QueryParams;
 
 
 
-},{"../snap/indexes/KeyIndex":49,"../snap/indexes/PathIndex":50,"../snap/indexes/PriorityIndex":51,"../snap/indexes/ValueIndex":52,"../util/util":73,"./filter/IndexedFilter":87,"./filter/LimitedFilter":88,"./filter/RangedFilter":89,"@firebase/util":102}],84:[function(require,module,exports){
+},{"../snap/indexes/KeyIndex":51,"../snap/indexes/PathIndex":52,"../snap/indexes/PriorityIndex":53,"../snap/indexes/ValueIndex":54,"../util/util":75,"./filter/IndexedFilter":89,"./filter/LimitedFilter":90,"./filter/RangedFilter":91,"@firebase/util":104}],86:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24946,7 +25212,7 @@ exports.View = View;
 
 
 
-},{"../operation/Operation":40,"../snap/ChildrenNode":42,"../snap/indexes/PriorityIndex":51,"./CacheNode":75,"./Change":76,"./EventGenerator":80,"./ViewCache":85,"./ViewProcessor":86,"./filter/IndexedFilter":87,"@firebase/util":102}],85:[function(require,module,exports){
+},{"../operation/Operation":42,"../snap/ChildrenNode":44,"../snap/indexes/PriorityIndex":53,"./CacheNode":77,"./Change":78,"./EventGenerator":82,"./ViewCache":87,"./ViewProcessor":88,"./filter/IndexedFilter":89,"@firebase/util":104}],87:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25044,7 +25310,7 @@ exports.ViewCache = ViewCache;
 
 
 
-},{"../snap/ChildrenNode":42,"./CacheNode":75}],86:[function(require,module,exports){
+},{"../snap/ChildrenNode":44,"./CacheNode":77}],88:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25641,7 +25907,7 @@ exports.ViewProcessor = ViewProcessor;
 
 
 
-},{"../operation/Operation":40,"../snap/ChildrenNode":42,"../snap/indexes/KeyIndex":49,"../util/ImmutableTree":64,"../util/Path":67,"./Change":76,"./ChildChangeAccumulator":77,"./CompleteChildSource":78,"@firebase/util":102}],87:[function(require,module,exports){
+},{"../operation/Operation":42,"../snap/ChildrenNode":44,"../snap/indexes/KeyIndex":51,"../util/ImmutableTree":66,"../util/Path":69,"./Change":78,"./ChildChangeAccumulator":79,"./CompleteChildSource":80,"@firebase/util":104}],89:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25776,7 +26042,7 @@ exports.IndexedFilter = IndexedFilter;
 
 
 
-},{"../../snap/ChildrenNode":42,"../../snap/indexes/PriorityIndex":51,"../Change":76,"@firebase/util":102}],88:[function(require,module,exports){
+},{"../../snap/ChildrenNode":44,"../../snap/indexes/PriorityIndex":53,"../Change":78,"@firebase/util":104}],90:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26037,7 +26303,7 @@ exports.LimitedFilter = LimitedFilter;
 
 
 
-},{"../../snap/ChildrenNode":42,"../../snap/Node":45,"../Change":76,"./RangedFilter":89,"@firebase/util":102}],89:[function(require,module,exports){
+},{"../../snap/ChildrenNode":44,"../../snap/Node":47,"../Change":78,"./RangedFilter":91,"@firebase/util":104}],91:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26182,7 +26448,7 @@ exports.RangedFilter = RangedFilter;
 
 
 
-},{"../../../core/snap/Node":45,"../../snap/ChildrenNode":42,"../../snap/indexes/PriorityIndex":51,"./IndexedFilter":87}],90:[function(require,module,exports){
+},{"../../../core/snap/Node":47,"../../snap/ChildrenNode":44,"../../snap/indexes/PriorityIndex":53,"./IndexedFilter":89}],92:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26813,7 +27079,7 @@ exports.FirebaseIFrameScriptHolder = FirebaseIFrameScriptHolder;
 
 
 
-},{"../core/stats/StatsManager":57,"../core/util/CountedSet":62,"../core/util/util":73,"./Constants":92,"./polling/PacketReceiver":95,"@firebase/util":102}],91:[function(require,module,exports){
+},{"../core/stats/StatsManager":59,"../core/util/CountedSet":64,"../core/util/util":75,"./Constants":94,"./polling/PacketReceiver":97,"@firebase/util":104}],93:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27308,7 +27574,7 @@ exports.Connection = Connection;
 
 
 
-},{"../core/storage/storage":61,"../core/util/util":73,"./Constants":92,"./TransportManager":93}],92:[function(require,module,exports){
+},{"../core/storage/storage":63,"../core/util/util":75,"./Constants":94,"./TransportManager":95}],94:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27338,7 +27604,7 @@ exports.LONG_POLLING = 'long_polling';
 
 
 
-},{}],93:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27439,7 +27705,7 @@ exports.TransportManager = TransportManager;
 
 
 
-},{"../core/util/util":73,"./BrowserPollConnection":90,"./WebSocketConnection":94}],94:[function(require,module,exports){
+},{"../core/util/util":75,"./BrowserPollConnection":92,"./WebSocketConnection":96}],96:[function(require,module,exports){
 (function (process){
 "use strict";
 /**
@@ -27794,7 +28060,7 @@ exports.WebSocketConnection = WebSocketConnection;
 
 
 }).call(this,require('_process'))
-},{"../core/stats/StatsManager":57,"../core/storage/storage":61,"../core/util/util":73,"./Constants":92,"@firebase/app":11,"@firebase/util":102,"_process":122}],95:[function(require,module,exports){
+},{"../core/stats/StatsManager":59,"../core/storage/storage":63,"../core/util/util":75,"./Constants":94,"@firebase/app":13,"@firebase/util":104,"_process":124}],97:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27882,7 +28148,7 @@ exports.PacketReceiver = PacketReceiver;
 
 
 
-},{"../../core/util/util":73}],96:[function(require,module,exports){
+},{"../../core/util/util":75}],98:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27913,7 +28179,7 @@ exports.LogLevel = logger_2.LogLevel;
 
 
 
-},{"./src/logger":97}],97:[function(require,module,exports){
+},{"./src/logger":99}],99:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28090,7 +28356,7 @@ exports.Logger = Logger;
 
 
 
-},{}],98:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28114,7 +28380,7 @@ require("./src/shims/String");
 
 
 
-},{"./src/polyfills/promise":99,"./src/shims/Array":100,"./src/shims/String":101}],99:[function(require,module,exports){
+},{"./src/polyfills/promise":101,"./src/shims/Array":102,"./src/shims/String":103}],101:[function(require,module,exports){
 (function (global){
 /**
  * Copyright 2017 Google Inc.
@@ -28152,7 +28418,7 @@ if (typeof Promise === 'undefined') {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"promise-polyfill":123}],100:[function(require,module,exports){
+},{"promise-polyfill":125}],102:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -28253,7 +28519,7 @@ if (!Array.prototype.findIndex) {
 
 
 
-},{}],101:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 /**
  * Copyright 2018 Google Inc.
  *
@@ -28281,7 +28547,7 @@ if (!String.prototype.startsWith) {
 
 
 
-},{}],102:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28367,7 +28633,7 @@ exports.stringToByteArray = utf8_1.stringToByteArray;
 
 
 
-},{"./src/assert":103,"./src/constants":104,"./src/crypt":105,"./src/deepCopy":106,"./src/deferred":107,"./src/environment":108,"./src/errors":109,"./src/json":111,"./src/jwt":112,"./src/obj":113,"./src/query":114,"./src/sha1":115,"./src/subscribe":116,"./src/utf8":117,"./src/validation":118}],103:[function(require,module,exports){
+},{"./src/assert":105,"./src/constants":106,"./src/crypt":107,"./src/deepCopy":108,"./src/deferred":109,"./src/environment":110,"./src/errors":111,"./src/json":113,"./src/jwt":114,"./src/obj":115,"./src/query":116,"./src/sha1":117,"./src/subscribe":118,"./src/utf8":119,"./src/validation":120}],105:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28410,7 +28676,7 @@ exports.assertionError = function (message) {
 
 
 
-},{"./constants":104}],104:[function(require,module,exports){
+},{"./constants":106}],106:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28448,7 +28714,7 @@ exports.CONSTANTS = {
 
 
 
-},{}],105:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28761,7 +29027,7 @@ exports.base64Decode = function (str) {
 
 
 
-},{}],106:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28838,7 +29104,7 @@ exports.patchProperty = patchProperty;
 
 
 
-},{}],107:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28901,7 +29167,7 @@ exports.Deferred = Deferred;
 
 
 
-},{}],108:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28965,7 +29231,7 @@ exports.isNodeSdk = function () {
 
 
 
-},{"./constants":104}],109:[function(require,module,exports){
+},{"./constants":106}],111:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ERROR_NAME = 'FirebaseError';
@@ -29050,7 +29316,7 @@ exports.ErrorFactory = ErrorFactory;
 
 
 
-},{}],110:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29107,7 +29373,7 @@ exports.Hash = Hash;
 
 
 
-},{}],111:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29147,7 +29413,7 @@ exports.stringify = stringify;
 
 
 
-},{}],112:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29277,7 +29543,7 @@ exports.isAdmin = function (token) {
 
 
 
-},{"./crypt":105,"./json":111}],113:[function(require,module,exports){
+},{"./crypt":107,"./json":113}],115:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29414,7 +29680,7 @@ exports.every = function (obj, fn) {
 
 
 
-},{}],114:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29475,7 +29741,7 @@ exports.querystringDecode = function (querystring) {
 
 
 
-},{"./obj":113}],115:[function(require,module,exports){
+},{"./obj":115}],117:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29747,7 +30013,7 @@ exports.Sha1 = Sha1;
 
 
 
-},{"./hash":110,"tslib":124}],116:[function(require,module,exports){
+},{"./hash":112,"tslib":126}],118:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -29969,7 +30235,7 @@ function noop() {
 
 
 
-},{}],117:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30063,7 +30329,7 @@ exports.stringLength = function (str) {
 
 
 
-},{"./assert":103}],118:[function(require,module,exports){
+},{"./assert":105}],120:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30175,7 +30441,7 @@ exports.validateContextObject = validateContextObject;
 
 
 
-},{}],119:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30195,7 +30461,7 @@ exports.validateContextObject = validateContextObject;
 require('@firebase/polyfill');
 module.exports = require('@firebase/app').default;
 
-},{"@firebase/app":11,"@firebase/polyfill":98}],120:[function(require,module,exports){
+},{"@firebase/app":13,"@firebase/polyfill":100}],122:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30214,7 +30480,7 @@ module.exports = require('@firebase/app').default;
 
 require('@firebase/auth');
 
-},{"@firebase/auth":13}],121:[function(require,module,exports){
+},{"@firebase/auth":15}],123:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30233,7 +30499,7 @@ require('@firebase/auth');
 
 module.exports = require('@firebase/database');
 
-},{"@firebase/database":14}],122:[function(require,module,exports){
+},{"@firebase/database":16}],124:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -30419,7 +30685,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],123:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
@@ -30663,7 +30929,7 @@ Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
 
 module.exports = Promise;
 
-},{}],124:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 (function (global){
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -30908,4 +31174,4 @@ var __importDefault;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[7]);
+},{}]},{},[8]);

@@ -1,4 +1,5 @@
 "use strict";
+console.log("user-interaction");
 let $ = require("jquery"),
     user = require("./user"),
     firebase = require("./config"),
@@ -6,7 +7,9 @@ let $ = require("jquery"),
 //DO YOU HAVE AN ID?
 
 
+
 function getFBDetails(user) {
+    console.log("user", user);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
     }).done((resolve) => {
@@ -20,7 +23,7 @@ function getFBDetails(user) {
 function addUser(userObj) {
     console.log("add user tofirebase", userObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+        url: `${firebase.getFBsettings().databaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
@@ -32,7 +35,7 @@ function addUser(userObj) {
 
 function updateUserFB(userObj) {
     return $.ajax({
-        url: `${firebase.getFBsettings().dataBaseURL}/user/${userObj.userID}.json`,
+        url: `${firebase.getFBsettings().databaseURL}/user/${userObj.userID}.json`,
         type: 'PUT',
         data: JSON.stringify(userObj),
         dataType: 'json'

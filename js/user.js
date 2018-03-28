@@ -6,35 +6,37 @@
          books = require("./books-interaction"),
          fapi = require("./api"),
          interaction = require("./user-interaction"),
-         object="",
-         provider = new firebase.auth.GoogleAuthProvider(),
-         currentUser = {
-                 uid: null,
-                 displayName:null,
-                 email: null,
-                 bookId: null
+        //  object="",
+         provider = new firebase.auth.GoogleAuthProvider();
+       let currentUser = {
+                      uid: null,
+                      displayName:null,
+                      email: null,
+                      bookId: null,
+                      fbID:null
                };
 
-    firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
-            console.log("onAuthStateChanged", user);
+    firebase.auth().onAuthStateChanged(function (user) {  
+            console.log("onAuthGoogle user", user);
            if (user) {
-                    currentUser = user.uid;
+                    currentUser.uid = user.uid;
                 } else {
                     currentUser.uid = null;
                     currentUser.displayName = null;
                     currentUser.email = null;
                     currentUser.bookId = null;
+                    currentUser.fbID=null;
             
                     console.log("NO USER LOGGED IN", currentUser);
                }
         });
 
     function getUser() {
-            return currentUser;
+            return currentUser.uid;
         }
     
     function setUser(val) {
-            currentUser = val;
+            currentUser.uid = val;
         }
      function getUserObj() {
             return currentUser;
@@ -43,7 +45,7 @@
     function setUserVars(obj) {
             console.log("user.setUserVars: obj", obj);
             return new Promise((resolve, reject) => {
-                    // currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
+                    currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
                     currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
                     currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
@@ -91,7 +93,7 @@
         displayName: currentUser.displayName,
                 email: currentUser.email,
                 fbID: null
-                            };
+            };
     console.log("userObj", userObj);
     return userObj;
 }

@@ -38,7 +38,7 @@
             "book-type": [
                 {
                     "type": "library",
-                    "uid":"fbId"
+                    "bookId":"fbId"
                 },
                 {
                    "type": "borrow",

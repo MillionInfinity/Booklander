@@ -4,36 +4,33 @@ let $ = require('jquery'),
             firebase = require("./config"),
             aBook={},
             myBookArr=[];
-        // console.log("firebase", firebase.getFBsettings().dataBaseURL);
+         let librar = [];
+        // cuseronsole.log("firebase", firebase.getFBsettings().dataBaseURL);
 
 function getBook() {
               return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book.json`
+            url: `${firebase.getFBsettings().databaseURL}/book.json`
             }).done((bookData) => {
             console.log("i can able to get all books without user", bookData);
                return bookData;
             });
 }
 
-function getAllTypeBook() {
-            return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book-type.json`
-         }).done((bookData) => {
-            console.log("i can able to get with its type", bookData);
-            return bookData;
-            });
-}
+// function heyLibrary() {
+//     getBook().then((lib) => {
+//       for (var i = 0; i < lib.length; i++) {
+//             var libType = lib[i].type;
+//              if (lib[i]==="library") {
+//              librar.push(libType);
+//        } else {
+//               alert("Sorry! there is no library books there");
+//       }
+//           return libType;
+//         }
+//     });
+// } 
+// heyLibrary();
 
-function getUserBook(user) {
-              return $.ajax({
-            url: `${firebase.getFBsettings().dataBaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-         }).done((bookData) => {
-            console.log("get my user book", bookData);
-               return bookData;
-            }).fail((error) => {
-               return error;
-    });
-}
 function ajaxCalls(myBooks) {
             console.log("myBooks", myBooks);
             return $.ajax({
@@ -60,7 +57,7 @@ function getSameBook(array) {
 
 function deleteBook(bookId) {
             $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
+                url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
                 method: "DELETE"
             }).done((data) => {
                 return data;
@@ -71,7 +68,7 @@ function deleteBook(bookId) {
 function addBook(bookObj) {
                 console.log("addBook", bookObj);
                 return $.ajax({
-                    url: `${firebase.getFBsettings().dataBaseURL}/book.json`,
+                    url: `${firebase.getFBsettings().databaseURL}/book.json`,
                     type: 'POST',
                     data: JSON.stringify(bookObj),
                     dataType: 'json'
@@ -82,7 +79,7 @@ function addBook(bookObj) {
 function addUserBook(bookObj) {
             console.log("addBook", bookObj);
             return $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/user.json`,
+                url: `${firebase.getFBsettings().databaseURL}/user.json`,
                 type: 'POST',
                 data: JSON.stringify(bookObj),
                 dataType: 'json'
@@ -95,7 +92,7 @@ function addUserBook(bookObj) {
 
 function editBook(bookObj, bookId) {
             return $.ajax({
-                url: `${firebase.getFBsettings().dataBaseURL}/book/${bookId}.json`,
+                url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
                 type: 'PUT',
                 data: JSON.stringify(bookObj)
              }).done((data) => {
@@ -104,8 +101,8 @@ function editBook(bookObj, bookId) {
         }
 
 module.exports = { getBook,
-                        getAllTypeBook,
-                        getUserBook,
+                        // heyLibrary,
+                        // getUserBook,
                         ajaxCalls,
                         addBook,
                         addUserBook,

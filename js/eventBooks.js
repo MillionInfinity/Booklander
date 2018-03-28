@@ -83,12 +83,12 @@ function buildBookObj() {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#select-dueDate").val(),
+        dueDate: $("#form-dueDate").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("form-read").val(),
-        type: $("select-type").val(),
-        description: $("form-description").val(),
+        type: $("form-type").val(),
+        description: $("form-desc").val(),
         status: false,
         uid: user.getUser()
     };
@@ -102,5 +102,5 @@ $("#add-book").click(function () {
         .then((bookForm) => {
             $(".uiContainer--wrapper").html(bookForm);
         });
-    setTimeout(callback, 1000);
+    // setTimeout(callback, 1000);
 });

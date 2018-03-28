@@ -44,7 +44,7 @@ $("#logout").click(() => {
 
 // $("#add-book").click(() => {
 //     console.log("i want to see");
-//     // loadBooksToDOM();
+//     loadBooksToDOM();
 //     sendToFirebase();
 // });
 

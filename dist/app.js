@@ -10496,29 +10496,26 @@ let $ = require('jquery');
 function makeBookList(bookList) {
                 console.log("bookDom makebooklist", bookList);
 let bookDisplay =
- $(`<div class="uiContainer_book-list box col -md-3">
-     <h3>Book of the Week</h3>
-             <ul class="book-list">
-                    </ul>
-              
-                </div>`);
+    $(`  <div class="container">
+            <h1>Book of the Week</h1>
+<div class="row">`);
                 $(".uiContainer--wrapper").html(bookDisplay);
                 for (let book in bookList) {
                     let currentBook = bookList[book],
-                        bookListItem = $("<li>", { class: "book-list_item"}),
-                        // image = $("<img src="" alt="Generic placeholder image">", { class: "book-image" }),
+                        bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
+                        // image = $(class:"thumbnail").prepend($("<img>", {src:""})),
                         title = $("<span>", { class: "book-titl" }).text(currentBook.title),
-                        bookListData = $("<ul/>", { class: "book-list_item--data" }),
+                        bookListData = $("<div/>", { class: "caption" }),
                         bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
                         bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
                         bookListData.append(
-                            `<li>${currentBook.author}</li>
-                             <li>${currentBook.type}</li>
-                             <li>${currentBook.description}</li>`);
+                            `<h3>${currentBook.author}</h3>
+                             <h6>${currentBook.type}</h6>
+                             <h5>${currentBook.place}</h5>`);
 
-                    $(".book-list").append(bookListItem.append(title));
-                    $(".book-list").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+                    $(".row").append(bookListItem.append(title));
+                    $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
                 }
 
             }
@@ -10543,8 +10540,8 @@ function bookForm(book, bookId) {
                         `<h3>${bookItem.formTitle}</h3>
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                        <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
-                        <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
+                        <input type="text" id="form-dueDate" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+                        <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input>
                         <input type="text" id="form-type" placeholder="Type" value="${bookItem.type}"></input>
                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
@@ -10677,12 +10674,12 @@ function buildBookObj() {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#select-dueDate").val(),
+        dueDate: $("#form-dueDate").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("form-read").val(),
-        type: $("select-type").val(),
-        description: $("form-description").val(),
+        type: $("form-type").val(),
+        description: $("form-desc").val(),
         status: false,
         uid: user.getUser()
     };
@@ -10696,7 +10693,7 @@ $("#add-book").click(function () {
         .then((bookForm) => {
             $(".uiContainer--wrapper").html(bookForm);
         });
-    setTimeout(callback, 1000);
+    // setTimeout(callback, 1000);
 });
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
@@ -10745,7 +10742,7 @@ $("#logout").click(() => {
 
 // $("#add-book").click(() => {
 //     console.log("i want to see");
-//     // loadBooksToDOM();
+//     loadBooksToDOM();
 //     sendToFirebase();
 // });
 

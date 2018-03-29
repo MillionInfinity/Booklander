@@ -21,10 +21,10 @@ let $ = require('jquery'),
 
 
 $("#login").click(function () {
-    // console.log("user clicked login");
+
     user.googleLogIn()
         .then((result) => {
-            // console.log("UID result from login: ", result.user.uid);
+         
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);

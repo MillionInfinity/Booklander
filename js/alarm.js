@@ -1,5 +1,5 @@
-"use strict";
-console.log("Alarm! wake up early");
+                     "use strict";
+         console.log("Alarm! wake up early");
 
 
 

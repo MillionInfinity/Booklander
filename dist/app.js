@@ -10254,8 +10254,8 @@ return jQuery;
 } );
 
 },{}],2:[function(require,module,exports){
-"use strict";
-console.log("Alarm! wake up early");
+                     "use strict";
+         console.log("Alarm! wake up early");
 
 
 
@@ -10312,50 +10312,62 @@ console.log("Alarm! wake up early");
         // }
 },{}],3:[function(require,module,exports){
 "use strict";
-function getKey() {
-              return {
 
-                      apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
-                      authDomain: "my-capstone-new.firebaseapp.com",
-                      databaseURL: "https://my-capstone-new.firebaseio.com",
 
-       
-                  };
-    }
-             module.exports = { getKey };
+
+
+
+                function getKey() {
+                            return {
+                                    apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
+                                    authDomain: "my-capstone-new.firebaseapp.com",
+                                    databaseURL: "https://my-capstone-new.firebaseio.com"
+                                };
+                    }
+                           
+                    
+                    
+                    
+     module.exports = { getKey };
 
 },{}],4:[function(require,module,exports){
 "use strict";
 console.log("book-interaction");
-let $ = require('jquery'),
-    firebase = require("./config"),
-    aBook = {},
-    myBookArr = [];
 
-// cuseronsole.log("firebase", firebase.getFBsettings().dataBaseURL);
+let $ = require('jquery'),
+                firebase = require("./config"),
+                // aBook = {},
+                myBookArr = [];
+
+        // book withOut user
 
 function getBook() {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json`
-    }).done((bookData) => {
-        return bookData;
-    });
-}
-function getUserBook(user) {
-       return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-       
-    }).done((resolve) => {
-        return resolve;
-    }).fail((error) => {
+       url: `${firebase.getFBsettings().databaseURL}/book.json`
+            }).done((bookData) => {
+                return bookData;
+    }).fail((error)=>{
         return error;
     });
 }
+         //book with userId
+
+function getUserBook(user) {
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+            }).done((bookData) => {
+                return bookData;
+            }).fail((error) => {
+                return error;
+            });
+}
+  
+         //Library books
 
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
-        for (let key in lib) {
+            for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
             } else {
@@ -10366,16 +10378,48 @@ function getLibBook(){
     });
 }
 
+         //bought 
+
+function getBuyBook() {
+    return getBook().then((bou) => {
+        const bought = [];
+        for (let key in bou) {
+            if (bou[key].type === "bought") {
+                bought.push(bou[key]);
+            } else {
+                alert("you need to buy new books");
+            }
+        }
+        return bought;
+    });
+}  
+
+          //borrow 
+
+function getBrBook() {
+    return getBook().then((bro) => {
+        const borrow = [];
+        for (let key in bro) {
+            if (bro[key].type === "borrow") {
+                borrow.push(bro[key]);
+            } else {
+                alert("you are free from borrowing books");
+            }
+        }
+        return borrow;
+    });
+}  
+          //ajaxCall
 
 
-function ajaxCalls(myBooks) {
-    console.log("myBooks", myBooks);
+function ajaxCalls(book) {
+    console.log("myBooks", book);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${myBooks.fbID}.json?`
-    }).done((aooks) => {
-        console.log("calling + ajax + users book", aBook);
-        myBookArr.push(aBook);
-        return aBook;
+        url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
+    }).done((bookData) => {
+        console.log("calling + ajax + users book",bookData);
+        myBookArr.push(myBookArr);
+        return myBookArr;
     });
 }
 
@@ -10383,7 +10427,6 @@ function getSameBook(array) {
     console.log("getSameBook", array);
     let promiseArr = [];
     for (var i = 0; i < array.length; i++) {
-        console.log("array[i]", array[i]);
         promiseArr.push(ajaxCalls(array[i]));
     }
     return Promise.all(promiseArr);
@@ -10442,7 +10485,9 @@ module.exports = {
     addUserBook,
     getSameBook,
     deleteBook,
-    editBook
+    editBook,
+    getBrBook,
+    getBuyBook
 };
 
 
@@ -10458,75 +10503,39 @@ module.exports = {
 
 
 },{"./config":6,"jquery":1}],5:[function(require,module,exports){
-"use strict";
-console.log("print on to dom");
-let $ = require('jquery');
-    // user=require("./user"),
-    // book =require("./books-interaction"),
-    // firebase=require("./config");
-
-
-// function makeBookList(book){
-//     console.log("book with phontip",book);
-//     let bookDisplay =
-//         ` <div class="primaryCotainer">
-
-//                 <h1>Book of the Week</h1>
-//                      <div class="row">
-//                       <div class="col-sm-6 col-md-3">
-//                       <div class="thumbnail"><img src="" alt="book one" width="123"></div>
-//                        <div class="caption">
-//                   </div>
-//               </div>
-//           </div> 
-//     </div>`;
-//     $(".container").html(bookDisplay);
-//     for (let book in bookList){
-//                let currentBook = bookList[item],
-//                 //    imgs = $("img", {class:"thumbnail"}),
-//                    title=$("<h3>", {class:"book-title"}).text(currentBook.title),
-//                    author=$("<h6>",{class:"book-author"}).text(currentBook.author),
-//                    dueDate=$("<h5>",{class:"book-dueDate"}).text(currentBook.dueDate),
-//                    read=$("<h6>",{class:"book-read"}).text(currentBook.read),
-//              //    description=$("<p>",{class:"book-desc"}).text(currentBook.read),
-//                    bookListEdit = $("<a>", { "data-edit-id": item, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-//                    bookListDelete = $("<a>", { "data-delete-id": item, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+     "use strict";
+           console.log("print on to dom");
+           let $ = require('jquery');
    
-//         $(".caption").append(title).append(author).append(dueDate).append(read).append(bookListEdit).append(bookListDelete);  
-//         console.log("my bookDom js line 35currentbook", currentBook);
-//     }
-// }
-// $(".container").html(function () {
-//     makeBookList();
-//     console.log();
-// }); 
 function makeBookList(bookList) {
-                console.log("bookDom makebooklist", bookList);
+                // console.log("bookDom makebooklist", bookList);
 let bookDisplay =
     $(`  <div class="container">
             <h1>Book of the Week</h1>
-<div class="row">`);
-                $(".uiContainer--wrapper").html(bookDisplay);
-                for (let book in bookList) {
-                    let currentBook = bookList[book],
-                        bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
-                        //image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
-                        title = $("<span>", { class: "book-titl" }).text(currentBook.title),
-                        bookListData = $("<div/>", { class: "caption" }),
-                        bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
-                        bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+             <div class="row"></div>
+             </div>`);
+        
+   for (let book in bookList) {
+        let currentBook = bookList[book],
+             bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
+        //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
+                title = $("<span>", { class: "book-titl" }).text(currentBook.title),
+                bookListData = $("<div/>", { class: "caption" }),
+                bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "edit" }),
+                bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
-                        bookListData.append(
-                            `<h5>${currentBook.author}</h5>
-                             <h6>${currentBook.type}</h6>
-                             <h5>${currentBook.place}</h5>`);
+    bookListData.append(
+               `<h5>${currentBook.author}</h5>
+                <h6>${currentBook.type}</h6>
+                <h5>${currentBook.place}</h5>`);
 
                     //$(".row").append(bookListItem.append(image));
-                    $(".row").append(bookListItem.append(title));
-                    $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-                }
-
-            }
+          $(".row").append(bookListItem.append(title));
+          $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+      
+          $(".uiContainer--wrapper").html(bookDisplay);
+        }
+    }
    $(".uiContainer--wrapper").html(function(){
       makeBookList();
 });
@@ -10606,29 +10615,46 @@ let $ = require('jquery'),
     interaction=require("./user-interaction"),
     user = require("./user");
 
+      //loading all books
 
 function loadBookToDOM(){
-// console.log("from eventBook to see books on dom");
-let currentUser=user.getUser();
-// console.log("eventbook loadbook",currentUser);
-bookInter.getBook(currentUser)
-.then((bookData)=>{
-// console.log("i get my data eventbook",bookData);
-booksDom.makeBookList(bookData);
-});
+    let currentUser=user.getUser();
+        bookInter.getBook(currentUser)
+           .then((bookData)=>{
+                booksDom.makeBookList(bookData);
+    });
 }
 
+           //loaing bought books
 
-function loadLibBookToDOM(){
-            // console.log("from eventBook to see books on dom");
-            let currentUser=user.getUser();
-            // console.log("eventbook lib book is loading",currentUser);
-            bookInter.getLibBook(currentUser)
+function loadBoughtBookToDOM(){
+    let currentUser=user.getUser();
+    bookInter.getBuyBook(currentUser)
             .then((books)=>{
-            // console.log("i get my lib data eventbook",book);
-            booksDom.makeBookList(books);
+                booksDom.makeBookList(books);
             });
 }
+         //loaing borrow books
+
+function loadBorrowBookToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getBrBook(currentUser)
+        .then((books) => {
+            booksDom.makeBookList(books);
+        });
+}
+
+          //loaing library books
+
+function loadLibBookToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getLibBook(currentUser)
+        .then((books) => {
+            booksDom.makeBookList(books);
+        });
+}
+
+            //save listner
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -10639,6 +10665,8 @@ $(document).on("click", ".save_new_btn", function(){
 });
 });
 
+            //edit listner
+
 $(document).on("click", ".edit-btn", function () {
     console.log("click edit book");
     let bookID = $(this).data("edit-id");
@@ -10648,10 +10676,11 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $(".container").html(finishedForm);
+            $(".uiContainer--wrapper").html(finishedForm);
         });
 });
 
+           //save about edit
 $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
@@ -10662,25 +10691,18 @@ $(document).on("click", ".save_edit_btn", function () {
         });
 });
 
+           //save delete
 $(document).on("click", ".delete-btn", function () {
-    console.log("you can delete a book", $(this).data("delete-id"));
+    console.log("you are about to delete a book", $(this).data("delete-id"));
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
             loadBookToDOM();
         });
 });
-        $("#all").click(function () {
-            $(".uiContainer--wrapper").html("");
-            loadBookToDOM();
-        });
-
-     $("#library").click(function(){
-        $(".lib-book").html("");
-         loadLibBookToDOM();
-       });
-
-function buildBookObj() {
+   
+       // book object
+     function buildBookObj() {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
@@ -10696,15 +10718,44 @@ function buildBookObj() {
     return bookObj;
 }
 
-let callback="";
-$("#add-book").click(function () {
-    console.log("clicked to add book");
-    var bookForm = booksDom.bookForm()
-        .then((bookForm) => {
-            $(".uiContainer--wrapper").html(bookForm);
+       // library listner
+    $("#library").click(function () {
+                $(".lib-book").html("");
+                loadLibBookToDOM();
         });
+
+        //bought listner
+    $("#bought").click(function () {
+                $(".lib-book").html("");
+                loadBoughtBookToDOM();
+        });
+        
+        //borrow listner
+    $("#borrowed").click(function () {
+                $(".lib-book").html("");
+                loadBorrowBookToDOM();
+         }); 
+
+        //view all books to dom
+    $("#all-book").click(function (e) {
+            event.preventDefault(e);
+            $(".uiContainer--wrapper").html("");
+            loadBookToDOM();
+        });
+
+
+
+         //addbooks listner
+    $("#add-book").click(function () {
+        console.log("clicked to add book");
+        var bookForm = booksDom.bookForm()
+            .then((bookForm) => {
+                $(".uiContainer--wrapper").html(bookForm);
+            });
     // setTimeout(callback, 1000);
 });
+
+  
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
@@ -10729,10 +10780,10 @@ let $ = require('jquery'),
 
 
 $("#login").click(function () {
-    // console.log("user clicked login");
+
     user.googleLogIn()
         .then((result) => {
-            // console.log("UID result from login: ", result.user.uid);
+         
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);

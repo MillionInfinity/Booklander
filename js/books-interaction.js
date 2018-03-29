@@ -1,34 +1,40 @@
 "use strict";
 console.log("book-interaction");
-let $ = require('jquery'),
-    firebase = require("./config"),
-    aBook = {},
-    myBookArr = [];
 
-// cuseronsole.log("firebase", firebase.getFBsettings().dataBaseURL);
+let $ = require('jquery'),
+                firebase = require("./config"),
+                // aBook = {},
+                myBookArr = [];
+
+        // book withOut user
 
 function getBook() {
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json`
-    }).done((bookData) => {
-        return bookData;
-    });
-}
-function getUserBook(user) {
-       return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-       
-    }).done((resolve) => {
-        return resolve;
-    }).fail((error) => {
+       url: `${firebase.getFBsettings().databaseURL}/book.json`
+            }).done((bookData) => {
+                return bookData;
+    }).fail((error)=>{
         return error;
     });
 }
+         //book with userId
+
+function getUserBook(user) {
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+            }).done((bookData) => {
+                return bookData;
+            }).fail((error) => {
+                return error;
+            });
+}
+  
+         //Library books
 
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
-        for (let key in lib) {
+            for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
             } else {
@@ -39,16 +45,48 @@ function getLibBook(){
     });
 }
 
+         //bought 
+
+function getBuyBook() {
+    return getBook().then((bou) => {
+        const bought = [];
+        for (let key in bou) {
+            if (bou[key].type === "bought") {
+                bought.push(bou[key]);
+            } else {
+                alert("you need to buy new books");
+            }
+        }
+        return bought;
+    });
+}  
+
+          //borrow 
+
+function getBrBook() {
+    return getBook().then((bro) => {
+        const borrow = [];
+        for (let key in bro) {
+            if (bro[key].type === "borrow") {
+                borrow.push(bro[key]);
+            } else {
+                alert("you are free from borrowing books");
+            }
+        }
+        return borrow;
+    });
+}  
+          //ajaxCall
 
 
-function ajaxCalls(myBooks) {
-    console.log("myBooks", myBooks);
+function ajaxCalls(book) {
+    console.log("myBooks", book);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${myBooks.fbID}.json?`
-    }).done((aooks) => {
-        console.log("calling + ajax + users book", aBook);
-        myBookArr.push(aBook);
-        return aBook;
+        url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
+    }).done((bookData) => {
+        console.log("calling + ajax + users book",bookData);
+        myBookArr.push(myBookArr);
+        return myBookArr;
     });
 }
 
@@ -56,7 +94,6 @@ function getSameBook(array) {
     console.log("getSameBook", array);
     let promiseArr = [];
     for (var i = 0; i < array.length; i++) {
-        console.log("array[i]", array[i]);
         promiseArr.push(ajaxCalls(array[i]));
     }
     return Promise.all(promiseArr);
@@ -115,7 +152,9 @@ module.exports = {
     addUserBook,
     getSameBook,
     deleteBook,
-    editBook
+    editBook,
+    getBrBook,
+    getBuyBook
 };
 
 

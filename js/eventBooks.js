@@ -7,29 +7,46 @@ let $ = require('jquery'),
     interaction=require("./user-interaction"),
     user = require("./user");
 
+      //loading all books
 
 function loadBookToDOM(){
-// console.log("from eventBook to see books on dom");
-let currentUser=user.getUser();
-// console.log("eventbook loadbook",currentUser);
-bookInter.getBook(currentUser)
-.then((bookData)=>{
-// console.log("i get my data eventbook",bookData);
-booksDom.makeBookList(bookData);
-});
+    let currentUser=user.getUser();
+        bookInter.getBook(currentUser)
+           .then((bookData)=>{
+                booksDom.makeBookList(bookData);
+    });
 }
 
+           //loaing bought books
 
-function loadLibBookToDOM(){
-            // console.log("from eventBook to see books on dom");
-            let currentUser=user.getUser();
-            // console.log("eventbook lib book is loading",currentUser);
-            bookInter.getLibBook(currentUser)
+function loadBoughtBookToDOM(){
+    let currentUser=user.getUser();
+    bookInter.getBuyBook(currentUser)
             .then((books)=>{
-            // console.log("i get my lib data eventbook",book);
-            booksDom.makeBookList(books);
+                booksDom.makeBookList(books);
             });
 }
+         //loaing borrow books
+
+function loadBorrowBookToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getBrBook(currentUser)
+        .then((books) => {
+            booksDom.makeBookList(books);
+        });
+}
+
+          //loaing library books
+
+function loadLibBookToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getLibBook(currentUser)
+        .then((books) => {
+            booksDom.makeBookList(books);
+        });
+}
+
+            //save listner
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -40,6 +57,8 @@ $(document).on("click", ".save_new_btn", function(){
 });
 });
 
+            //edit listner
+
 $(document).on("click", ".edit-btn", function () {
     console.log("click edit book");
     let bookID = $(this).data("edit-id");
@@ -49,10 +68,11 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $(".container").html(finishedForm);
+            $(".uiContainer--wrapper").html(finishedForm);
         });
 });
 
+           //save about edit
 $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
@@ -63,25 +83,18 @@ $(document).on("click", ".save_edit_btn", function () {
         });
 });
 
+           //save delete
 $(document).on("click", ".delete-btn", function () {
-    console.log("you can delete a book", $(this).data("delete-id"));
+    console.log("you are about to delete a book", $(this).data("delete-id"));
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
             loadBookToDOM();
         });
 });
-        $("#all").click(function () {
-            $(".uiContainer--wrapper").html("");
-            loadBookToDOM();
-        });
-
-     $("#library").click(function(){
-        $(".lib-book").html("");
-         loadLibBookToDOM();
-       });
-
-function buildBookObj() {
+   
+       // book object
+     function buildBookObj() {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
@@ -97,12 +110,41 @@ function buildBookObj() {
     return bookObj;
 }
 
-let callback="";
-$("#add-book").click(function () {
-    console.log("clicked to add book");
-    var bookForm = booksDom.bookForm()
-        .then((bookForm) => {
-            $(".uiContainer--wrapper").html(bookForm);
+       // library listner
+    $("#library").click(function () {
+                $(".lib-book").html("");
+                loadLibBookToDOM();
         });
+
+        //bought listner
+    $("#bought").click(function () {
+                $(".lib-book").html("");
+                loadBoughtBookToDOM();
+        });
+        
+        //borrow listner
+    $("#borrowed").click(function () {
+                $(".lib-book").html("");
+                loadBorrowBookToDOM();
+         }); 
+
+        //view all books to dom
+    $("#all-book").click(function (e) {
+            event.preventDefault(e);
+            $(".uiContainer--wrapper").html("");
+            loadBookToDOM();
+        });
+
+
+
+         //addbooks listner
+    $("#add-book").click(function () {
+        console.log("clicked to add book");
+        var bookForm = booksDom.bookForm()
+            .then((bookForm) => {
+                $(".uiContainer--wrapper").html(bookForm);
+            });
     // setTimeout(callback, 1000);
 });
+
+  

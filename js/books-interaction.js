@@ -40,7 +40,7 @@ function getLibBook(){
                 return library;
             
         }else {
-            alert("sorry i couldnt find book")
+            alert("sorry i couldnt find book");
         }
     }
     });

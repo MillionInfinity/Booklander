@@ -10,8 +10,8 @@
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Open+Sans+Condensed:300|Raleway|Roboto" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" /> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 </head>
 
 <body>
@@ -41,36 +41,47 @@
                              <!--CENTER PART -->
 
 
-            <div class="col-sm-8" style="background-color:#edf1e2;">
+            <div class="col-sm-8">
+
+            <!-- </div> style="background-color:#edf1e2;"> -->
                 <div class="uiContainer ">
 
                      <section class="uiContainer--wrapper"></section> <!---the center of the body-->  
-
-                </div>
+           <!-- <div id="h" style="width: 500px"></div> -->
+              </div>
+          
                   <div class="lib-book"></div>
+    
             </div>
-      
-      
+            
                               <!--RIGHT SIDE -->
-
-
             <div id="right" class="col-sm-2" style="background-color:#c2dd73;">
                 <div class="container-add">
-                    <!-- <div class="row box"> -->
+                    <div class="row box">
                           <div class="nav-wrapper"></div>
 
                           <ul>
-
+                              
                               <li id="add-book"><a href="#" title="book" class="aBook">Add Book</a></li>
-                         
+                             <li id="footer-date"><a href="" title="timer" class="timer">what time is it</a></li>                        
                          </ul>
+                    <div id="clockDisplay"></div>
                 </div>
             </div> 
-            
-
+       
+        
+<p>Date From :
+    <input type="text" id="TextBox1" />
+</p>
+<p>Date To :
+    <input type="text" id="TextBox2" />
+</p>
+<p>Difference :
+    <input type="text" id="TextBox3" />
+</p>
      </div><!--END OF ROW-->
 </div><!--END OF CONTAINER FLUID-->
-
+           <!-- <script async src="//jsfiddle.net/taditdash/kh0ptnu5/embed/js,html,result/"></script> -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="dist/app.js"></script>
@@ -78,11 +89,3 @@
 </body>
 
 </html>
-
-<!-- <input type="datetime-local" id="alarmTime" />
-            <button onclick="setAlarm(this);" id="alarmbutton">Set Alarm</button>
-
-            <div id="alarmOptions" style="display:none">
-
-            <button onclick="snooze();">sooze 5 Minutes</button>
-            <button onclick="stopAlarm();">stop Alarm</button> -->

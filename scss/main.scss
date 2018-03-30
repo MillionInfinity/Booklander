@@ -9,6 +9,10 @@ $primaryFont: 'Atila Normal',sans-serif;
 $secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
 $nav-color: #b9b4aa;
 
+// body{
+//   background-image: url('img/1.png')repeat fixed;
+//   background-size: contain;
+// }
 
  .nav-sidebar{
    display: block;
@@ -195,9 +199,10 @@ margin: 5px;
    top:150px !important;
    margin-top: 50px;
  }
-// div.col-sm-6{
-// background-color: #ffffff;
-// border:1px solid #84ad52;
-// margin:15px;
-// min-height: 350px;
-// }
+div.col-sm-6{
+background-color: #ffffff;
+border:1px solid #84ad52;
+margin:15px;
+min-height: 350px;
+}
+

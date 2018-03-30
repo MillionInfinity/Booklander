@@ -3,13 +3,13 @@
            let $ = require('jquery');
    
 function makeBookList(bookList) {
-                // console.log("bookDom makebooklist", bookList);
-let bookDisplay =
-    $(`  <div class="container">
-            <h1>Book of the Week</h1>
-             <div class="row"></div>
-             </div>`);
-        
+     let bookDisplay =$(`<div class="container">
+                       <h1>Book of the Week</h1>
+
+                      <div class="col">
+                     </div> </div>`);
+
+    $(".uiContainer--wrapper").html(bookDisplay);          
    for (let book in bookList) {
         let currentBook = bookList[book],
              bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
@@ -25,16 +25,15 @@ let bookDisplay =
                 <h5>${currentBook.place}</h5>`);
 
                     //$(".row").append(bookListItem.append(image));
-          $(".row").append(bookListItem.append(title));
-          $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-      
-          $(".uiContainer--wrapper").html(bookDisplay);
-        }
+       $(".col").append(bookListItem.append(title));
+       $(".col").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+    
     }
-   $(".uiContainer--wrapper").html(function(){
-      makeBookList();
-});
-
+  
+}
+//    $(".uiContainer--wrapper").html(function(){
+//       makeBookList();
+// });
 function bookForm(book, bookId) {
             return new Promise((resolve, reject) => {
                 let bookItem = {
@@ -60,8 +59,11 @@ function bookForm(book, bookId) {
                 resolve(form);
     });
 }
-
-module.exports = { makeBookList, bookForm };
+        //  var img =document.createElement("img");
+        //  img.src="img/1.png";
+        //  var src=document.getElementById("h");
+        //  src.appendChild(img);
+         module.exports = { makeBookList, bookForm };
 
 
 

@@ -14,7 +14,8 @@ var config = {
 
     apiKey: fData.apiKey,
     authDomain: fData.authDomain,
-    databaseURL: fData.databaseURL
+    databaseURL: fData.databaseURL,
+    storageBucket: fData.storageBucket
 };
 
 

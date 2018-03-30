@@ -101,9 +101,9 @@ $(document).on("click", ".delete-btn", function () {
         dueDate: $("#form-dueDate").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
-        read: $("form-read").val(),
-        type: $("form-type").val(),
-        description: $("form-desc").val(),
+        read: $("#form-read").val(),
+        type: $("#form-type").val(),
+        description: $("#form-desc").val(),
         status: false,
         uid: user.getUser()
     };
@@ -118,20 +118,19 @@ $(document).on("click", ".delete-btn", function () {
 
         //bought listner
     $("#bought").click(function () {
-                $(".lib-book").html("");
+                $(".bou-book").html("");
                 loadBoughtBookToDOM();
         });
         
         //borrow listner
     $("#borrowed").click(function () {
-                $(".lib-book").html("");
+                $(".bor-book").html("");
                 loadBorrowBookToDOM();
          }); 
 
         //view all books to dom
-    $("#all-book").click(function (e) {
-            event.preventDefault(e);
-            $(".uiContainer--wrapper").html("");
+    $("#all-book").click(function () {
+$(".uiContainer--wrapper").html("");
             loadBookToDOM();
         });
 

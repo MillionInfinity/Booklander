@@ -10257,59 +10257,30 @@ return jQuery;
                      "use strict";
          console.log("Alarm! wake up early");
 
-
-
-        //     var alarmSound = new Audio();
-        //     alarmSound.src='alarm.mp3';
-        //      var alarmTimer='';
-
-
-
-
-        // function setAlarm (button){
-        //         var ms=document.getElementById("alarmTime").valueAsNumber;
-        //         if(isNaN(ms)){
-        //             alert('Invalid Date');
-        //             return;
-        // }
-        //         var alarm=new Date(ms);
-        //         var alarmTime = new Date(alarm.getUTCFullYear(),alarm.getUTCMonth(), alarm.getUTCDate(), alarm.getUTCHours(), alarm.getUTCMinutes, alarm.getUTCSeconds());
-        //         var differenceInMs = alarmTime.getTime()- (new Date ()).getTime();
-
-        // if(differenceInMs<0){
-        //     return;
-        // }
-        // alarmTimer= setTimeout(initAlarm, differenceInMs);
-
-        // button.innerText = 'cancel Alarm';
-        // button.setattribute('onclick', 'cancelAlarm(this)');
-        // }
+           
+var date = new Date();
+document.getElementById("footer-date").innerHTML = date.toString();
+console.log("footer date working");
 
 
 
-        // function cancelAlert(button){
-        //     button.innerText='Set Alert';
-        //     button.setattribute('onclick', 'setAlarm(this);');
-        //     clearTimeout(alarmTimer);
-        // }
 
 
-        //     function initAlarm(){
-        //     alarmSound.play();
-        //     document.getElementById('alarmOptions').style.display='';
-        // }
+                    // var x = new Date();
+                    // x.setFullYear(2018,4, 30);
+                    // var today = new Date();
 
-        // function stopAlarm(){
-        //     alarmSound.pause();
-        //     alarmSound.currentTime =0;
-        // document.getElementById('alarmOptions').style.display='none';
-        // cancelAlert(document.getElementById('alarmButton'));
-        // }
+                    // if (x < today) {
+                    //     alert("You missed the day.");
+                    // }
+                    // else if (x > today) {
+                    //     alert("you have 5 more days");
+                    // }
+                    // else {
+                    //     alert("This is the day");
+                    // }
 
-        // function snooze(){
-        //     stopAlarm();
-        //     setTimeout(initAlarm,36000);
-        // }
+                    
 },{}],3:[function(require,module,exports){
 "use strict";
 
@@ -10321,7 +10292,8 @@ return jQuery;
                             return {
                                     apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
                                     authDomain: "my-capstone-new.firebaseapp.com",
-                                    databaseURL: "https://my-capstone-new.firebaseio.com"
+                                    databaseURL: "https://my-capstone-new.firebaseio.com",
+                                    storageBucket: "my-capstone-new.appspot.com"
                                 };
                     }
                            
@@ -10508,13 +10480,13 @@ module.exports = {
            let $ = require('jquery');
    
 function makeBookList(bookList) {
-                // console.log("bookDom makebooklist", bookList);
-let bookDisplay =
-    $(`  <div class="container">
-            <h1>Book of the Week</h1>
-             <div class="row"></div>
-             </div>`);
-        
+     let bookDisplay =$(`<div class="container">
+                       <h1>Book of the Week</h1>
+
+                      <div class="col">
+                     </div> </div>`);
+
+    $(".uiContainer--wrapper").html(bookDisplay);          
    for (let book in bookList) {
         let currentBook = bookList[book],
              bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
@@ -10530,16 +10502,15 @@ let bookDisplay =
                 <h5>${currentBook.place}</h5>`);
 
                     //$(".row").append(bookListItem.append(image));
-          $(".row").append(bookListItem.append(title));
-          $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-      
-          $(".uiContainer--wrapper").html(bookDisplay);
-        }
+       $(".col").append(bookListItem.append(title));
+       $(".col").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+    
     }
-   $(".uiContainer--wrapper").html(function(){
-      makeBookList();
-});
-
+  
+}
+//    $(".uiContainer--wrapper").html(function(){
+//       makeBookList();
+// });
 function bookForm(book, bookId) {
             return new Promise((resolve, reject) => {
                 let bookItem = {
@@ -10565,8 +10536,11 @@ function bookForm(book, bookId) {
                 resolve(form);
     });
 }
-
-module.exports = { makeBookList, bookForm };
+        //  var img =document.createElement("img");
+        //  img.src="img/1.png";
+        //  var src=document.getElementById("h");
+        //  src.appendChild(img);
+         module.exports = { makeBookList, bookForm };
 
 
 
@@ -10590,7 +10564,8 @@ var config = {
 
     apiKey: fData.apiKey,
     authDomain: fData.authDomain,
-    databaseURL: fData.databaseURL
+    databaseURL: fData.databaseURL,
+    storageBucket: fData.storageBucket
 };
 
 
@@ -10709,9 +10684,9 @@ $(document).on("click", ".delete-btn", function () {
         dueDate: $("#form-dueDate").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
-        read: $("form-read").val(),
-        type: $("form-type").val(),
-        description: $("form-desc").val(),
+        read: $("#form-read").val(),
+        type: $("#form-type").val(),
+        description: $("#form-desc").val(),
         status: false,
         uid: user.getUser()
     };
@@ -10726,20 +10701,19 @@ $(document).on("click", ".delete-btn", function () {
 
         //bought listner
     $("#bought").click(function () {
-                $(".lib-book").html("");
+                $(".bou-book").html("");
                 loadBoughtBookToDOM();
         });
         
         //borrow listner
     $("#borrowed").click(function () {
-                $(".lib-book").html("");
+                $(".bor-book").html("");
                 loadBorrowBookToDOM();
          }); 
 
         //view all books to dom
-    $("#all-book").click(function (e) {
-            event.preventDefault(e);
-            $(".uiContainer--wrapper").html("");
+    $("#all-book").click(function () {
+$(".uiContainer--wrapper").html("");
             loadBookToDOM();
         });
 

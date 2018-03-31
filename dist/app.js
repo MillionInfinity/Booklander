@@ -10261,25 +10261,25 @@ return jQuery;
            
 
 
-var finput = document.get.getElementById("form-dueDate");
+// var finput = document.get.getElementById("form-dueDate");
 
-                  function dueDate(){
+//                   function dueDate(){
                             
-                   let x = new Date();
-                    x.setFullYear=finput;
-                    var today = new Date();
+//                    let x = new Date();
+//                     x.setFullYear=finput;
+//                     var today = new Date();
 
-                    if (x < today) {
-                        alert("You missed the day.");
-                    }
-                    else if (x > today) {
-                        alert("you have 5 more days");
-                    }
-                    else {
-                        alert("This is the day");
-                    }
+//                     if (x < today) {
+//                         alert("You missed the day.");
+//                     }
+//                     else if (x > today) {
+//                         alert("you have 5 more days");
+//                     }
+//                     else {
+//                         alert("This is the day");
+//                     }
 
-                }
+//                 }
 },{"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
@@ -10487,81 +10487,81 @@ module.exports = {
 
            //bought books
 
-function makeBouBookList(bookList) {
+// function makeBouBookList(bookList) {
    
-        let bookDisplay = $(`<div class="container">
-                       <h1>Book Shelf</h1>
-                     <div class="row">
-                      <div class="card"></div>
-                     </div> </div>`);
+//         let bookDisplay = $(`<div class="container">
+//                        <h1>Book Shelf</h1>
+//                      <div class="row">
+//                       <div class="card"></div>
+//                      </div> </div>`);
 
-        $(".uiContainer--wrapper").html(bookDisplay);
-        for (let book in bookList) {
-            let currentBook = bookList[book],
-                bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-                //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
-                // title = $("<span>", { class: "book-title" }).text(currentBook.title),
-                bookListData = $("<div/>", { class: "caption" }),
-                bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "Edit" }),
-                bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//         $(".uiContainer--wrapper").html(bookDisplay);
+//         for (let book in bookList) {
+//             let currentBook = bookList[book],
+//                 bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
+//                 //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
+//                 // title = $("<span>", { class: "book-title" }).text(currentBook.title),
+//                 bookListData = $("<div/>", { class: "caption" }),
+//                 bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "Edit" }),
+//                 bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
 
-            bookListData.append(
-                `<img src="imgs/${currentBook.image}">
-             <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+//             bookListData.append(
+//                 `<img src="imgs/${currentBook.image}">
+//              <h4>${(currentBook.title)}</h4>
+//                 <h5>${currentBook.author}</h5>
+//                 <h5>${currentBook.type}</h5>
+//                 <h5>${currentBook.place}</h5>`);
 
-            //$(".row").append(bookListItem.append(image));
-            //    $(".container").ap          pend(bookListItem.append(title));
-            $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//             //$(".row").append(bookListItem.append(image));
+//             //    $(".container").ap          pend(bookListItem.append(title));
+//             $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
 
-        }
+//         }
 
-    }
-           // borrowed books
+//     }
+//            // borrowed books
 
-function makeBorBookList(bookList) {
+// function makeBorBookList(bookList) {
   
-     let bookDisplay =$(`<div class="container">
-                       <h1>Book Shelf</h1>
-                     <div class="row">
-                      <div class="card"></div>
-                     </div> </div>`);
+//      let bookDisplay =$(`<div class="container">
+//                        <h1>Book Shelf</h1>
+//                      <div class="row">
+//                       <div class="card"></div>
+//                      </div> </div>`);
 
-    $(".uiContainer--wrapper").html(bookDisplay);          
-   for (let book in bookList) {
-        let currentBook = bookList[book],
-             bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
-        //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
-                // title = $("<span>", { class: "book-title" }).text(currentBook.title),
-                bookListData = $("<div/>", { class: "caption" }),
-                bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "Edit" }),
-                bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//     $(".uiContainer--wrapper").html(bookDisplay);          
+//    for (let book in bookList) {
+//         let currentBook = bookList[book],
+//              bookListItem = $("<div>", {class: "col-sm-6 col-md-3"}),
+//         //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
+//                 // title = $("<span>", { class: "book-title" }).text(currentBook.title),
+//                 bookListData = $("<div/>", { class: "caption" }),
+//                 bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "Edit" }),
+//                 bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
 
-    bookListData.append(
-        `<img src="imgs/${currentBook.image}">
-             <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+//     bookListData.append(
+//         `<img src="imgs/${currentBook.image}">
+//              <h4>${(currentBook.title)}</h4>
+//                 <h5>${currentBook.author}</h5>
+//                 <h5>${currentBook.type}</h5>
+//                 <h5>${currentBook.place}</h5>`);
 
-                    //$(".row").append(bookListItem.append(image));
-    //    $(".container").ap          pend(bookListItem.append(title));
-       $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//                     //$(".row").append(bookListItem.append(image));
+//     //    $(".container").ap          pend(bookListItem.append(title));
+//        $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     
-    }
+//     }
   
-}
+// }
 
             //Library books 
 
 
-function makeLibBookList(bookList) {
+function makeBookList(bookList) {
            let bookDisplay = $(`<div class="container">
                        <h1>Book Shelf</h1>
-                     <div class="row">
-                      <div class="card"></div>
+                     <div class="row" id="toprint">
+                     
                      </div> </div>`);
 
         $(".uiContainer-wrapper").html(bookDisplay);
@@ -10571,55 +10571,23 @@ function makeLibBookList(bookList) {
                 //      image = $(class:"thumbnail").prepend($("<img>", {src:"imgs/1.png"})),
                 // title = $("<span>", { class: "book-title" }).text(currentBook.title),
                 bookListData = $("<div/>", { class: "caption" }),
-                bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-light btn", text: "Edit" }),
-                bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-
-            bookListData.append(
+                bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+                bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            
+            
+                bookListData.append(
                 `<img src="imgs/${currentBook.image}">
-             <h4>${(currentBook.title)}</h4>
+                <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
                 <h5>${currentBook.place}</h5>`);
 
-            //$(".row").append(bookListItem.append(image));
-            //    $(".container").ap          pend(bookListItem.append(title));
-            $(".row").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+            $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
         }
 
     }
-                 //all books collection
-{/* <div class="thumbnail"><img>, src="imgs/${currentBook.image}"></div> */}
-function makeBookList(bookList) {
-    console.log("bookList", bookList);
-    let bookDisplay = $(`<div class="container">
-                       <h1>Book Shelf</h1>
-                     <div class="row" id="toprint">
-                     
-                     </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
-    var abookS = "";
-    
-    for (let book in bookList) {
-        let currentBook = bookList[book];
-        abookS +=
-       ` <div class="col-sm-6 col-md-3">
-            <div class="thumbnail"><img src="imgs/${currentBook.image}"></div>
-                <div class="caption">
-                   <h4>${(currentBook.title)}</h4>
-                   <h5>${currentBook.author}</h5>
-                   <h5>${currentBook.type}</h5>
-                   <h5>${currentBook.place}</h5>
-                    <p>
-                        <a href="#" ><img src="imgs/edit.png" alt="edit" width="60px" height="50px"></a>
-                         <a href="#" ><img src="imgs/del.png" alt="delete" width="60px" height="50px"></a>
-                         
-                        </p>
-                    </div>
-                </div>`;
-    }
-    $("#toprint").append(abookS);
-} 
+
 function bookForm(book, bookId) {
             return new Promise((resolve, reject) => {
                 let bookItem = {
@@ -10632,7 +10600,7 @@ function bookForm(book, bookId) {
                     read: book ? book.read : "",
                     description: book ? book.description : "",
                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                    btnText: book ? "Save Changes" : "Save",
+                    btnText: book ? "Save Changes" : "Save Book",
                     btnId: book ? "save_edit_btn" : "save_new_btn"
                 },
                     form =
@@ -10649,14 +10617,11 @@ function bookForm(book, bookId) {
                 resolve(form);
     });
 }
-        //  var img =document.createElement("img");
-        //  img.src="img/1.png";
-        //  var src=document.getElementById("h");
-        //  src.appendChild(img);
+       
          module.exports = { makeBookList,
-                            makeLibBookList,
-                            makeBorBookList,
-                            makeBouBookList,
+                            // makeLibBookList,
+                            // makeBorBookList,
+                            // makeBouBookList,
                             bookForm };
 
 
@@ -10713,7 +10678,7 @@ function loadBookToDOM(){
     let currentUser=user.getUser();
         bookInter.getBook(currentUser)
            .then((bookData)=>{
-                booksDom.makeBookList(bookData);
+               booksDom.makeBookList(bookData);
     });
 }
 
@@ -10768,7 +10733,7 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $(".col-md-6").html(finishedForm);
+            $("#toprint").html(finishedForm);
         });
 });
 
@@ -10831,7 +10796,7 @@ $(document).on("click", ".delete-btn", function () {
         //view all books to dom
     $("#all-book").click(function () {
         $(".uniContainer-wrapper").html("");
-            loadBookToDOM();
+                loadBookToDOM();
         });
 
 
@@ -10841,7 +10806,7 @@ $(document).on("click", ".delete-btn", function () {
         console.log("clicked to add book");
         var bookForm = booksDom.bookForm()
             .then((bookForm) => {
-                $(".uiContainer--wrapper").html(bookForm);
+                $("#toprint").html(bookForm);
             });
     // setTimeout(callback, 1000);
 });

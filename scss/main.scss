@@ -17,8 +17,8 @@ $nav-color: #b9b4aa;
  .nav-sidebar{
    display: block;
    left:-15px;
-   background-color:#c2dd73;
- width:280px;
+   background-color: #accc63;
+ width:301px;
     & li{
        padding: 45px;
       //  border-right: 1px solid #eeeeee;
@@ -64,11 +64,11 @@ color: $white;
   display: inline !important;
 }
 
-//  .book-list_item{
-//    background-color: aquamarine;
-//    padding: 15px;
-//    display: inline;
-// }
+ .book-list_item{
+   background-color: aquamarine;
+   padding: 15px;
+   display: inline;
+}
 nav{
   background-color: #accc63;
   margin-top: .5rem;
@@ -83,7 +83,9 @@ nav{
     padding-left: -.1rem;
     width: 9rem;
      border-right: 2px solid #000;
-}} 
+}
+}
+ .aBook,
    .nav-sidebar a{
       font-size: 1.5em;
       color:$secondaryFont;

@@ -1,8 +1,8 @@
 .nav-sidebar {
   display: block;
   left: -15px;
-  background-color: #c2dd73;
-  width: 280px; }
+  background-color: #accc63;
+  width: 301px; }
   .nav-sidebar li {
     padding: 45px;
     border-bottom: 1px solid #eeeeee;
@@ -42,6 +42,11 @@
   width: 150px;
   display: inline !important; }
 
+.book-list_item {
+  background-color: aquamarine;
+  padding: 15px;
+  display: inline; }
+
 nav {
   background-color: #accc63;
   margin-top: .5rem;
@@ -56,6 +61,7 @@ nav {
     width: 9rem;
     border-right: 2px solid #000; }
 
+.aBook,
 .nav-sidebar a {
   font-size: 1.5em;
   color: "Microsoft Sans Serif Regular", sans-serif;
@@ -65,8 +71,10 @@ nav {
   display: block;
   text-align: center;
   text-decoration: none; }
+  .aBook.last,
   .nav-sidebar a.last {
     border-right: 0; }
+  .aBook:hover,
   .nav-sidebar a:hover {
     border: 1px solid #6f8a30;
     color: white;

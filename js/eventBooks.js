@@ -13,7 +13,7 @@ function loadBookToDOM(){
     let currentUser=user.getUser();
         bookInter.getBook(currentUser)
            .then((bookData)=>{
-                booksDom.makeBookList(bookData);
+               booksDom.makeBookList(bookData);
     });
 }
 
@@ -68,7 +68,7 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $(".col-md-6").html(finishedForm);
+            $("#toprint").html(finishedForm);
         });
 });
 
@@ -131,7 +131,7 @@ $(document).on("click", ".delete-btn", function () {
         //view all books to dom
     $("#all-book").click(function () {
         $(".uniContainer-wrapper").html("");
-            loadBookToDOM();
+                loadBookToDOM();
         });
 
 
@@ -141,7 +141,7 @@ $(document).on("click", ".delete-btn", function () {
         console.log("clicked to add book");
         var bookForm = booksDom.bookForm()
             .then((bookForm) => {
-                $(".uiContainer--wrapper").html(bookForm);
+                $("#toprint").html(bookForm);
             });
     // setTimeout(callback, 1000);
 });

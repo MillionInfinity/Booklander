@@ -2,9 +2,9 @@
 console.log("book-interaction");
 
 let $ = require('jquery'),
-                firebase = require("./config"),
+                firebase = require("./config");
                 // aBook = {},
-                myBookArr = [];
+              
 
         // book withOut user
 
@@ -39,9 +39,10 @@ function getLibBook(){
                 library.push(lib[key]);
                 return library;
             
-        }else {
-            alert("sorry i couldnt find book");
+        }else{
+            alert("you need to borrow books from library");
         }
+        
     }
     });
 }
@@ -58,6 +59,7 @@ function getBuyBook() {
             } else {
                 alert("you need to buy new books");
             }
+            
         }
       
     });
@@ -72,10 +74,10 @@ function getBrBook() {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
                 return borrow;
-            } else {
-                alert("you are free from borrowing books");
+            }else{
+                alert("Read some books"); 
             }
-        }
+        } 
         
     });
 }  
@@ -84,6 +86,7 @@ function getBrBook() {
 
 function ajaxCalls(book) {
     console.log("myBooks", book);
+     let myBookArr = [];
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
     }).done((bookData) => {

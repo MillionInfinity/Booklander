@@ -68,7 +68,7 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $(".uiContainer--wrapper").html(finishedForm);
+            $(".col-md-6").html(finishedForm);
         });
 });
 
@@ -112,25 +112,25 @@ $(document).on("click", ".delete-btn", function () {
 
        // library listner
     $("#library").click(function () {
-                $(".lib-book").html("");
+        $(".uniContainer-wrapper").html("");
                 loadLibBookToDOM();
         });
 
         //bought listner
     $("#bought").click(function () {
-                $(".bou-book").html("");
+               $(".uniContainer-wrapper").html("");
                 loadBoughtBookToDOM();
         });
         
         //borrow listner
     $("#borrowed").click(function () {
-                $(".bor-book").html("");
+        $(".uniContainer-wrapper").html("");
                 loadBorrowBookToDOM();
          }); 
 
         //view all books to dom
     $("#all-book").click(function () {
-$(".uiContainer--wrapper").html("");
+        $(".uniContainer-wrapper").html("");
             loadBookToDOM();
         });
 

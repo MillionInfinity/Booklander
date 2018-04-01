@@ -122,7 +122,7 @@ li {
 
 #form-image,
 #form-read,
-#form-dueDate,
+#date,
 #form-place,
 #form-author,
 #form-title,
@@ -139,16 +139,22 @@ li {
 .bookItem {
   background-color: #3b610c; }
 
-#form-title,
+#form-title {
+  width: 1000px; }
+
 #form-author {
-  width: 418px; }
+  width: 800px; }
 
 #form-desc {
-  width: 850px;
+  width: 1200px;
   height: 250px; }
 
-#form-album {
-  width: 200px; }
+#form-place,
+#form-image {
+  width: 400px; }
+
+#form-type {
+  width: 150px; }
 
 save.new.btn {
   background-color: #84ad52; }
@@ -195,7 +201,7 @@ a.delete-btn {
   z-index: 17; }
 
 .container h1 {
-  color: yellowgreen;
+  color: #364e04;
   font-family: 'Loto', sans-serif; }
 
 .caption img {

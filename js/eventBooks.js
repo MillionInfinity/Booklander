@@ -5,6 +5,7 @@ let $ = require('jquery'),
     bookInter=require("./books-interaction"),
     booksDom =require("./booksDom"),
     interaction=require("./user-interaction"),
+    meg =require("./meg"),
     user = require("./user");
 
       //loading all books
@@ -16,6 +17,15 @@ function loadBookToDOM(){
                booksDom.makeBookList(bookData);
     });
 }
+        //loaing ready to read
+
+        function loadToReadDOM() {
+            let currentUser = user.getUser();
+            bookInter.getReadBook(currentUser)
+                .then((bookData) => {
+                    booksDom.makeBookReadList(bookData);
+                });
+        }
 
            //loaing bought books
 
@@ -43,6 +53,14 @@ function loadLibBookToDOM() {
     bookInter.getLibBook(currentUser)
         .then((books) => {
             booksDom.makeLiBookList(books);
+        });
+}
+      //loading edit books
+function loadEditToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getBook(currentUser)
+        .then((bookData) => {
+            booksDom.makeEditList(bookData);
         });
 }
 
@@ -79,7 +97,7 @@ $(document).on("click", ".save_edit_btn", function () {
     console.log("i am saving my a bookID", bookID);
     bookInter.editBook(bookObj, bookID)
         .then((data) => {
-            loadBookToDOM();
+            loadEditToDOM();
         });
 });
 
@@ -89,7 +107,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
-            loadBookToDOM();
+            loadEditToDOM();
         });
 });
    
@@ -98,7 +116,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#form-dueDate").val(),
+        dueDate: $("#date").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("#form-read").val(),
@@ -109,29 +127,44 @@ $(document).on("click", ".delete-btn", function () {
     };
     return bookObj;
 }
+       //ready to read
+     $("#read-book").click(function () {
+            $(".uniContainer-wrapper").html("");
+            loadToReadDOM();
+            meg.blue();
+
+        });
+
+
+
 
        // library listner
     $("#library").click(function () {
         $(".uniContainer-wrapper").html("");
-                loadLibBookToDOM();
+               loadLibBookToDOM();
+                meg.green();
+               
         });
 
         //bought listner
     $("#bought").click(function () {
                $(".uniContainer-wrapper").html("");
                 loadBoughtBookToDOM();
+                meg.purple();
         });
         
         //borrow listner
     $("#borrowed").click(function () {
         $(".uniContainer-wrapper").html("");
                 loadBorrowBookToDOM();
+                meg.yellow();
          }); 
 
         //view all books to dom
     $("#all-book").click(function () {
         $(".uniContainer-wrapper").html("");
                loadBookToDOM();
+                meg.purple();
         });
 
 
@@ -142,8 +175,18 @@ $(document).on("click", ".delete-btn", function () {
         var bookForm = booksDom.bookForm()
             .then((bookForm) => {
                 $("#toprint").html(bookForm);
-            });
+                   });
     // setTimeout(callback, 1000);
 });
 
-  
+$(document).ready(function () {
+    $("#add-book").click(function () {
+        $(".container h1").remove();
+    });
+});
+
+$(document).ready(function () {
+    $(".edit-btn").click(function () {
+        $(".container h1").remove();
+    });
+});

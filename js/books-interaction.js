@@ -17,6 +17,18 @@ function getBook() {
         return error;
     });
 }
+function getDueBook(due) {
+    console.log("dueDate",due);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+    }).done((bookData) => {
+        return bookData;
+    }).fail((error) => {
+        return error;
+    });
+}
+
+
          //book with userId
 
 function getUserBook(user) {
@@ -29,8 +41,28 @@ function getUserBook(user) {
             });
 }
   
-         //Library books
+//read books
+function getReadBook() {
+    return getBook().then((rea) => {
+        const read = [];
+        for (let key in rea) {
+            if (rea[key].read === "No") {
+                read.push(rea[key]);
 
+                return read;
+            } else {
+                alert("Do you want to read today?");
+            }
+
+        }
+
+    });
+}
+
+
+
+         //Library books
+         
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
@@ -154,6 +186,8 @@ function editBook(bookObj, bookId) {
 }
 
 module.exports = {
+    getReadBook,
+    getDueBook,
     getBook,
     getLibBook,
     getUserBook,

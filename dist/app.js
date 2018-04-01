@@ -10256,31 +10256,75 @@ return jQuery;
 },{}],2:[function(require,module,exports){
                      "use strict";
          console.log("Alarm! wake up early");
-       let $ = require('jquery');
+let $ = require('jquery'),
+  firebase = require("./config"),
+  user = require("./user"),
+  books = require("./books-interaction"),
+  fapi = require("./api"),
+  search = require("./search"),
+  interaction = require("./user-interaction"),
+  booksDom = require("./booksDom"),
+  eventBooks = require("./eventBooks"),
+  meg = require("./meg");
+  
+
 
            
+
+// var types=$('#form-type').find('option:selected').text();
+
 
 
 // var finput = document.get.getElementById("form-dueDate");
 
 //                   function dueDate(){
-                            
-//                    let x = new Date();
-//                     x.setFullYear=finput;
-//                     var today = new Date();
+// var y = "2018-5-30";
+//                       var x = new Date();
+//                      x.setFullYear(y);
+//                      var today = new Date();
 
-//                     if (x < today) {
-//                         alert("You missed the day.");
-//                     }
-//                     else if (x > today) {
-//                         alert("you have 5 more days");
-//                     }
-//                     else {
-//                         alert("This is the day");
-//                     }
+//                      if (x < today) {
+//                          alert("You missed the day.");
+//                      }
+//                      else if (x > today) {
+//                          alert("you have 5 more days");
+//                      }
+//                      else {
+//                          alert("This is the day");
+// }
 
-//                 }
-},{"jquery":1}],3:[function(require,module,exports){
+                // }
+
+
+// let booky = books.getBook().val;
+
+function getDueDate() {
+ 
+  return books.getDueBook().then((l) => {
+      console.log("interactionetbook()", l);
+    // const dueddate = [];
+    // let x = new Date();
+    // x.setFullYear = finput;
+    // var today = new Date();
+    // for (let key in dues) {
+    //   if (x < today) {
+    //     alert("You missed the day.");
+    //   }
+    //   else if (x > today) {
+    //     alert("you have 5 more days");
+    //   }
+    //   else {
+    //     alert("This is the day");
+    //   }
+
+    // }
+
+   
+
+  });
+}
+getDueDate();
+},{"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./search":10,"./user":12,"./user-interaction":11,"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
 
@@ -10321,6 +10365,18 @@ function getBook() {
         return error;
     });
 }
+function getDueBook(due) {
+    console.log("dueDate",due);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+    }).done((bookData) => {
+        return bookData;
+    }).fail((error) => {
+        return error;
+    });
+}
+
+
          //book with userId
 
 function getUserBook(user) {
@@ -10333,8 +10389,28 @@ function getUserBook(user) {
             });
 }
   
-         //Library books
+//read books
+function getReadBook() {
+    return getBook().then((rea) => {
+        const read = [];
+        for (let key in rea) {
+            if (rea[key].read === "No") {
+                read.push(rea[key]);
 
+                return read;
+            } else {
+                alert("Do you want to read today?");
+            }
+
+        }
+
+    });
+}
+
+
+
+         //Library books
+         
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
@@ -10458,6 +10534,8 @@ function editBook(bookObj, bookId) {
 }
 
 module.exports = {
+    getReadBook,
+    getDueBook,
     getBook,
     getLibBook,
     getUserBook,
@@ -10489,7 +10567,62 @@ module.exports = {
            let $ = require('jquery');
          
   
-         
+         // ready to read
+
+function makeEditList(bookList) {
+    let bookDisplay = $(`<div class="container" id="readground">
+                     
+                     <div class="row" id="toprint">
+                     
+                     </div> </div>`);
+
+    $(".uiContainer-wrapper").html(bookDisplay);
+    for (let book in bookList) {
+        let currentBook = bookList[book],
+            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
+            bookListData = $("<div/>", { class: "caption" }),
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+
+
+        bookListData.append(
+            `<img src="imgs/${currentBook.image}">
+                <h4>${(currentBook.title)}</h4>
+                <h5>${currentBook.author}</h5>
+                <h5>${currentBook.type}</h5>
+                <h5>${currentBook.dueDate}</h5>`);
+
+        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+    }
+
+} 
+function makeBookReadList(bookList) {
+    let bookDisplay = $(`<div class="container" id="readground">
+                       <h1> My Books Ready To Read</h1>
+                     <div class="row" id="toprint">
+                     
+                     </div> </div>`);
+
+    $(".uiContainer-wrapper").html(bookDisplay);
+    for (let book in bookList) {
+        let currentBook = bookList[book],
+            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
+            bookListData = $("<div/>", { class: "caption" }),
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+
+
+        bookListData.append(
+            `<img src="imgs/${currentBook.image}">
+                <h4>${(currentBook.title)}</h4>
+                <h5>${currentBook.author}</h5>
+                <h5>${currentBook.type}</h5>
+                <h5>${currentBook.dueDate}</h5>`);
+
+        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+    }
+
+}
      //Library
 
 function makeLiBookList(bookList) {
@@ -10513,7 +10646,7 @@ function makeLiBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.dueDate}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10543,7 +10676,7 @@ function makeBrBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.dueDate}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10577,7 +10710,7 @@ function makeBoBookList(bookList) {
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 }
-
+ //all books
 function makeBookList(bookList) {
     let bookDisplay = $(`<div class="container">
                        <h1> Your Book Shelf</h1>
@@ -10625,20 +10758,39 @@ function bookForm(book, bookId) {
                 },
                     form =
                         `<h3>${bookItem.formTitle}</h3>
+                        
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                        <input type="text" id="form-dueDate" placeholder="Due Date" value="${bookItem.dueDate}"></input>
+                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.dueDate}"></input>
                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
                         <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input>
-                        <input type="text" id="form-type" placeholder="Type" value="${bookItem.type}"></input>
-                        <input type="text" id="form-read" placeholder="Do you Read it?" value="${bookItem.read}"></input>
+                        <select name="Type" id="form-type" value="${bookItem.type}">
+                           <option value="option">Book Type</option>
+                            <option value="library">library</option>
+                            <option value="borrow">borrow</option>
+                            <option value="bought">bought</option>
+                            <option value="e-mail">e-book</option>
+                        </select>
+                         <select name="Type" id="form-read" value="${bookItem.read}">
+                           <option value="option">Have you read this book?</option>
+                            <option value="library">Yes</option>
+                            <option value="borrow">No</option>
+                        </select>
                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
                 resolve(form);
+             
+                var types = $('#form-type').find('option:selected').text();
+                bookItem.type=types;
     });
 }
+{/* <input type="text" id="form-read" placeholder="Do you Read it?" value="${bookItem.read}"></input> */}
+
+
        
-         module.exports = { makeBookList,
+         module.exports = { 
+                            makeBookReadList,
+                            makeBookList,
                             makeLiBookList,
                             makeBrBookList,
                             makeBoBookList,
@@ -10690,6 +10842,7 @@ let $ = require('jquery'),
     bookInter=require("./books-interaction"),
     booksDom =require("./booksDom"),
     interaction=require("./user-interaction"),
+    meg =require("./meg"),
     user = require("./user");
 
       //loading all books
@@ -10701,6 +10854,15 @@ function loadBookToDOM(){
                booksDom.makeBookList(bookData);
     });
 }
+        //loaing ready to read
+
+        function loadToReadDOM() {
+            let currentUser = user.getUser();
+            bookInter.getReadBook(currentUser)
+                .then((bookData) => {
+                    booksDom.makeBookReadList(bookData);
+                });
+        }
 
            //loaing bought books
 
@@ -10728,6 +10890,14 @@ function loadLibBookToDOM() {
     bookInter.getLibBook(currentUser)
         .then((books) => {
             booksDom.makeLiBookList(books);
+        });
+}
+      //loading edit books
+function loadEditToDOM() {
+    let currentUser = user.getUser();
+    bookInter.getBook(currentUser)
+        .then((bookData) => {
+            booksDom.makeEditList(bookData);
         });
 }
 
@@ -10764,7 +10934,7 @@ $(document).on("click", ".save_edit_btn", function () {
     console.log("i am saving my a bookID", bookID);
     bookInter.editBook(bookObj, bookID)
         .then((data) => {
-            loadBookToDOM();
+            loadEditToDOM();
         });
 });
 
@@ -10774,7 +10944,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
-            loadBookToDOM();
+            loadEditToDOM();
         });
 });
    
@@ -10783,7 +10953,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#form-dueDate").val(),
+        dueDate: $("#date").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("#form-read").val(),
@@ -10794,29 +10964,44 @@ $(document).on("click", ".delete-btn", function () {
     };
     return bookObj;
 }
+       //ready to read
+     $("#read-book").click(function () {
+            $(".uniContainer-wrapper").html("");
+            loadToReadDOM();
+            meg.blue();
+
+        });
+
+
+
 
        // library listner
     $("#library").click(function () {
         $(".uniContainer-wrapper").html("");
-                loadLibBookToDOM();
+               loadLibBookToDOM();
+                meg.green();
+               
         });
 
         //bought listner
     $("#bought").click(function () {
                $(".uniContainer-wrapper").html("");
                 loadBoughtBookToDOM();
+                meg.purple();
         });
         
         //borrow listner
     $("#borrowed").click(function () {
         $(".uniContainer-wrapper").html("");
                 loadBorrowBookToDOM();
+                meg.yellow();
          }); 
 
         //view all books to dom
     $("#all-book").click(function () {
         $(".uniContainer-wrapper").html("");
                loadBookToDOM();
+                meg.purple();
         });
 
 
@@ -10827,12 +11012,22 @@ $(document).on("click", ".delete-btn", function () {
         var bookForm = booksDom.bookForm()
             .then((bookForm) => {
                 $("#toprint").html(bookForm);
-            });
+                   });
     // setTimeout(callback, 1000);
 });
 
-  
-},{"./books-interaction":4,"./booksDom":5,"./config":6,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
+$(document).ready(function () {
+    $("#add-book").click(function () {
+        $(".container h1").remove();
+    });
+});
+
+$(document).ready(function () {
+    $(".edit-btn").click(function () {
+        $(".container h1").remove();
+    });
+});
+},{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
 
@@ -10904,218 +11099,39 @@ function sendToFirebase() {
 },{"./alarm":2,"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./search":10,"./user":12,"./user-interaction":11,"jquery":1}],9:[function(require,module,exports){
 "use strict";
 
-// let $ = require('jquery'),
-//     firebase = require("./config"),
-//     user = require("./user"),
-//     books = require("./books-interaction"),
-//     fapi = require("./api"),
-//     search = require("./search"),
-//     interaction = require("./user-interaction"),
-//     booksDom = require("./booksDom"),
-//     eventBooks = require("./eventBooks"),
-//         alarm = require("./alarm");
+function red() {
 
+    document.body.style.backgroundColor = "#c2de65";
 
+}
 
+function green() {
 
+    document.body.style.backgroundColor = "#ddefa4";
 
+}
 
+function blue() {
 
+    document.body.style.backgroundColor = "#a1b16d";
 
+}
+function purple() {
 
+    document.body.style.backgroundColor = "#b3ba9c";
 
+}
 
+function yellow() {
 
+    document.body.style.backgroundColor = "#ddefa4";
 
-
-
-
-// console.log("meg");
-// function getUserBook(user) {
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-//     }).then((response) => {
-//             console.log("meg response",response);
-//             let books = response.data;
-//             let output = '';
-//             $.each(books, (index, movie) => {
-//                 output += `
-//           <div class="col-md-3">
-//             <div class="well text-center">
-//               <img src="${movie.Poster}">
-//               <h5>${movie.Title}</h5>
-//               <a onclick="movieSelected('${movie.imdbID}')" class="btn btn-primary" href="#">Movie Details</a>
-//             </div>
-//           </div>
-//         `;
-//             });
-
-//             $('#movies').html(output);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }
-// function movieSelected(id) {
-//     sessionStorage.setItem('movieId', id);
-//     window.location = 'movie.html';
-//     return false;
-// }
-
-// // function getMovie() {
-//     let movieId = sessionStorage.getItem('movieId');
-
-// //     axios.get('http://www.omdbapi.com?i=' + movieId)
-// //         .then((response) => {
-// //             console.log(response);
-//             let movie = response.data;
-
-//             let output = `
-//         <div class="row">
-//           <div class="col-md-4">
-//             <img src="${movie.Poster}" class="thumbnail">
-//           </div>
-//           <div class="col-md-8">
-//             <h2>${movie.Title}</h2>
-//             <ul class="list-group">
-//               <li class="list-group-item"><strong>Genre:</strong> ${movie.Genre}</li>
-//               <li class="list-group-item"><strong>Released:</strong> ${movie.Released}</li>
-//               <li class="list-group-item"><strong>Rated:</strong> ${movie.Rated}</li>
-//               <li class="list-group-item"><strong>IMDB Rating:</strong> ${movie.imdbRating}</li>
-//               <li class="list-group-item"><strong>Director:</strong> ${movie.Director}</li>
-//               <li class="list-group-item"><strong>Writer:</strong> ${movie.Writer}</li>
-//               <li class="list-group-item"><strong>Actors:</strong> ${movie.Actors}</li>
-//             </ul>
-//           </div>
-//         </div>
-//         <div class="row">
-//           <div class="well">
-//             <h3>Plot</h3>
-//             ${movie.Plot}
-//             <hr>
-//             <a href="http://imdb.com/title/${movie.imdbID}" target="_blank" class="btn btn-primary">View IMDB</a>
-//             <a href="index.html" class="btn btn-default">Go Back To Search</a>
-//           </div>
-//         </div>
-//       `;
-
-//             $('#movie').html(output);
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// }
-
-
-
-// // ======CLICK TO FIREBASE=============//
-
-// $("#add-book").click(function () {
-//     console.log("get your book");
-//     var bookForm = buildBookObj();
-//     book.addBook(bookObj).then((bookForm) => {
-//         console.log("the book is sending to firebase", bookForm)
-//     });
-// });
-
-// // ===========format of my main dom page=========//
-
-//     for (let book in bookList) {
-//         let currentBook = bookList[book],
-//             BookListItem = $("<li>", { class: "book-list__item" }),
-//             title = $("<span/>", { class: "book-title" }).text(currentSong.title),
-//             bookListData = $("<ul/>", { class: "song-list__item--data" }),
-//             songListEdit = $("<a>", { "data-edit-id": song, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-//             songListDelete = $("<a>", { "data-delete-id": song, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-//         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
-
-
-//         function bookForm(book, bookId) {
-//             return new Promise((resolve, reject) => {
-//                 let bookItem = {
-//                     title: book ? book.title : "",
-//                     author: book ? book.author : "",
-//                     dueDate: book ? book.dueDate : "",
-//                     place: book ? book.place : "",
-//                     type: book ? book.type : "",
-//                     description: book ? book.description : "",
-//                     formTitle: book ? `Edit "${book.title}"` : "Add a new book",
-//                     btnText: book ? "save changes" : "save book",
-//                     btnId: book ? "save_edit_btn" : "save_new_btn"
-//                 },
-//                     form =
-//                         `<h3>${bookItem.formTitle}</h3>
-//                 <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
-//                 <input type="text" id="form-Author" placeholder="Author" value="${bookItem.author}"></input>
-//                 <input type="text" id="form-album" placeholder="Due Date" value="${bookItem.dueDate}"></input>
-//                 <input type="text" id="form-title" placeholder="Place" value="${bookItem.place}"></input>
-//                 <input type="text" id="form-album" placeholder="Type" value="${bookItem.type}"></input>
-//                 <input type="text" id="form-year" placeholder="Description" value="${bookItem.description}"></input><br/>
-//                 <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
-//                 resolve(form);
-//             });
-//         }
-
-
-
-
-//         //         $(`<div class="uiContainer__book-list box col s12">
-//         //     <ul class="book-list">
-//         //     </ul>
-//         //   </div>`);
-//         //     $(".items").html(booksDisplay);
-//         //     for (let book in bookList) {
-//         //         let currentBook = bookList[book],
-//         //             bookListItem = $("<li>", { class: "book-list__item" }),
-//         //             title = $("<span/>", { class: "book-title" }).text(currentBook.title),
-//         //             bookListData = $("<ul/>", { class: "book-list__item--data" }),
-//         //             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-//         //             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-//         //         // Same as `<a id="${song}" class="delete-btn waves-effect waves-light btn">delete</a>`
-
-//         //         bookListData.append(
-//         //             `<li>${currentBook.title}</li>
-//         //                     <li>${currentBook.author}</li>
-//         //                     <li>${currentBook.dueDate}</li>`);
-
-//         //         $(".book-list").append(bookListItem.append(title));
-//         //         $(".book-list").append(bookListItem.append(bookListData).append(bookListDelete).append(bookListEdit));
-//         //     }
-//         // }
-
-//         module.exports = { makeBookList, bookForm };
-// //===============FIREBASE DONE==========//
-
-// // ================read==============//
-
-// // function setStatus(bookID) {
-// //     return $.ajax({
-// //         url: `${firebase.getFBsettings().databaseURL}/book/${bookID}.json`,
-// //         type: 'PATCH',
-// //         data: JSON.stringify({ status: true }),
-// //         dataType: 'json'
-// //     }).done((userID) => {
-// //         return userID;
-// //     }).fail((error) => {
-// //         console.log("error", error);
-// //         return error;
-// //     });
-// // }
-// // $(document).on("click", ".check-in", function () {
-// //     let checkintoReso = $(this).attr("id");
-// //     console.log("check in", checkintoReso);
-// //     setStatus(checkintoReso);
-// //     // .then(() => {
-// //     //   checkStatus();
-// //     //   console.log("CHECK IN BUTTON CLICKED");
-
-// // });
-
-// // ------------------------------------
-
-
-
-
+}
+module.exports= {red,
+    blue,
+    purple,
+    yellow,
+     green};
 },{}],10:[function(require,module,exports){
 
 "use strict";

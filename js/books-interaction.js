@@ -37,13 +37,14 @@ function getLibBook(){
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-                return library;
             
+                return library;
         }else{
             alert("you need to borrow books from library");
         }
         
     }
+       
     });
 }
 
@@ -59,7 +60,7 @@ function getBuyBook() {
             } else {
                 alert("you need to buy new books");
             }
-            
+           
         }
       
     });
@@ -74,13 +75,16 @@ function getBrBook() {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
                 return borrow;
-            }else{
+             
+            }else {
                 alert("Read some books"); 
+            
             }
+           
         } 
-        
+          
     });
-}  
+}
           //ajaxCall
 
 

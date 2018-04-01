@@ -22,8 +22,8 @@ function loadBookToDOM(){
 function loadBoughtBookToDOM(){
     let currentUser=user.getUser();
     bookInter.getBuyBook(currentUser)
-            .then((books)=>{
-                booksDom.makeBookList(books);
+            .then((bookData)=>{
+                booksDom.makeBoBookList(bookData);
             });
 }
          //loaing borrow books
@@ -32,7 +32,7 @@ function loadBorrowBookToDOM() {
     let currentUser = user.getUser();
     bookInter.getBrBook(currentUser)
         .then((books) => {
-            booksDom.makeBookList(books);
+            booksDom.makeBrBookList(books);
         });
 }
 
@@ -42,7 +42,7 @@ function loadLibBookToDOM() {
     let currentUser = user.getUser();
     bookInter.getLibBook(currentUser)
         .then((books) => {
-            booksDom.makeBookList(books);
+            booksDom.makeLiBookList(books);
         });
 }
 
@@ -131,7 +131,7 @@ $(document).on("click", ".delete-btn", function () {
         //view all books to dom
     $("#all-book").click(function () {
         $(".uniContainer-wrapper").html("");
-                loadBookToDOM();
+               loadBookToDOM();
         });
 
 

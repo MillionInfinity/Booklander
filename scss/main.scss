@@ -211,9 +211,12 @@ border:1px solid lightgray;
 margin: 30px 0px 0px 70px;
 // margin-right:5px;
 min-height: 350px;
+line-height: 1.42857143;
+background-color: #fff;
+border-radius: 2px;
 box-shadow: 1px 1px 0px #adc08b;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-    transition: box-shadow .25s;
+box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+transition: box-shadow .25s;
 }
 a.edit-btn{
   // background-color: #6f8a30;
@@ -256,6 +259,8 @@ a.delete-btn{
   margin-top: 15px;
   left:20%;
   z-index: 58;
+  border-top-left-radius:2px;
+  border-top-right-radius:2px;
 
 }
 h5{

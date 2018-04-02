@@ -14,11 +14,16 @@ let $ = require('jquery'),
 
 var bookRef = firebase.database().ref("book/");
 
-bookRef.orderByChild("due").on("child_added", function dueds(data){
-  console.log("my duedate ",data.val().due);
+bookRef.orderByChild("due").on("child_added", function dueds(due){
+  if(typeof(dueDate) !== 'undefined'){
+    console.log(dueDate);
   
+  }
+
 });
            
+
+
 
 // var types=$('#form-type').find('option:selected').text();
 

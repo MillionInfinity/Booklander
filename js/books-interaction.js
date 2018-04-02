@@ -17,17 +17,17 @@ function getBook() {
         return error;
     });
 }
-// function getDueBook(due) {
-//     console.log("dueDate",due);
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
-//     }).done((bookData) => {
-//         return bookData;
-//     }).fail((error) => {
-//         return error;
-//     });
-// }
-// getDueBook();
+function getDueBook(due) {
+    console.log("dueDate",due);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+    }).done((bookData) => {
+        return bookData;
+    }).fail((error) => {
+        return error;
+    });
+}
+getDueBook();
 
          //book with userId
 

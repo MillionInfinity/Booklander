@@ -10270,11 +10270,16 @@ let $ = require('jquery'),
 
 var bookRef = firebase.database().ref("book/");
 
-bookRef.orderByChild("due").on("child_added", function dueds(data){
-  console.log("my duedate ",data.val().due);
+bookRef.orderByChild("due").on("child_added", function dueds(due){
+  if(typeof(dueDate) !== 'undefined'){
+    console.log(dueDate);
   
+  }
+
 });
            
+
+
 
 // var types=$('#form-type').find('option:selected').text();
 
@@ -10370,17 +10375,17 @@ function getBook() {
         return error;
     });
 }
-// function getDueBook(due) {
-//     console.log("dueDate",due);
-//     return $.ajax({
-//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
-//     }).done((bookData) => {
-//         return bookData;
-//     }).fail((error) => {
-//         return error;
-//     });
-// }
-// getDueBook();
+function getDueBook(due) {
+    console.log("dueDate",due);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+    }).done((bookData) => {
+        return bookData;
+    }).fail((error) => {
+        return error;
+    });
+}
+getDueBook();
 
          //book with userId
 
@@ -10572,19 +10577,19 @@ module.exports = {
            let $ = require('jquery');
          
   //welcome note
-            function welcomeH() {
-                let welcomes = $(`
-              `);
-            $(".welcome").html(welcomes);
+        //     function welcomeH() {
+        //         let welcomes = $(`
+        //       `);
+        //     $(".welcome").html(welcomes);
 
-          } 
-        // $(window).load(function () {
-        //     $(".welcome").fadeOut("slow");
-        // });
+        //   } 
+        // // $(window).load(function () {
+        // //     $(".welcome").fadeOut("slow");
+        // // });
 
-            $(document).ready(function () {
-                $("#welcome").show();
-            });
+        //     $(document).ready(function () {
+        //         $("#welcome").show();
+        //     });
 
          // ready to read
 
@@ -10808,7 +10813,7 @@ function bookForm(book, bookId) {
 
        
          module.exports = { 
-                            welcomeH,
+                            // welcomeH,
                             makeBookReadList,
                             makeBookList,
                             makeLiBookList,

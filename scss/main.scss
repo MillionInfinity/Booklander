@@ -18,7 +18,7 @@ $nav-color: #b9b4aa;
    font-family: 'Poiret One', cursive;
    font-weight: bolder;
    display: block;
-   left:-15px;
+   left:-35px;
    background-color: #accc63;
  width:301px;
     & li{
@@ -51,6 +51,8 @@ $nav-color: #b9b4aa;
 }
 .navbar-header{
   min-height: 150px !important;
+    border-style: 5px solid #657083;
+    border-width: 5px;
  
   & h3{
 font-family: $primaryFont;
@@ -77,7 +79,7 @@ color: $white;
    display: inline;
 }
 nav{
-  background-color: #accc63;
+  background-color: #657083;
   margin-top: .5rem;
   margin-bottom: 1.5rem;
 }
@@ -92,6 +94,7 @@ nav{
      border-right: 2px solid #000;
 }
 }
+
  .aBook,
    .nav-sidebar a{
       font-family: 'Poiret One', cursive;
@@ -360,6 +363,56 @@ body {
 }
 
 
-.toprint{
+toprint{
   background-color: #8a856a;
+}
+
+
+#login{
+  background-color: #aac8d8;
+  border:2px solid #ede6e9;
+}
+#library{
+   background-color:#a9bdc6;
+   border:2px solid #f4f7f1;
+}
+#borrowed{
+   background-color:#dbd5e4;
+   border: 2px solid #ede6e9;
+}
+#bought{
+   background-color:#ede6e9;
+   border: 2px solid #dbd5e4;
+}
+#all-book{
+    background-color:#f4f7f1;
+    border: 2px solid #aac8d8;
+}
+#right{
+    background-color:#ede6e9;
+}
+   .rightest li{
+    display: block;
+    padding-right: -1rem;
+    width: 18rem;
+    height: 9em;
+    left:0px;
+  
+
+}
+#add-book{
+  background-color:#f4f7f1;
+    border: 2px solid #aac8d8;
+    margin-left: -55px;
+}
+#read-book{
+   background-color:#dbd5e4;
+   border: 2px solid #ede6e9;
+    margin-left: -55px;
+}
+
+#over-book{
+    background-color:#a9bdc6;
+   border:2px solid #f4f7f1;
+    margin-left: -55px;
 }

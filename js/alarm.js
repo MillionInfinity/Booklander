@@ -12,15 +12,15 @@ let $ = require('jquery'),
   meg = require("./meg");
   
 
-var bookRef = firebase.database().ref("book/");
+// var bookRef = firebase.database().ref("book/");
 
-bookRef.orderByChild("due").on("child_added", function dueds(due){
-  if(typeof(dueDate) !== 'undefined'){
-    console.log(dueDate);
+// bookRef.orderByChild("due").on("child_added", function dueds(due){
+//   if(typeof(dueDate) !== 'undefined'){
+//     console.log(dueDate);
   
-  }
+//   }
 
-});
+// });
            
 
 

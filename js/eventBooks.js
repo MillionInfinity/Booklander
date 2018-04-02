@@ -183,14 +183,3 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
-// $(document).ready(function () {
-//     $("#add-book").click(function () {
-//         $(".container h1").remove();
-//     });
-// });
-
-// $(document).ready(function () {
-//     $(".edit-btn").click(function () {
-//         $(".container h1").remove();
-//     });
-// });

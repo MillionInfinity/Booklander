@@ -4,7 +4,24 @@ console.log("book-interaction");
 let $ = require('jquery'),
                 firebase = require("./config");
                 // aBook = {},
-              
+        // for referencec
+//         function getReadBook() {
+//     return getBook().then((rea) => {
+//         const read = [];
+//         for (let key in rea) {
+//             if (rea[key].read === "No") {
+//                 read.push(rea[key]);
+
+//                 return read;
+//             } else {
+//                 alert("Do you want to read today?");
+//             }
+
+//         }
+
+//     });
+// }
+
 
         // book withOut user
 
@@ -48,12 +65,8 @@ function getReadBook() {
         for (let key in rea) {
             if (rea[key].read === "No") {
                 read.push(rea[key]);
-
                 return read;
-            } else {
-                alert("Do you want to read today?");
-            }
-
+            } 
         }
 
     });
@@ -69,12 +82,8 @@ function getLibBook(){
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-            
                 return library;
-        }else{
-            alert("you need to borrow books from library");
         }
-        
     }
        
     });
@@ -89,10 +98,7 @@ function getBuyBook() {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
                 return bought;
-            } else {
-                alert("you need to buy new books");
-            }
-           
+            } 
         }
       
     });
@@ -107,11 +113,7 @@ function getBrBook() {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
                 return borrow;
-             
-            }else {
-                alert("Read some books"); 
-            
-            }
+             }
            
         } 
           
@@ -187,7 +189,7 @@ function editBook(bookObj, bookId) {
 
 module.exports = {
     getReadBook,
-    // getDueBook,
+    getDueBook,
     getBook,
     getLibBook,
     getUserBook,

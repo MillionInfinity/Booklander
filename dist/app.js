@@ -10268,15 +10268,15 @@ let $ = require('jquery'),
   meg = require("./meg");
   
 
-var bookRef = firebase.database().ref("book/");
+// var bookRef = firebase.database().ref("book/");
 
-bookRef.orderByChild("due").on("child_added", function dueds(due){
-  if(typeof(dueDate) !== 'undefined'){
-    console.log(dueDate);
+// bookRef.orderByChild("due").on("child_added", function dueds(due){
+//   if(typeof(dueDate) !== 'undefined'){
+//     console.log(dueDate);
   
-  }
+//   }
 
-});
+// });
            
 
 
@@ -10362,7 +10362,24 @@ console.log("book-interaction");
 let $ = require('jquery'),
                 firebase = require("./config");
                 // aBook = {},
-              
+        // for referencec
+//         function getReadBook() {
+//     return getBook().then((rea) => {
+//         const read = [];
+//         for (let key in rea) {
+//             if (rea[key].read === "No") {
+//                 read.push(rea[key]);
+
+//                 return read;
+//             } else {
+//                 alert("Do you want to read today?");
+//             }
+
+//         }
+
+//     });
+// }
+
 
         // book withOut user
 
@@ -10406,12 +10423,8 @@ function getReadBook() {
         for (let key in rea) {
             if (rea[key].read === "No") {
                 read.push(rea[key]);
-
                 return read;
-            } else {
-                alert("Do you want to read today?");
-            }
-
+            } 
         }
 
     });
@@ -10427,12 +10440,8 @@ function getLibBook(){
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-            
                 return library;
-        }else{
-            alert("you need to borrow books from library");
         }
-        
     }
        
     });
@@ -10447,10 +10456,7 @@ function getBuyBook() {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
                 return bought;
-            } else {
-                alert("you need to buy new books");
-            }
-           
+            } 
         }
       
     });
@@ -10465,11 +10471,7 @@ function getBrBook() {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
                 return borrow;
-             
-            }else {
-                alert("Read some books"); 
-            
-            }
+             }
            
         } 
           
@@ -10545,7 +10547,7 @@ function editBook(bookObj, bookId) {
 
 module.exports = {
     getReadBook,
-    // getDueBook,
+    getDueBook,
     getBook,
     getLibBook,
     getUserBook,
@@ -11045,17 +11047,7 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
-// $(document).ready(function () {
-//     $("#add-book").click(function () {
-//         $(".container h1").remove();
-//     });
-// });
 
-// $(document).ready(function () {
-//     $(".edit-btn").click(function () {
-//         $(".container h1").remove();
-//     });
-// });
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");

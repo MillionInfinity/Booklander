@@ -56,14 +56,14 @@ function loadLibBookToDOM() {
         });
 }
       //loading edit books
-function loadEditToDOM() {
-    let currentUser = user.getUser();
-    bookInter.getBook(currentUser)
-        .then((bookData) => {
-            booksDom.makeEditList(bookData);
-        });
-}
-
+// function loadEditToDOM() {
+//     let currentUser = user.getUser();
+//     bookInter.getBook(currentUser)
+//         .then((bookData) => {
+//             booksDom.makeEditList(bookData);
+//         });
+// }
+    
             //save listner
 
 $(document).on("click", ".save_new_btn", function(){
@@ -97,7 +97,7 @@ $(document).on("click", ".save_edit_btn", function () {
     console.log("i am saving my a bookID", bookID);
     bookInter.editBook(bookObj, bookID)
         .then((data) => {
-            loadEditToDOM();
+            loadBookToDOM();
         });
 });
 
@@ -107,7 +107,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
-            loadEditToDOM();
+            loadBookToDOM();
         });
 });
    
@@ -129,18 +129,18 @@ $(document).on("click", ".delete-btn", function () {
 }
        //ready to read
      $("#read-book").click(function () {
+            $("#welcome").remove();
             $(".uniContainer-wrapper").html("");
             loadToReadDOM();
             meg.blue();
+         
 
         });
-
-
-
 
        // library listner
     $("#library").click(function () {
         $(".uniContainer-wrapper").html("");
+              $("#welcome").remove();
                loadLibBookToDOM();
                 meg.green();
                
@@ -148,6 +148,7 @@ $(document).on("click", ".delete-btn", function () {
 
         //bought listner
     $("#bought").click(function () {
+              $("#welcome").remove();
                $(".uniContainer-wrapper").html("");
                 loadBoughtBookToDOM();
                 meg.purple();
@@ -155,6 +156,7 @@ $(document).on("click", ".delete-btn", function () {
         
         //borrow listner
     $("#borrowed").click(function () {
+        $("#welcome").remove();
         $(".uniContainer-wrapper").html("");
                 loadBorrowBookToDOM();
                 meg.yellow();
@@ -162,9 +164,11 @@ $(document).on("click", ".delete-btn", function () {
 
         //view all books to dom
     $("#all-book").click(function () {
+        $("#welcome").remove();
         $(".uniContainer-wrapper").html("");
+
                loadBookToDOM();
-                meg.purple();
+                // meg.purple();
         });
 
 
@@ -179,14 +183,14 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
-$(document).ready(function () {
-    $("#add-book").click(function () {
-        $(".container h1").remove();
-    });
-});
+// $(document).ready(function () {
+//     $("#add-book").click(function () {
+//         $(".container h1").remove();
+//     });
+// });
 
-$(document).ready(function () {
-    $(".edit-btn").click(function () {
-        $(".container h1").remove();
-    });
-});
+// $(document).ready(function () {
+//     $(".edit-btn").click(function () {
+//         $(".container h1").remove();
+//     });
+// });

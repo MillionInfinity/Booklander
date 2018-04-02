@@ -12,7 +12,12 @@ let $ = require('jquery'),
   meg = require("./meg");
   
 
+var bookRef = firebase.database().ref("book/");
 
+bookRef.orderByChild("due").on("child_added", function dueds(data){
+  console.log("my duedate ",data.val().due);
+  
+});
            
 
 // var types=$('#form-type').find('option:selected').text();
@@ -42,10 +47,10 @@ let $ = require('jquery'),
 
 // let booky = books.getBook().val;
 
-function getDueDate() {
+// function getDueDate() {
  
-  return books.getDueBook().then((l) => {
-      console.log("interactionetbook()", l);
+//   return books.getDueBook().then((l) => {
+//       console.log("interactionetbook()", l);
     // const dueddate = [];
     // let x = new Date();
     // x.setFullYear = finput;
@@ -65,6 +70,6 @@ function getDueDate() {
 
    
 
-  });
-}
-getDueDate();
+//   });
+// }
+// getDueDate();

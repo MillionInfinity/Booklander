@@ -17,17 +17,17 @@ function getBook() {
         return error;
     });
 }
-function getDueBook(due) {
-    console.log("dueDate",due);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
-    }).done((bookData) => {
-        return bookData;
-    }).fail((error) => {
-        return error;
-    });
-}
-
+// function getDueBook(due) {
+//     console.log("dueDate",due);
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+//     }).done((bookData) => {
+//         return bookData;
+//     }).fail((error) => {
+//         return error;
+//     });
+// }
+// getDueBook();
 
          //book with userId
 
@@ -132,14 +132,14 @@ function ajaxCalls(book) {
     });
 }
 
-function getSameBook(array) {
-    console.log("getSameBook", array);
-    let promiseArr = [];
-    for (var i = 0; i < array.length; i++) {
-        promiseArr.push(ajaxCalls(array[i]));
-    }
-    return Promise.all(promiseArr);
-}
+// function getSameBook(array) {
+//     console.log("getSameBook", array);
+//     let promiseArr = [];
+//     for (var i = 0; i < array.length; i++) {
+//         promiseArr.push(ajaxCalls(array[i]));
+//     }
+//     return Promise.all(promiseArr);
+// }
 
 function deleteBook(bookId) {
     $.ajax({
@@ -187,14 +187,14 @@ function editBook(bookObj, bookId) {
 
 module.exports = {
     getReadBook,
-    getDueBook,
+    // getDueBook,
     getBook,
     getLibBook,
     getUserBook,
     ajaxCalls,
     addBook,
     addUserBook,
-    getSameBook,
+    // getSamBook,
     deleteBook,
     editBook,
     getBrBook,

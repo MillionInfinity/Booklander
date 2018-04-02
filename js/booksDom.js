@@ -2,7 +2,21 @@
            console.log("print on to dom");
            let $ = require('jquery');
          
-  
+  //welcome note
+            function welcomeH() {
+                let welcomes = $(`
+              `);
+            $(".welcome").html(welcomes);
+
+          } 
+        // $(window).load(function () {
+        //     $(".welcome").fadeOut("slow");
+        // });
+
+            $(document).ready(function () {
+                $("#welcome").show();
+            });
+
          // ready to read
 
 function makeEditList(bookList) {
@@ -225,6 +239,7 @@ function bookForm(book, bookId) {
 
        
          module.exports = { 
+                            welcomeH,
                             makeBookReadList,
                             makeBookList,
                             makeLiBookList,

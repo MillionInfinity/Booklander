@@ -5,7 +5,7 @@ $lightgray: #8d8984;
 $regulargray: #aaaaaa;
 $black: #e8e9d8;
 $white:#fff;
-$primaryFont: 'Atila Normal',sans-serif;
+$primaryFont: 'Open Sans', sans-serif;
 $secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
 $nav-color: #b9b4aa;
 
@@ -15,6 +15,8 @@ $nav-color: #b9b4aa;
 // }
 
  .nav-sidebar{
+   font-family: 'Poiret One', cursive;
+   font-weight: bolder;
    display: block;
    left:-15px;
    background-color: #accc63;
@@ -26,6 +28,8 @@ $nav-color: #b9b4aa;
        top:50px;
     }
     & a{
+       font-family: 'Poiret One', cursive;
+   font-weight: bolder;
       font-size: 25px;
       color:#3b610c;
       text-decoration: none;
@@ -33,6 +37,8 @@ $nav-color: #b9b4aa;
  }
 
 .add-book a{
+   font-family: 'Poiret One', cursive;
+   font-weight: bolder;
   position: relative;
   left:15px;
 }
@@ -45,8 +51,9 @@ $nav-color: #b9b4aa;
 }
 .navbar-header{
   min-height: 150px !important;
+ 
   & h3{
-font-family: 'Lato', sans-serif;
+font-family: $primaryFont;
 font-size: 80px;
 color: $white;
   }
@@ -87,9 +94,11 @@ nav{
 }
  .aBook,
    .nav-sidebar a{
+      font-family: 'Poiret One', cursive;
+   font-weight: bolder;
       font-size: 1.5em;
       color:$secondaryFont;
-      box-shadow:5px 10px 18px #6f8a30;
+      // box-shadow:5px 10px 18px #6f8a30;
       border-radius: 5px;	
       line-height: 3rem;
       display: block;
@@ -100,7 +109,7 @@ nav{
         border-right: 0;
       }
       &:hover{
-        border:1px solid #6f8a30;
+        // border:1px solid #6f8a30;
         color: white;
         text-decoration:none;
     }}
@@ -155,6 +164,8 @@ nav{
             padding-left: 0;
 }}
       .book-title{
+         font-family: 'Poiret One', cursive;
+        font-weight: bolder;
         color: #3b610c;
         font-size: 2.5re;
         margin-bottom: .5rem;
@@ -304,3 +315,51 @@ body {
   // color: #e2e187
 }
 
+ .planetBook {
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     font-size: 8.5em;
+     color: #1cabee;
+     position: absolute;
+     top: 22%;
+     left: 205px;
+    //  z-index: 1;
+ }
+
+ .planetBook3{
+    color: #ffffff;
+   font-size: 4em;
+   font-weight: bolder;
+   position: absolute;
+     top: 8%;
+     left:300px;
+    //  z-index: 1; 
+  //     -webkit-text-stroke-width: 1px;
+  //  -webkit-text-stroke-color:#1cabee;
+ }
+ 
+ .planetBook2{
+ font-family: 'Poiret One', cursive;;
+ color:  #1cabee;
+  font-size: 4.5em;
+   position: absolute;
+     top: 15%;
+     left: 230px;
+    //  z-index: 1; 
+ }
+
+ p{
+   font-family: 'Poiret One';
+  position: absolute;
+   color: #ffffff;
+   font-style: oblique;
+  //  background-color: wheat;
+    top:3%;
+    font-size: 1.5em;
+    left:310px;
+    z-index: 14;
+}
+
+
+.toprint{
+  background-color: #8a856a;
+}

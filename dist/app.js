@@ -10268,7 +10268,12 @@ let $ = require('jquery'),
   meg = require("./meg");
   
 
+var bookRef = firebase.database().ref("book/");
 
+bookRef.orderByChild("due").on("child_added", function dueds(data){
+  console.log("my duedate ",data.val().due);
+  
+});
            
 
 // var types=$('#form-type').find('option:selected').text();
@@ -10298,10 +10303,10 @@ let $ = require('jquery'),
 
 // let booky = books.getBook().val;
 
-function getDueDate() {
+// function getDueDate() {
  
-  return books.getDueBook().then((l) => {
-      console.log("interactionetbook()", l);
+//   return books.getDueBook().then((l) => {
+//       console.log("interactionetbook()", l);
     // const dueddate = [];
     // let x = new Date();
     // x.setFullYear = finput;
@@ -10321,9 +10326,9 @@ function getDueDate() {
 
    
 
-  });
-}
-getDueDate();
+//   });
+// }
+// getDueDate();
 },{"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./search":10,"./user":12,"./user-interaction":11,"jquery":1}],3:[function(require,module,exports){
 "use strict";
 
@@ -10365,17 +10370,17 @@ function getBook() {
         return error;
     });
 }
-function getDueBook(due) {
-    console.log("dueDate",due);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
-    }).done((bookData) => {
-        return bookData;
-    }).fail((error) => {
-        return error;
-    });
-}
-
+// function getDueBook(due) {
+//     console.log("dueDate",due);
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
+//     }).done((bookData) => {
+//         return bookData;
+//     }).fail((error) => {
+//         return error;
+//     });
+// }
+// getDueBook();
 
          //book with userId
 
@@ -10480,14 +10485,14 @@ function ajaxCalls(book) {
     });
 }
 
-function getSameBook(array) {
-    console.log("getSameBook", array);
-    let promiseArr = [];
-    for (var i = 0; i < array.length; i++) {
-        promiseArr.push(ajaxCalls(array[i]));
-    }
-    return Promise.all(promiseArr);
-}
+// function getSameBook(array) {
+//     console.log("getSameBook", array);
+//     let promiseArr = [];
+//     for (var i = 0; i < array.length; i++) {
+//         promiseArr.push(ajaxCalls(array[i]));
+//     }
+//     return Promise.all(promiseArr);
+// }
 
 function deleteBook(bookId) {
     $.ajax({
@@ -10535,14 +10540,14 @@ function editBook(bookObj, bookId) {
 
 module.exports = {
     getReadBook,
-    getDueBook,
+    // getDueBook,
     getBook,
     getLibBook,
     getUserBook,
     ajaxCalls,
     addBook,
     addUserBook,
-    getSameBook,
+    // getSamBook,
     deleteBook,
     editBook,
     getBrBook,
@@ -10566,7 +10571,21 @@ module.exports = {
            console.log("print on to dom");
            let $ = require('jquery');
          
-  
+  //welcome note
+            function welcomeH() {
+                let welcomes = $(`
+              `);
+            $(".welcome").html(welcomes);
+
+          } 
+        // $(window).load(function () {
+        //     $(".welcome").fadeOut("slow");
+        // });
+
+            $(document).ready(function () {
+                $("#welcome").show();
+            });
+
          // ready to read
 
 function makeEditList(bookList) {
@@ -10789,6 +10808,7 @@ function bookForm(book, bookId) {
 
        
          module.exports = { 
+                            welcomeH,
                             makeBookReadList,
                             makeBookList,
                             makeLiBookList,
@@ -10893,14 +10913,14 @@ function loadLibBookToDOM() {
         });
 }
       //loading edit books
-function loadEditToDOM() {
-    let currentUser = user.getUser();
-    bookInter.getBook(currentUser)
-        .then((bookData) => {
-            booksDom.makeEditList(bookData);
-        });
-}
-
+// function loadEditToDOM() {
+//     let currentUser = user.getUser();
+//     bookInter.getBook(currentUser)
+//         .then((bookData) => {
+//             booksDom.makeEditList(bookData);
+//         });
+// }
+    
             //save listner
 
 $(document).on("click", ".save_new_btn", function(){
@@ -10934,7 +10954,7 @@ $(document).on("click", ".save_edit_btn", function () {
     console.log("i am saving my a bookID", bookID);
     bookInter.editBook(bookObj, bookID)
         .then((data) => {
-            loadEditToDOM();
+            loadBookToDOM();
         });
 });
 
@@ -10944,7 +10964,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID)
         .then(() => {
-            loadEditToDOM();
+            loadBookToDOM();
         });
 });
    
@@ -10966,18 +10986,18 @@ $(document).on("click", ".delete-btn", function () {
 }
        //ready to read
      $("#read-book").click(function () {
+            $("#welcome").remove();
             $(".uniContainer-wrapper").html("");
             loadToReadDOM();
             meg.blue();
+         
 
         });
-
-
-
 
        // library listner
     $("#library").click(function () {
         $(".uniContainer-wrapper").html("");
+              $("#welcome").remove();
                loadLibBookToDOM();
                 meg.green();
                
@@ -10985,6 +11005,7 @@ $(document).on("click", ".delete-btn", function () {
 
         //bought listner
     $("#bought").click(function () {
+              $("#welcome").remove();
                $(".uniContainer-wrapper").html("");
                 loadBoughtBookToDOM();
                 meg.purple();
@@ -10992,6 +11013,7 @@ $(document).on("click", ".delete-btn", function () {
         
         //borrow listner
     $("#borrowed").click(function () {
+        $("#welcome").remove();
         $(".uniContainer-wrapper").html("");
                 loadBorrowBookToDOM();
                 meg.yellow();
@@ -10999,9 +11021,11 @@ $(document).on("click", ".delete-btn", function () {
 
         //view all books to dom
     $("#all-book").click(function () {
+        $("#welcome").remove();
         $(".uniContainer-wrapper").html("");
+
                loadBookToDOM();
-                meg.purple();
+                // meg.purple();
         });
 
 
@@ -11016,17 +11040,17 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
-$(document).ready(function () {
-    $("#add-book").click(function () {
-        $(".container h1").remove();
-    });
-});
+// $(document).ready(function () {
+//     $("#add-book").click(function () {
+//         $(".container h1").remove();
+//     });
+// });
 
-$(document).ready(function () {
-    $(".edit-btn").click(function () {
-        $(".container h1").remove();
-    });
-});
+// $(document).ready(function () {
+//     $(".edit-btn").click(function () {
+//         $(".container h1").remove();
+//     });
+// });
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":12,"./user-interaction":11,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
@@ -11092,6 +11116,7 @@ function sendToFirebase() {
     interaction.addUser(userBuild);
     console.log("my user is saved in firebase", userBuild);
 }
+// home page
 
 // =============LOGIN AND LOGOUT ENDS======================//
 

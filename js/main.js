@@ -62,6 +62,7 @@ function sendToFirebase() {
     interaction.addUser(userBuild);
     console.log("my user is saved in firebase", userBuild);
 }
+// home page
 
 // =============LOGIN AND LOGOUT ENDS======================//
 

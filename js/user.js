@@ -1,41 +1,5 @@
 "use strict";
-<<<<<<< HEAD
-console.log("iam user");
- //VARIABLES AND AS ASSUMPTIONS // 
 
-let firebase = require("./config"),
-    provider = new firebase.auth.GoogleAuthProvider(),
-    currentUser = null;
-
-
-function googleLogIn() {
-    return firebase.auth().signInWithPopup(provider);
-}
-
-function logOut() {
-    return firebase.auth().signOut();
-}
-
-function setUser(val) {
-    currentUser = val;
-}
-
-function getUser() {
-    return currentUser;
-}
-
-firebase.auth().onAuthStateChanged(function (user) {  //.onAuthStateChanged is a firebase method from firebase
-    console.log("onAuthStateChanged", user);
-    if (user) {
-        currentUser = user.uid;
-    } else {
-        currentUser = null;
-        console.log("NO USER LOGGED IN");
-    }
-});
-
-module.exports = { googleLogIn, logOut, setUser, getUser };
-=======
      console.log("iam user");
 
     let $ = require('jquery'),
@@ -156,4 +120,4 @@ module.exports = { googleLogIn, logOut, setUser, getUser };
              setUserVars, 
              getUserObj
         };
->>>>>>> ca82b927948b826a526c86db4d056b04850245b8
+

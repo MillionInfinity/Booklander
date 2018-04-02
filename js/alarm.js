@@ -5,7 +5,7 @@ let $ = require('jquery'),
   user = require("./user"),
   books = require("./books-interaction"),
   fapi = require("./api"),
-  search = require("./search"),
+ 
   interaction = require("./user-interaction"),
   booksDom = require("./booksDom"),
   eventBooks = require("./eventBooks"),

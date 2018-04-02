@@ -1,20 +1,7 @@
 "use strict";
 console.log("my mainjs");
-let $ = require('jquery'),
-    firebase= require("./config"),
-    user = require("./user"),
-    books = require("./books"),
-    fapi = require("./api"),
-    search= require("./search"),
-    xhr= require("./fbook"),
-    DOMbuild=require("./user-add"),
-    interaction=require("./user-interaction");
 
-<<<<<<< HEAD
-function createUserObj(a) {
-    let userObj = {
-        name: '',
-=======
+
 //======================= REQUIRED STAFFS============================//
 
 
@@ -23,7 +10,7 @@ let $ = require('jquery'),
     user = require("./user"),
     books = require("./books-interaction"),
     fapi = require("./api"),
-    search = require("./search"),
+    
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
     eventBooks= require("./eventBooks"),
@@ -65,32 +52,13 @@ $("#logout").click(() => {
 function createUserObj(a) {
     let userObj = {
         name:'',
->>>>>>> ca82b927948b826a526c86db4d056b04850245b8
         email: '',
         uid: user.getUser()
     };
     console.log("userObj", userObj);
     return userObj;
 }
-<<<<<<< HEAD
-//login//
-$("#login").click(function () {
-    console.log("clicked auth");
-    user.googleLogIn()
-        .then((result) => {
-            user.setUser(result.user.uid);
-            $("#login");
-            $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" width="50">`);
-            // console.log("login complete!");
-            sendToFirebase();
-        });
-});
-function sendToFirebase() {
-    let userBuild = createUserObj();
 
-    interaction.addUser(userBuild);
-}    
-=======
 function sendToFirebase() {
     let userBuild = createUserObj();
     interaction.addUser(userBuild);
@@ -100,4 +68,3 @@ function sendToFirebase() {
 
 // =============LOGIN AND LOGOUT ENDS======================//
 
->>>>>>> ca82b927948b826a526c86db4d056b04850245b8

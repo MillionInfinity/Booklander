@@ -1,17 +1,24 @@
 "use strict";
 console.log("i configarate");
+
+
 let firebase = require("firebase/app"),
-    fb = require("./api"),
-    fbData = fb.getKey();
-// console.log(fb);
+    apikeys = require("./api"),
+    fData = apikeys.getKey();
+// console.log(fData);
+
 
 require("firebase/auth");
 require("firebase/database");
 
 var config = {
-    apiKey: fbData.apiKey,
-    authDomain: fbData.authDomain,
-    databaseURL: fbData.databaseURL
+
+
+    apiKey: fData.apiKey,
+    authDomain: fData.authDomain,
+    databaseURL: fData.databaseURL,
+    storageBucket: fData.storageBucket
+
 };
 
 
@@ -22,6 +29,7 @@ firebase.getFBsettings = () => {
     return config;
 };
 console.log("eyesus yegeba sew");
+
 
 
 module.exports = firebase;

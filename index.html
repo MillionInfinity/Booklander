@@ -1,110 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- <meta name="google-signin-client_id" content="706027816436-d7b9g242tldk2tlfi4a4jgv1mfoc5a40.apps.googleusercontent.com"> -->
-    <title>BookShelf</title>
+    <title>Bookalander</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
+        crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i|Poiret+One" rel="stylesheet">
+
     <link rel="stylesheet" href="css/main.css">
+    <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" /> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 </head>
-   <body>
-        <header>
-            <nav class="navbar navbar-light bg-light">
-                <a class="navbar-brand">Bookalander</a>
-            </nav>
-        </header>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    <ul class="nav nav-sidebar">
-                        <div class="col-auto login ml-auto">
-                            <div id="userPic" class="d-none">Profile Pic</div>
-                            <button id="login" type="button" class="btn btn-danger">Login</button>
-                           
-                        </div>
-                        <ul>
-                        <li class="active"><a href="#">Library</a></li>
-                        <li class="active"><a href="#">borrowed</a></li>
-                        <li class="active"><a href="#">bought</a></li>
-                        <li class="active"><a href="#">collection</a></li>
-                    </ul>
-                </div>
-            <!-- <div class="col-sm-9 col-sm-offset-2 col-md-1 col-md-offset-2 main"> -->
-        <div class="container">
-            <h1>Book of the Week</h1>
-            <div class="row">
-                <div class="col-sm-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="imgs/1.png" alt="book one" width="123">
-                    </div>
-                    <div class="caption">
-                        <h3>the lowlander</h3>
-                        <h6>jhumpa</h6>
-                        <h5>NSS</h5>
-                        <p>
-                            <a href="#" class="btn btn-primary" role="button">
-                                <img src="imgs/b.png" alt="facebook" width="60px" height="50px">
-                            </a>
-                            <a href="#" class="btn btn-default" role="button">Delete</a>
-                        </p>
-                    </div>
-                </div>
-    
-                <div class="col-sm-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="imgs/2.png" alt="Generic placeholder thumbnail" width="123">
-                    </div>
-                    <div class="caption">
-                        <h3>The lowland</h3>
-                        <h6>Jhumpa</h6>
-                        <h5>Starbucks</h5>
-                        <p>
-                            <a href="#" class="btn btn-primary" role="button">Edit</a>
-                            <a href="#" class="btn btn-default" role="button">Delete</a>
-                        </p>
-                    </div>
-                </div>
-    
-                <div class="col-sm-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="imgs/4.png" alt="Generic placeholder thumbnail" width="123">
-                    </div>
-                    <div class="caption">
-                        <h3>Enchantress</h3>
-                        <h6>Jhumpa</h6>
-                        <h5>Starbucks</h5>
-                        <p>
-                            <a href="#" class="btn btn-primary" role="button">Edit</a>
-                            <a href="#" class="btn btn-default" role=" button">Delete</a>
-                        </p>
-                    </div>
-                </div>
-    
-                <div class="col-sm-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="imgs/5.png" alt="Generic placeholder thumbnail" width="123">
-                    </div>
-                    <div class="caption">
-                        <h3>Enchantress</h3>
-                        <h6>Jhumpa</h6>
-                        <h5>Starbucks</h5>
-                        <p>
-                            <a href="#" class="btn btn-primary" role="button">Edit</a>
-                            <a href="#" class="btn btn-default" role="button">Delete</a>
-                        </p>
-                    </div>
-                </div>
+
+
+
+<body>
+
+    <header>
+
+                               <!-- HEADER -->
+        <nav class="navbar-header" style="background-color:#657083;"><h3 class="navbar-brand">Bookalander</h3></nav>
+
+    </header>
+
+                            <!-- SIDEBAR STARTS -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2" style="background-color:aac8d8;">
+                <ul class="nav nav-sidebar">
+                    <li id="login"><a href="#" title="">Sign In</a></li>
+                    <li id="logout" class="is-hidden"><a href="#" title="">Logout</a></li>
+                    <li id="library"><a href="#">Library</a></li>
+                    <li id="borrowed"><a href="#">Borrowed</a></li>
+                    <li id="bought"><a href="#">Bought</a></li>
+                    <li id="all-book"><a href="#">Collection</a></li>
+                </ul>
             </div>
-        </div>
+
+                             <!--CENTER PART -->
+
+
+            <div class="col-sm-8">
+                     
+                    <div class="uiContainer-wrapper"></div>
+                    <div id="welcome">
+                     <!-- <img src="imgs/cover.png" alt="welcomeImage"> -->
+                            <!-- <img src="imgs/cover.png" alt="welcomeImage"> -->
+                                  <!-- <h3 class="planetBook3">Welcome to</h3>
+                                 <h2 class="planetBook2">The Planet of</h2> 
+                                <h1 class="planetBook">BOOks </h1> -->
+                     <p>Always Stay Near your Books</p>
+                      
+                    </div>
+          
     
-        </div>
-        </div>
-        </div>
-        <script src="dist/app.js"></script>
-   <script src="https://apis.google.com/js/platform.js" async defer></script>
-   <script src="dist/app.js"></script> 
+            </div>
+            
+                              <!--RIGHT SIDE -->
+            <div id="right" class="col-sm-2" style="background-color:#a9bdc6;">
+                <div class="container-add">
+                    
+                          <div class="nav-wrapper"></div>
+
+                          <ul class="rightest">
+                             <li id="add-book"><a href="#" title="addBook" class="aBook">Add Book</a></li>
+                            <li id="read-book"><a href="#" title="readBook" class="aBook">Ready to Read</a></li>
+                            <li id="over-book"><a href="#" title="dueBook" class="aBook">Due books</a></li>
+                             <!-- <li id="footer-date"><a href="" title="timer" class="timer">what time is it</a></li>                         -->
+                         </ul>
+                    
+                    
+                </div>
+            </div> 
+               
+     </div><!--END OF ROW-->
+</div><!--END OF CONTAINER FLUID-->
+           <!-- <script async src="//jsfiddle.net/taditdash/kh0ptnu5/embed/js,html,result/"></script> -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="dist/app.js"></script>
+
 </body>
+
 </html>

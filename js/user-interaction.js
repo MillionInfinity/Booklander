@@ -1,12 +1,19 @@
 "use strict";
-let $=require("jquery"),
-    user=require("./user-add"),
-    firebase=require("./config"),
-    provider =firebase.auth.GoogleAuthProvider();
+
+console.log("user-interaction");
+let $ = require("jquery"),
+    user = require("./user"),
+    firebase = require("./config"),
+    provider = new firebase.auth.GoogleAuthProvider();
 //DO YOU HAVE AN ID?
-    function getFBDetails(user){
-        return $.ajax({
-            url: `${firebase.getFBsettings().databaseURL}//user.json?orderBy="uid"&equalTo="${user}"`
+
+
+
+function getFBDetails(user) {
+    console.log("user", user);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
+
     }).done((resolve) => {
         return resolve;
     }).fail((error) => {
@@ -16,13 +23,16 @@ let $=require("jquery"),
 
 //FIREBASE KNOCK KNOCK //
 function addUser(userObj) {
-    console.log("add user to firebase", userObj);
+
+    console.log("add user tofirebase", userObj);
     return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/userInfo.json`,
+        url: `${firebase.getFBsettings().databaseURL}/user.json`,
+
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
+        console.log("userID",userID);
         return userID;
     });
 }
@@ -54,13 +64,8 @@ function loginUser(userObj) {
         });
 }
 
-function logInGoogle() {
-    //all firebase functions return a promise!! Add a then when called
-    return firebase.auth().signInWithPopup(provider);
-}
 
-function logOut() {
-    return firebase.auth().signOut();
-}
 
-module.exports = { addUser, getFBDetails, updateUserFB, createUser,loginUser};
+
+module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
+

@@ -3,7 +3,9 @@ console.log("book-interaction");
 
 let $ = require('jquery'),
                 firebase = require("./config");
-                // aBook = {},
+              
+
+
         // for referencec
 //         function getReadBook() {
 //     return getBook().then((rea) => {
@@ -34,18 +36,22 @@ function getBook() {
         return error;
     });
 }
-function getDueBook(due) {
-    console.log("dueDate",due);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="due"&equalTo="${due}"`
-    }).done((bookData) => {
-        return bookData;
-    }).fail((error) => {
-        return error;
-    });
-}
-getDueBook();
 
+
+function getDueBook() {
+    console.log("getdueda",getBook());
+            return getBook().then((ove) => {
+            const dueDa = [];
+            for (let key in ove) {
+                if (ove[key].due !== "undifined") {
+                    dueDa.push(ove[key]);
+                    return dueDa;
+                }
+            }
+
+        });
+    }
+getDueBook();
          //book with userId
 
 function getUserBook(user) {
@@ -71,9 +77,6 @@ function getReadBook() {
 
     });
 }
-
-
-
          //Library books
          
 function getLibBook(){

@@ -282,9 +282,7 @@ p {
   left: 310px;
   z-index: 14; }
 
-toprint {
-  background-color: #8a856a; }
-
+#logout,
 #login {
   background-color: #aac8d8;
   border: 2px solid #ede6e9; }

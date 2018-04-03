@@ -1,5 +1,4 @@
 "use strict";
-
      console.log("iam user");
 
     let $ = require('jquery'),
@@ -83,7 +82,7 @@
                 data[0].fbID = key[0];
                 setUserVars(data[0]);
                 }
-            $("#zip-container").removeClass("is-hidden");
+            // $("#zip-container").removeClass("is-hidden");
         });
 
     }

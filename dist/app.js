@@ -11032,7 +11032,7 @@ $("#over-book").click(function () {
      $("#welcome").remove();
          $(".uniContainer-wrapper").html("");
               loadDueBooksDOM();
-            // meg.purple();
+    $("#login").addClass("is-hidden");
         });
 
 

@@ -77,7 +77,7 @@ function getLibBook(){
          //bought 
 
 function getBuyBook() {
-    console.log("why get buy books",getBook())
+    console.log("why get buy books",getBook());
     return getBook().then((bou) => {
         const bought = [];
         for (let key in bou) {

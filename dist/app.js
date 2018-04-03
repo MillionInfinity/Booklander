@@ -10437,7 +10437,7 @@ function getLibBook(){
          //bought 
 
 function getBuyBook() {
-    console.log("why get buy books",getBook())
+    console.log("why get buy books",getBook());
     return getBook().then((bou) => {
         const bought = [];
         for (let key in bou) {
@@ -11020,7 +11020,7 @@ $(document).on("click", ".delete-btn", function () {
 $("#over-book").click(function () {
      $("#welcome").remove();
          $(".uniContainer-wrapper").html("");
-              loadDueBooksDOM() 
+              loadDueBooksDOM();
             // meg.purple();
         });
 

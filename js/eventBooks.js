@@ -187,7 +187,7 @@ $(document).on("click", ".delete-btn", function () {
 $("#over-book").click(function () {
      $("#welcome").remove();
          $(".uniContainer-wrapper").html("");
-              loadDueBooksDOM() 
+              loadDueBooksDOM();
             // meg.purple();
         });
 

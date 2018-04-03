@@ -16,11 +16,11 @@
             "bookId": "pottergrace001",
             "title": "Medicine",
             "author": "Grace Potter",
-            "place": "Grace Potter and the Nocturnals",
+         
             "image": "3.png",
             "type": "borrowed",
-            "due-date": "March, 5 2018",
-            "read":false,
+            "due": "2018,2,10",
+            "read":"Yes",
             "description":"i will sleep after i wakeup"
         },
         {

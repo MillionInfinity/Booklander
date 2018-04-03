@@ -19,8 +19,8 @@ $nav-color: #b9b4aa;
    font-weight: bolder;
    display: block;
    left:-35px;
-   background-color: #accc63;
- width:301px;
+  //  background-color: #accc63;
+//  width:301px;
     & li{
        padding: 45px;
       //  border-right: 1px solid #eeeeee;
@@ -49,14 +49,15 @@ $nav-color: #b9b4aa;
   font-size: 35px;
   padding:15px 0px;
 }
-.navbar-header{
-  min-height: 150px !important;
-    border-style: 5px solid #657083;
+.navbar{
+  min-height: 15px !important;
+    border-style: 5px solid #836573;
     border-width: 5px;
  
   & h3{
+    margin-top: 15px;
 font-family: $primaryFont;
-font-size: 80px;
+font-size: 50px;
 color: $white;
   }
 }
@@ -80,8 +81,8 @@ color: $white;
 }
 nav{
   background-color: #657083;
-  margin-top: .5rem;
-  margin-bottom: 1.5rem;
+  margin-top: -1.5rem;
+  // margin-bottom: 1.5rem;
 }
 .nav__links{
   margin-bottom: 0;
@@ -372,22 +373,22 @@ body {
   background-color: #aac8d8;
   border:2px solid #ede6e9;
 }
-#library{
-   background-color:#a9bdc6;
-   border:2px solid #f4f7f1;
-}
-#borrowed{
-   background-color:#dbd5e4;
-   border: 2px solid #ede6e9;
-}
-#bought{
-   background-color:#ede6e9;
-   border: 2px solid #dbd5e4;
-}
-#all-book{
-    background-color:#f4f7f1;
-    border: 2px solid #aac8d8;
-}
+// #library{
+//    background-color:#a9bdc6;
+//    border:2px solid #f4f7f1;
+// }
+// #borrowed{
+//    background-color:#dbd5e4;
+//    border: 2px solid #ede6e9;
+// }
+// #bought{
+//    background-color:#ede6e9;
+//    border: 2px solid #dbd5e4;
+// }
+// #all-book{
+//     background-color:#f4f7f1;
+//     border: 2px solid #aac8d8;
+// }
 #right{
     background-color:#ede6e9;
 }
@@ -416,3 +417,46 @@ body {
    border:2px solid #f4f7f1;
     margin-left: -55px;
 }
+.myuser li{
+  width:120px;
+  text-align: center;
+  height: 35px;
+  border-radius: 5px;
+  padding-top: 3px;
+  position: relative;
+  top:20px;
+  left:-20px;
+  &:hover{
+    background-color: #f4f7f1; 
+  }
+
+  & a{
+ 
+  color: #385785;
+  text-decoration: none;
+  &:hover{
+    color:#192b33;
+
+  }
+   }
+   
+}
+
+h1{
+  position: relative;
+  left:30px;
+  top:25px;
+  margin-bottom: 40px;
+}
+#toprint.row{
+margin-left:10px;
+}
+
+// #login{
+//   margin-top: 5px;
+// }
+
+// .container{
+//   max-width: 550px;
+//   margin:5px;
+// }

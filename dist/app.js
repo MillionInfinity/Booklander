@@ -10559,7 +10559,9 @@ module.exports = {
          
  
 
+
 function makeDueList(bookList) {
+
     let bookDisplay = $(`<div class="container" id="readground">
                      
                      <div class="row" id="toprint">
@@ -10579,7 +10581,9 @@ function makeDueList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
+
               
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
@@ -10635,6 +10639,8 @@ function makeLiBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
+
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
@@ -10664,6 +10670,7 @@ function makeBrBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
@@ -10733,7 +10740,9 @@ function bookForm(book, bookId) {
                 let bookItem = {
                     title: book ? book.title : "",
                     author: book ? book.author : "",
+
                     dueDate: book ? book.due : "",
+
                     image: book ? book.image : "",
                     // place: book ? book.place : "",
                     type: book ? book.type : "",
@@ -10748,7 +10757,9 @@ function bookForm(book, bookId) {
                         
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
+
                       
+
                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
                       
                         <select name="Type" id="form-type" value="${bookItem.type}">
@@ -11021,7 +11032,7 @@ $("#over-book").click(function () {
      $("#welcome").remove();
          $(".uniContainer-wrapper").html("");
               loadDueBooksDOM();
-            // meg.purple();
+    $("#login").addClass("is-hidden");
         });
 
 

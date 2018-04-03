@@ -10363,28 +10363,10 @@ console.log("book-interaction");
 
 let $ = require('jquery'),
                 firebase = require("./config");
-              
+        
 
 
-        // for referencec
-//         function getReadBook() {
-//     return getBook().then((rea) => {
-//         const read = [];
-//         for (let key in rea) {
-//             if (rea[key].read === "No") {
-//                 read.push(rea[key]);
-
-//                 return read;
-//             } else {
-//                 alert("Do you want to read today?");
-//             }
-
-//         }
-
-//     });
-// }
-
-
+    
         // book withOut user
 
 function getBook() {
@@ -10397,21 +10379,21 @@ function getBook() {
     });
 }
 
-
+// due books
 function getDueBook() {
-    console.log("getdueda",getBook());
-            return getBook().then((ove) => {
+     return getBook().then((ove) => {
             const dueDa = [];
             for (let key in ove) {
-                if (ove[key].due !== "undifined") {
+                if (ove[key].due !== null || 'undefined') {
                     dueDa.push(ove[key]);
-                    return dueDa;
+                    console.log("getdueda", dueDa);
                 }
-            }
-
+              
+         } return dueDa;
+       
         });
     }
-getDueBook();
+
          //book with userId
 
 function getUserBook(user) {
@@ -10431,9 +10413,9 @@ function getReadBook() {
         for (let key in rea) {
             if (rea[key].read === "No") {
                 read.push(rea[key]);
-                return read;
+              
             } 
-        }
+        } return read;
 
     });
 }
@@ -10445,9 +10427,9 @@ function getLibBook(){
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-                return library;
+             
         }
-    }
+        } return library;
        
     });
 }
@@ -10455,14 +10437,15 @@ function getLibBook(){
          //bought 
 
 function getBuyBook() {
+    console.log("why get buy books",getBook())
     return getBook().then((bou) => {
         const bought = [];
         for (let key in bou) {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
-                return bought;
+               
             } 
-        }
+        } return bought;
       
     });
 }  
@@ -10475,10 +10458,10 @@ function getBrBook() {
         for (let key in bro) {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
-                return borrow;
+               
              }
            
-        } 
+        } return borrow;
           
     });
 }
@@ -10497,14 +10480,6 @@ function ajaxCalls(book) {
     });
 }
 
-// function getSameBook(array) {
-//     console.log("getSameBook", array);
-//     let promiseArr = [];
-//     for (var i = 0; i < array.length; i++) {
-//         promiseArr.push(ajaxCalls(array[i]));
-//     }
-//     return Promise.all(promiseArr);
-// }
 
 function deleteBook(bookId) {
     $.ajax({
@@ -10559,7 +10534,6 @@ module.exports = {
     ajaxCalls,
     addBook,
     addUserBook,
-    // getSamBook,
     deleteBook,
     editBook,
     getBrBook,
@@ -10583,24 +10557,9 @@ module.exports = {
            console.log("print on to dom");
            let $ = require('jquery');
          
-  //welcome note
-        //     function welcomeH() {
-        //         let welcomes = $(`
-        //       `);
-        //     $(".welcome").html(welcomes);
+ 
 
-        //   } 
-        // // $(window).load(function () {
-        // //     $(".welcome").fadeOut("slow");
-        // // });
-
-        //     $(document).ready(function () {
-        //         $("#welcome").show();
-        //     });
-
-         // ready to read
-
-function makeEditList(bookList) {
+function makeDueList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
                      
                      <div class="row" id="toprint">
@@ -10620,13 +10579,14 @@ function makeEditList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+              
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 
 } 
+   //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
                        <h1> My Books Ready To Read</h1>
@@ -10647,8 +10607,7 @@ function makeBookReadList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10676,8 +10635,7 @@ function makeLiBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10706,8 +10664,7 @@ function makeBrBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10736,7 +10693,7 @@ function makeBoBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10762,8 +10719,7 @@ function makeBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.type}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -10777,9 +10733,9 @@ function bookForm(book, bookId) {
                 let bookItem = {
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-                    dueDate: book ? book.dueDate : "",
+                    dueDate: book ? book.due : "",
                     image: book ? book.image : "",
-                    place: book ? book.place : "",
+                    // place: book ? book.place : "",
                     type: book ? book.type : "",
                     read: book ? book.read : "",
                     description: book ? book.description : "",
@@ -10792,9 +10748,9 @@ function bookForm(book, bookId) {
                         
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.dueDate}"></input>
+                      
                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
-                        <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input>
+                      
                         <select name="Type" id="form-type" value="${bookItem.type}">
                            <option value="option">Book Type</option>
                             <option value="library">library</option>
@@ -10807,20 +10763,25 @@ function bookForm(book, bookId) {
                             <option value="library">Yes</option>
                             <option value="borrow">No</option>
                         </select>
+                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
                 resolve(form);
-             
-                var types = $('#form-type').find('option:selected').text();
-                bookItem.type=types;
+                {/* <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input> */}
+                // var types = $('#form-type').find('option:selected').text();
+                // bookItem.type=types;
     });
 }
-{/* <input type="text" id="form-read" placeholder="Do you Read it?" value="${bookItem.read}"></input> */}
+//  function enableElements(){
+// if($('#form-type').val() == "library" || "borrow"){
+//     $("#date option[value='${ bookItem.dueDate }']").attr('disabled',true);
+// }
+//  }
 
 
        
          module.exports = { 
-                            // welcomeH,
+                            makeDueList,
                             makeBookReadList,
                             makeBookList,
                             makeLiBookList,
@@ -10927,14 +10888,14 @@ function loadLibBookToDOM() {
             booksDom.makeLiBookList(books);
         });
 }
-      //loading edit books
-// function loadEditToDOM() {
-//     let currentUser = user.getUser();
-//     bookInter.getBook(currentUser)
-//         .then((bookData) => {
-//             booksDom.makeEditList(bookData);
-//         });
-// }
+    //   loading edit books
+function loadDueBooksDOM() {
+    let currentUser = user.getUser();
+    bookInter.getDueBook(currentUser)
+        .then((bookData) => {
+            booksDom.makeDueList(bookData);
+        });
+}
     
             //save listner
 
@@ -10988,7 +10949,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#date").val(),
+        due: $("#date").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("#form-read").val(),
@@ -11055,7 +11016,18 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
+   //due books li
+$("#over-book").click(function () {
+     $("#welcome").remove();
+         $(".uniContainer-wrapper").html("");
+              loadDueBooksDOM() 
+            // meg.purple();
+        });
 
+
+
+
+      
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("my mainjs");
@@ -11239,7 +11211,6 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
 
 },{"./config":6,"./user":11,"jquery":1}],11:[function(require,module,exports){
 "use strict";
-
      console.log("iam user");
 
     let $ = require('jquery'),
@@ -11323,7 +11294,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                 data[0].fbID = key[0];
                 setUserVars(data[0]);
                 }
-            $("#zip-container").removeClass("is-hidden");
+            // $("#zip-container").removeClass("is-hidden");
         });
 
     }

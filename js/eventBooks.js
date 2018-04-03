@@ -55,14 +55,14 @@ function loadLibBookToDOM() {
             booksDom.makeLiBookList(books);
         });
 }
-      //loading edit books
-// function loadEditToDOM() {
-//     let currentUser = user.getUser();
-//     bookInter.getBook(currentUser)
-//         .then((bookData) => {
-//             booksDom.makeEditList(bookData);
-//         });
-// }
+    //   loading edit books
+function loadDueBooksDOM() {
+    let currentUser = user.getUser();
+    bookInter.getDueBook(currentUser)
+        .then((bookData) => {
+            booksDom.makeDueList(bookData);
+        });
+}
     
             //save listner
 
@@ -183,3 +183,15 @@ $(document).on("click", ".delete-btn", function () {
     // setTimeout(callback, 1000);
 });
 
+   //due books li
+$("#over-book").click(function () {
+     $("#welcome").remove();
+         $(".uniContainer-wrapper").html("");
+              loadDueBooksDOM();
+            // meg.purple();
+        });
+
+
+
+
+      

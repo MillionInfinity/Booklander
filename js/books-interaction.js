@@ -3,28 +3,10 @@ console.log("book-interaction");
 
 let $ = require('jquery'),
                 firebase = require("./config");
-              
+        
 
 
-        // for referencec
-//         function getReadBook() {
-//     return getBook().then((rea) => {
-//         const read = [];
-//         for (let key in rea) {
-//             if (rea[key].read === "No") {
-//                 read.push(rea[key]);
-
-//                 return read;
-//             } else {
-//                 alert("Do you want to read today?");
-//             }
-
-//         }
-
-//     });
-// }
-
-
+    
         // book withOut user
 
 function getBook() {
@@ -37,21 +19,21 @@ function getBook() {
     });
 }
 
-
+// due books
 function getDueBook() {
-    console.log("getdueda",getBook());
-            return getBook().then((ove) => {
+     return getBook().then((ove) => {
             const dueDa = [];
             for (let key in ove) {
-                if (ove[key].due !== "undifined") {
+                if (ove[key].due !== null || 'undefined') {
                     dueDa.push(ove[key]);
-                    return dueDa;
+                    console.log("getdueda", dueDa);
                 }
-            }
-
+              
+         } return dueDa;
+       
         });
     }
-getDueBook();
+
          //book with userId
 
 function getUserBook(user) {
@@ -71,9 +53,9 @@ function getReadBook() {
         for (let key in rea) {
             if (rea[key].read === "No") {
                 read.push(rea[key]);
-                return read;
+              
             } 
-        }
+        } return read;
 
     });
 }
@@ -85,9 +67,9 @@ function getLibBook(){
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-                return library;
+             
         }
-    }
+        } return library;
        
     });
 }
@@ -95,14 +77,15 @@ function getLibBook(){
          //bought 
 
 function getBuyBook() {
+    console.log("why get buy books",getBook());
     return getBook().then((bou) => {
         const bought = [];
         for (let key in bou) {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
-                return bought;
+               
             } 
-        }
+        } return bought;
       
     });
 }  
@@ -115,10 +98,10 @@ function getBrBook() {
         for (let key in bro) {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
-                return borrow;
+               
              }
            
-        } 
+        } return borrow;
           
     });
 }
@@ -137,14 +120,6 @@ function ajaxCalls(book) {
     });
 }
 
-// function getSameBook(array) {
-//     console.log("getSameBook", array);
-//     let promiseArr = [];
-//     for (var i = 0; i < array.length; i++) {
-//         promiseArr.push(ajaxCalls(array[i]));
-//     }
-//     return Promise.all(promiseArr);
-// }
 
 function deleteBook(bookId) {
     $.ajax({
@@ -199,7 +174,6 @@ module.exports = {
     ajaxCalls,
     addBook,
     addUserBook,
-    // getSamBook,
     deleteBook,
     editBook,
     getBrBook,

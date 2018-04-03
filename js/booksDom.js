@@ -4,7 +4,9 @@
          
  
 
-function makeEditList(bookList) {
+
+function makeDueList(bookList) {
+
     let bookDisplay = $(`<div class="container" id="readground">
                      
                      <div class="row" id="toprint">
@@ -24,13 +26,16 @@ function makeEditList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
+
+              
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 
 } 
+   //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
                        <h1> My Books Ready To Read</h1>
@@ -79,7 +84,8 @@ function makeLiBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
+
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
@@ -109,7 +115,7 @@ function makeBrBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
+
                 <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
@@ -139,7 +145,7 @@ function makeBoBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -165,8 +171,7 @@ function makeBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.place}</h5>`);
+                <h5>${currentBook.type}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -180,9 +185,11 @@ function bookForm(book, bookId) {
                 let bookItem = {
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-                    due: book ? book.due : "",
+
+                    dueDate: book ? book.due : "",
+
                     image: book ? book.image : "",
-                    place: book ? book.place : "",
+                    // place: book ? book.place : "",
                     type: book ? book.type : "",
                     read: book ? book.read : "",
                     description: book ? book.description : "",
@@ -195,9 +202,11 @@ function bookForm(book, bookId) {
                         
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
+
+                      
+
                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
-                        <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input>
+                      
                         <select name="Type" id="form-type" value="${bookItem.type}">
                            <option value="option">Book Type</option>
                             <option value="library">library</option>
@@ -210,20 +219,25 @@ function bookForm(book, bookId) {
                             <option value="library">Yes</option>
                             <option value="borrow">No</option>
                         </select>
+                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
                 resolve(form);
-             
-                var types = $('#form-type').find('option:selected').text();
-                bookItem.type=types;
+                {/* <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input> */}
+                // var types = $('#form-type').find('option:selected').text();
+                // bookItem.type=types;
     });
 }
-{/* <input type="text" id="form-read" placeholder="Do you Read it?" value="${bookItem.read}"></input> */}
+//  function enableElements(){
+// if($('#form-type').val() == "library" || "borrow"){
+//     $("#date option[value='${ bookItem.dueDate }']").attr('disabled',true);
+// }
+//  }
 
 
        
          module.exports = { 
-                            // welcomeH,
+                            makeDueList,
                             makeBookReadList,
                             makeBookList,
                             makeLiBookList,

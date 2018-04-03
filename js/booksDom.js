@@ -2,22 +2,7 @@
            console.log("print on to dom");
            let $ = require('jquery');
          
-  //welcome note
-        //     function welcomeH() {
-        //         let welcomes = $(`
-        //       `);
-        //     $(".welcome").html(welcomes);
-
-        //   } 
-        // // $(window).load(function () {
-        // //     $(".welcome").fadeOut("slow");
-        // // });
-
-        //     $(document).ready(function () {
-        //         $("#welcome").show();
-        //     });
-
-         // ready to read
+ 
 
 function makeEditList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
@@ -40,7 +25,7 @@ function makeEditList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -66,8 +51,7 @@ function makeBookReadList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -96,7 +80,7 @@ function makeLiBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -126,7 +110,7 @@ function makeBrBookList(bookList) {
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
                 <h5>${currentBook.type}</h5>
-                <h5>${currentBook.dueDate}</h5>`);
+                <h5>${currentBook.due}</h5>`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
@@ -196,7 +180,7 @@ function bookForm(book, bookId) {
                 let bookItem = {
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-                    dueDate: book ? book.dueDate : "",
+                    due: book ? book.due : "",
                     image: book ? book.image : "",
                     place: book ? book.place : "",
                     type: book ? book.type : "",
@@ -211,7 +195,7 @@ function bookForm(book, bookId) {
                         
                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.dueDate}"></input>
+                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
                         <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input>
                         <select name="Type" id="form-type" value="${bookItem.type}">

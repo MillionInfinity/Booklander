@@ -116,7 +116,7 @@ $(document).on("click", ".delete-btn", function () {
     let bookObj = {
         title: $("#form-title").val(),
         author: $("#form-author").val(),
-        dueDate: $("#date").val(),
+        due: $("#date").val(),
         image: $("#form-image").val(),
         place: $("#form-place").val(),
         read: $("#form-read").val(),

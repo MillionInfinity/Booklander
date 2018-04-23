@@ -13,7 +13,7 @@ $nav-color: #b9b4aa;
 //   background-image: url('img/1.png')repeat fixed;
 //   background-size: contain;
 // }
-
+.rightest,
  .nav-sidebar{
    font-family: 'Poiret One', cursive;
    font-weight: bolder;
@@ -22,7 +22,7 @@ $nav-color: #b9b4aa;
   //  background-color: #accc63;
 //  width:301px;
     & li{
-       padding: 45px;
+       padding: 25px;
       //  border-right: 1px solid #eeeeee;
        border-bottom: 1px solid #eeeeee;
        top:50px;
@@ -206,7 +206,7 @@ margin: 5px;
 }
 #form-desc{
   width: 1200px;
-  height: 250px;
+  height: auto;
 }
 #form-place,
  #form-image{
@@ -220,7 +220,7 @@ margin: 5px;
  }
  a.aBook{
    top:150px !important;
-   margin-top: 50px;
+   margin-bottom: 30px;
    font-size: 25px;
    color:#3b610c;
    text-decoration: none;
@@ -241,8 +241,8 @@ transition: box-shadow .25s;
 }
 a.edit-btn{
   // background-color: #6f8a30;
-  // position: relative;
-  // top: 180px;
+  position: relative;
+  top: 38px;
   left:0px;
   width: 100px;
   height: 35px;
@@ -256,7 +256,7 @@ a.delete-btn{
   height: 35px;
   //  position: relative;
   // top: 180px;
-  margin-left:100px;
+  margin-left:170px;
   z-index: 17;
   background-color: white;
   border:1px solid #84ad52;
@@ -364,59 +364,16 @@ body {
 }
 
 
-// toprint{
-//   background-color: #8a856a;
-// }
-
 #logout,
 #login{
   background-color: #aac8d8;
   border:2px solid #ede6e9;
 }
-// #library{
-//    background-color:#a9bdc6;
-//    border:2px solid #f4f7f1;
-// }
-// #borrowed{
-//    background-color:#dbd5e4;
-//    border: 2px solid #ede6e9;
-// }
-// #bought{
-//    background-color:#ede6e9;
-//    border: 2px solid #dbd5e4;
-// }
-// #all-book{
-//     background-color:#f4f7f1;
-//     border: 2px solid #aac8d8;
-// }
+
 #right{
     background-color:#ede6e9;
 }
-   .rightest li{
-    display: block;
-    padding-right: -1rem;
-    width: 18rem;
-    height: 9em;
-    left:0px;
   
-
-}
-#add-book{
-  background-color:#f4f7f1;
-    border: 2px solid #aac8d8;
-    margin-left: -55px;
-}
-#read-book{
-   background-color:#dbd5e4;
-   border: 2px solid #ede6e9;
-    margin-left: -55px;
-}
-
-#over-book{
-    background-color:#a9bdc6;
-   border:2px solid #f4f7f1;
-    margin-left: -55px;
-}
 .myuser li{
   width:120px;
   text-align: center;
@@ -452,11 +409,6 @@ h1{
 margin-left:10px;
 }
 
-// #login{
-//   margin-top: 5px;
-// }
-
-// .container{
-//   max-width: 550px;
-//   margin:5px;
-// }
+#welcome{
+  max-width: 545px;
+}

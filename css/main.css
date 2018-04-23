@@ -1,12 +1,15 @@
+.rightest,
 .nav-sidebar {
   font-family: 'Poiret One', cursive;
   font-weight: bolder;
   display: block;
   left: -35px; }
+  .rightest li,
   .nav-sidebar li {
-    padding: 45px;
+    padding: 25px;
     border-bottom: 1px solid #eeeeee;
     top: 50px; }
+  .rightest a,
   .nav-sidebar a {
     font-family: 'Poiret One', cursive;
     font-weight: bolder;
@@ -155,7 +158,7 @@ li {
 
 #form-desc {
   width: 1200px;
-  height: 250px; }
+  height: auto; }
 
 #form-place,
 #form-image {
@@ -169,7 +172,7 @@ save.new.btn {
 
 a.aBook {
   top: 150px !important;
-  margin-top: 50px;
+  margin-bottom: 30px;
   font-size: 25px;
   color: #3b610c;
   text-decoration: none; }
@@ -187,6 +190,8 @@ div.col-sm-6 {
   transition: box-shadow .25s; }
 
 a.edit-btn {
+  position: relative;
+  top: 38px;
   left: 0px;
   width: 100px;
   height: 35px;
@@ -197,7 +202,7 @@ a.edit-btn {
 
 a.delete-btn {
   height: 35px;
-  margin-left: 100px;
+  margin-left: 170px;
   z-index: 17;
   background-color: white;
   border: 1px solid #84ad52;
@@ -288,28 +293,6 @@ p {
 #right {
   background-color: #ede6e9; }
 
-.rightest li {
-  display: block;
-  padding-right: -1rem;
-  width: 18rem;
-  height: 9em;
-  left: 0px; }
-
-#add-book {
-  background-color: #f4f7f1;
-  border: 2px solid #aac8d8;
-  margin-left: -55px; }
-
-#read-book {
-  background-color: #dbd5e4;
-  border: 2px solid #ede6e9;
-  margin-left: -55px; }
-
-#over-book {
-  background-color: #a9bdc6;
-  border: 2px solid #f4f7f1;
-  margin-left: -55px; }
-
 .myuser li {
   width: 120px;
   text-align: center;
@@ -335,5 +318,8 @@ h1 {
 
 #toprint.row {
   margin-left: 10px; }
+
+#welcome {
+  max-width: 545px; }
 
 /*# sourceMappingURL=main.css.map */

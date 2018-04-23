@@ -168,7 +168,7 @@ $(document).on("click", ".delete-btn", function () {
         $(".uniContainer-wrapper").html("");
 
                loadBookToDOM();
-                // meg.purple();
+                meg.purple();
         });
 
 

@@ -220,7 +220,7 @@ function bookForm(book, bookId) {
                             <option value="borrow">No</option>
                         </select>
                         <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
-                        <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"></input><br/>
+                        <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
                 resolve(form);
                 {/* <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input> */}

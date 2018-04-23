@@ -1,14 +1,15 @@
+.rightest,
 .nav-sidebar {
   font-family: 'Poiret One', cursive;
   font-weight: bolder;
   display: block;
-  left: -35px;
-  background-color: #accc63;
-  width: 301px; }
+  left: -35px; }
+  .rightest li,
   .nav-sidebar li {
-    padding: 45px;
+    padding: 25px;
     border-bottom: 1px solid #eeeeee;
     top: 50px; }
+  .rightest a,
   .nav-sidebar a {
     font-family: 'Poiret One', cursive;
     font-weight: bolder;
@@ -29,13 +30,14 @@
   font-size: 35px;
   padding: 15px 0px; }
 
-.navbar-header {
-  min-height: 150px !important;
-  border-style: 5px solid #657083;
+.navbar {
+  min-height: 15px !important;
+  border-style: 5px solid #836573;
   border-width: 5px; }
-  .navbar-header h3 {
+  .navbar h3 {
+    margin-top: 15px;
     font-family: "Open Sans", sans-serif;
-    font-size: 80px;
+    font-size: 50px;
     color: #fff; }
 
 .header-font {
@@ -57,8 +59,7 @@
 
 nav {
   background-color: #657083;
-  margin-top: .5rem;
-  margin-bottom: 1.5rem; }
+  margin-top: -1.5rem; }
 
 .nav__links {
   margin-bottom: 0;
@@ -157,7 +158,7 @@ li {
 
 #form-desc {
   width: 1200px;
-  height: 250px; }
+  height: auto; }
 
 #form-place,
 #form-image {
@@ -171,7 +172,7 @@ save.new.btn {
 
 a.aBook {
   top: 150px !important;
-  margin-top: 50px;
+  margin-bottom: 30px;
   font-size: 25px;
   color: #3b610c;
   text-decoration: none; }
@@ -189,6 +190,8 @@ div.col-sm-6 {
   transition: box-shadow .25s; }
 
 a.edit-btn {
+  position: relative;
+  top: 38px;
   left: 0px;
   width: 100px;
   height: 35px;
@@ -199,7 +202,7 @@ a.edit-btn {
 
 a.delete-btn {
   height: 35px;
-  margin-left: 100px;
+  margin-left: 170px;
   z-index: 17;
   background-color: white;
   border: 1px solid #84ad52;
@@ -287,45 +290,36 @@ p {
   background-color: #aac8d8;
   border: 2px solid #ede6e9; }
 
-#library {
-  background-color: #a9bdc6;
-  border: 2px solid #f4f7f1; }
-
-#borrowed {
-  background-color: #dbd5e4;
-  border: 2px solid #ede6e9; }
-
-#bought {
-  background-color: #ede6e9;
-  border: 2px solid #dbd5e4; }
-
-#all-book {
-  background-color: #f4f7f1;
-  border: 2px solid #aac8d8; }
-
 #right {
   background-color: #ede6e9; }
 
-.rightest li {
-  display: block;
-  padding-right: -1rem;
-  width: 18rem;
-  height: 9em;
-  left: 0px; }
+.myuser li {
+  width: 120px;
+  text-align: center;
+  height: 35px;
+  border-radius: 5px;
+  padding-top: 3px;
+  position: relative;
+  top: 20px;
+  left: -20px; }
+  .myuser li:hover {
+    background-color: #f4f7f1; }
+  .myuser li a {
+    color: #385785;
+    text-decoration: none; }
+    .myuser li a:hover {
+      color: #192b33; }
 
-#add-book {
-  background-color: #f4f7f1;
-  border: 2px solid #aac8d8;
-  margin-left: -55px; }
+h1 {
+  position: relative;
+  left: 30px;
+  top: 25px;
+  margin-bottom: 40px; }
 
-#read-book {
-  background-color: #dbd5e4;
-  border: 2px solid #ede6e9;
-  margin-left: -55px; }
+#toprint.row {
+  margin-left: 10px; }
 
-#over-book {
-  background-color: #a9bdc6;
-  border: 2px solid #f4f7f1;
-  margin-left: -55px; }
+#welcome {
+  max-width: 545px; }
 
 /*# sourceMappingURL=main.css.map */

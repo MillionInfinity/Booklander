@@ -168,7 +168,7 @@ $(document).on("click", ".delete-btn", function () {
         $(".uniContainer-wrapper").html("");
 
                loadBookToDOM();
-                // meg.purple();
+                meg.purple();
         });
 
 
@@ -188,7 +188,7 @@ $("#over-book").click(function () {
      $("#welcome").remove();
          $(".uniContainer-wrapper").html("");
               loadDueBooksDOM();
-            // meg.purple();
+    // $("#login").addClass("is-hidden");
         });
 
 

@@ -10,7 +10,9 @@
         crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i|Poiret+One" rel="stylesheet">
 
+
     <link rel="stylesheet" href="./css/main.css">
+
     <!-- <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" /> -->
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
 </head>
@@ -18,22 +20,25 @@
 
 
 <body>
-
     <header>
-
-                               <!-- HEADER -->
-        <nav class="navbar-header" style="background-color:#657083;"><h3 class="navbar-brand">Bookalander</h3></nav>
-
+                             <!-- HEADER -->
+        <nav class="navbar" style="background-color:#657083;"><h3 class="navbar-brand">Bookalander</h3>
+        <div class="navbar-nav">
+        <ul class="myuser">
+        <li id="login"><a href="#" title="">Sign In</a></li>
+        <li id="logout" class="is-hidden"><a href="#" title="">Logout</a></li>
+        </ul>
+        </div>
+        </nav>
     </header>
 
                             <!-- SIDEBAR STARTS -->
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-2" style="background-color:aac8d8;">
+            <div class="col-sm-2" style="background-color:#aac8d8;">
                 <ul class="nav nav-sidebar">
-                    <li id="login"><a href="#" title="">Sign In</a></li>
-                    <li id="logout" class="is-hidden"><a href="#" title="">Logout</a></li>
+                  
                     <li id="library"><a href="#">Library</a></li>
                     <li id="borrowed"><a href="#">Borrowed</a></li>
                     <li id="bought"><a href="#">Bought</a></li>
@@ -44,11 +49,11 @@
                              <!--CENTER PART -->
 
 
-            <div class="col-sm-8">
+            <div class="col-sm-8" style="background-color:#557d92;">
                      
                     <div class="uiContainer-wrapper"></div>
                     <div id="welcome">
-                     <!-- <img src="imgs/cover.png" alt="welcomeImage"> -->
+                     <img src="imgs/cover.png" alt="welcomeImage">
                             <!-- <img src="imgs/cover.png" alt="welcomeImage"> -->
                                   <!-- <h3 class="planetBook3">Welcome to</h3>
                                  <h2 class="planetBook2">The Planet of</h2> 

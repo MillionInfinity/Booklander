@@ -1,417 +1,56 @@
-$red: #f63541;
-$yellow: #8a856a;;
-$lightgray: #8d8984;
-$regulargray: #aaaaaa;
-$black: #e8e9d8;
-$white:#fff;
-$primaryFont: 'Open Sans', sans-serif;
-$secondaryFont:'Microsoft Sans Serif Regular',sans-serif;
-$nav-color: #b9b4aa;
-
-// body{
-//   background-image: url('img/1.png')repeat fixed;
-//   background-size: contain;
-// }
-
- .nav-sidebar{
-   font-family: 'Poiret One', cursive;
-   font-weight: bolder;
-   display: block;
-   left:-35px;
-   background-color: #accc63;
- width:301px;
-    & li{
-       padding: 45px;
-      //  border-right: 1px solid #eeeeee;
-       border-bottom: 1px solid #eeeeee;
-       top:50px;
-    }
-    & a{
-       font-family: 'Poiret One', cursive;
-   font-weight: bolder;
-      font-size: 25px;
-      color:#3b610c;
-      text-decoration: none;
-    }
- }
-
-.add-book a{
-   font-family: 'Poiret One', cursive;
-   font-weight: bolder;
-  position: relative;
-  left:15px;
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+.navbar-expand-lg{
+  background-color: #546E7A;
 }
-.contact{
-  top:15px;
+body{
+  background-color: rgb(199, 207, 211);
 }
-#dueBook.header{
-  font-size: 35px;
-  padding:15px 0px;
+h1{
+  font-family: 'Montserrat', sans-serif;
+  color:white;
+  padding:30px;
 }
-.navbar-header{
-  min-height: 150px !important;
-    border-style: 5px solid #657083;
-    border-width: 5px;
- 
-  & h3{
-font-family: $primaryFont;
-font-size: 80px;
-color: $white;
-  }
+.navbar-brand{
+  font-size:2rem;
+  font-family: Montserrat;
 }
-.header-font{
-  color:#84ad52;
-  font-size: 35px;
-  margin-left: -15px;
-}
-.selector-for-some-widget {
-  box-sizing: border-box;
-}
-.book-title{
-  width:150px;
-  display: inline !important;
+.is-hidden{
+   display: none;
 }
 
- .book-list_item{
-   background-color: aquamarine;
-   padding: 15px;
-   display: inline;
-}
-nav{
-  background-color: #657083;
-  margin-top: .5rem;
-  margin-bottom: 1.5rem;
-}
-.nav__links{
-  margin-bottom: 0;
-  padding-left: 1.5rem;
-
-   li{
-    display: block;
-    padding-left: -.1rem;
-    width: 9rem;
-     border-right: 2px solid #000;
-}
-}
-
- .aBook,
-   .nav-sidebar a{
-      font-family: 'Poiret One', cursive;
-   font-weight: bolder;
-      font-size: 1.5em;
-      color:$secondaryFont;
-      // box-shadow:5px 10px 18px #6f8a30;
-      border-radius: 5px;	
-      line-height: 3rem;
-      display: block;
-      text-align: center;
-      text-decoration: none;
-
-      &.last{
-        border-right: 0;
-      }
-      &:hover{
-        // border:1px solid #6f8a30;
-        color: white;
-        text-decoration:none;
-    }}
-  .is-hidden{
-    display: none;
-}
-
-.uiContainer
-{
-  &--wrapper{
-    padding-right: 0;
-    height: 750px;
-    // background-color: $regulargray;
-  }
-    input{
-      font-size: 2em;
-      // padding:85px;
-    } 
-  &__book-list{
-    height: 538px;
-    padding-right: 0;
-    overflow: scroll;
-    }
-    li.book-list_item{
-      border: 1px solid black;
-      padding: 14px;
-      display: inline !important;
-      min-width:550px;
-      min-height:550px;
-      list-style-type: none;
-      padding-bottom: 85px;
-      background-color: #4f922f;
-    }
-      li{
-        
-        margin-bottom: .4rem;
-        // padding: 15px;
-      }
-      &__item--data{
-        padding-left: 100px;
-      }}
-        li{
-         background-color:#accc63 0.5;
-         display:block;
-         padding-left: .8rem;
-        //  border-bottom: 1px solid rgb(126, 123, 114);
-        
-          &:last-of-type{
-            border-right: none;
-          }
-          &:first-of-type{
-            padding-left: 0;
-}}
-      .book-title{
-         font-family: 'Poiret One', cursive;
-        font-weight: bolder;
-        color: #3b610c;
-        font-size: 2.5re;
-        margin-bottom: .5rem;
-      }
-      // .delete-btn{
-      //   background: grey;
-      //   width: 80px;
-      //   padding: 0;
-      // }
- #form-image,
- #form-read,
- #date,
- #form-place,
- #form-author,
- #form-title,
- #form-type,
- #form-desc{
-font-size: 15px;
-left:15px;
-background-color: #f2f5f1;
-border:1px solid #b9e0a6;
-border-radius: 5px;
-padding:8px;
-margin: 5px;
-}
-.bookItem{
-  background-color: #3b610c;
-}
-#form-title{
-  width: 1000px;
-}
-#form-author{
-  width: 800px;
-}
-#form-desc{
-  width: 1200px;
-  height: 250px;
-}
-#form-place,
- #form-image{
-   width:400px;
- }
-  #form-type{
-    width:150px;
-  }
- save.new.btn{
-   background-color: #84ad52;
- }
- a.aBook{
-   top:150px !important;
-   margin-top: 50px;
-   font-size: 25px;
-   color:#3b610c;
-   text-decoration: none;
- }
-div.col-sm-6{
-background-color: #ffffff;
-border:1px solid lightgray;
-// margin-left: 70px;
-margin: 30px 0px 0px 70px;
-// margin-right:5px;
-min-height: 350px;
-line-height: 1.42857143;
-background-color: #fff;
-border-radius: 2px;
-box-shadow: 1px 1px 0px #adc08b;
-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-transition: box-shadow .25s;
-}
-a.edit-btn{
-  // background-color: #6f8a30;
-  // position: relative;
-  // top: 180px;
-  left:0px;
-  width: 100px;
-  height: 35px;
-  margin-bottom: 5px;
-  z-index: 18;
-  background-color:#84ad52;
-  width: 75px;
-}
-
-a.delete-btn{
-  height: 35px;
-  //  position: relative;
-  // top: 180px;
-  margin-left:100px;
-  z-index: 17;
-  background-color: white;
-  border:1px solid #84ad52;
-  width: 75px;
-  margin-bottom: 5px;
-}
-.caption{
-  //  position: relative;
-  // top: 180px;
-  left:6px;
-  
-  z-index: 17;
-}
-.container h1{
-  color: rgb(54, 78, 4);
-  font-family: 'Loto', sans-serif;
-}
-.caption img{
-  max-width: 150px !important;
-  position: relative;
-  margin-top: 15px;
-  left:20%;
-  z-index: 58;
-  border-top-left-radius:2px;
-  border-top-right-radius:2px;
+#second-sec{
+    background-color: #546E7A;
 
 }
-h5{
-  font-size: 15px;
-  font-family: 'Loto', sans-serif;
-  margin: 2px 0px;
-  color:  rgb(133, 146, 109);
-  font-weight: 100;
-}
-html,
-body {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
-  height: 100%;
-  width: 100%; 
-  background: #FFF;
-  font-family: 'Loto', sans-serif;
-
-}
- h4{
-   font-size: 17px;
-   color:  rgb(95, 90, 83);
-   margin-top: 15px;
-   
- }
-
-//  #welcome{
-//    background-image: url('imgs/cover.png')
-//  }
-
-.uiContainer-wrapper.row{
-  margin-left: 95px;
-  background-repeat: no-repeat;
-
-  // color: #e2e187
+div.card {
+  background-color: rgb(255, 255, 255);
+   margin-bottom: 45px;
 }
 
- .planetBook {
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     font-size: 8.5em;
-     color: #1cabee;
-     position: absolute;
-     top: 22%;
-     left: 205px;
-    //  z-index: 1;
- }
+.d-block.w-100{
 
- .planetBook3{
-    color: #ffffff;
-   font-size: 4em;
-   font-weight: bolder;
-   position: absolute;
-     top: 8%;
-     left:300px;
-    //  z-index: 1; 
-  //     -webkit-text-stroke-width: 1px;
-  //  -webkit-text-stroke-color:#1cabee;
- }
- 
- .planetBook2{
- font-family: 'Poiret One', cursive;;
- color:  #1cabee;
-  font-size: 4.5em;
-   position: absolute;
-     top: 15%;
-     left: 230px;
-    //  z-index: 1; 
- }
-
- p{
-   font-family: 'Poiret One';
-  position: absolute;
-   color: #ffffff;
-   font-style: oblique;
-  //  background-color: wheat;
-    top:3%;
-    font-size: 1.5em;
-    left:310px;
-    z-index: 14;
-}
-
-
-// toprint{
-//   background-color: #8a856a;
-// }
-
-#logout,
-#login{
-  background-color: #aac8d8;
-  border:2px solid #ede6e9;
-}
-#library{
-   background-color:#a9bdc6;
-   border:2px solid #f4f7f1;
-}
-#borrowed{
-   background-color:#dbd5e4;
-   border: 2px solid #ede6e9;
-}
-#bought{
-   background-color:#ede6e9;
-   border: 2px solid #dbd5e4;
-}
-#all-book{
-    background-color:#f4f7f1;
-    border: 2px solid #aac8d8;
-}
-#right{
-    background-color:#ede6e9;
-}
-   .rightest li{
-    display: block;
-    padding-right: -1rem;
-    width: 18rem;
-    height: 9em;
-    left:0px;
-  
+margin-top: 100px;
 
 }
-#add-book{
-  background-color:#f4f7f1;
-    border: 2px solid #aac8d8;
-    margin-left: -55px;
-}
-#read-book{
-   background-color:#dbd5e4;
-   border: 2px solid #ede6e9;
-    margin-left: -55px;
-}
+#search-bar{
+  margin-top:1%;
+  margin-bottom: 25px;
+  background-color:rgb(253, 253, 253);
 
-#over-book{
-    background-color:#a9bdc6;
-   border:2px solid #f4f7f1;
-    margin-left: -55px;
+}
+div.modal-dialog{
+width:50% !important;
+height:900px;
+}
+img.img-thumbnail{
+  max-height: 20px;
+}
+@media (max-width: 375px) {
+
+#search-bar{
+  margin-top:-11%;
+  margin-bottom: 25px;
+  background-color:rgb(253, 253, 253);
+
+}
 }

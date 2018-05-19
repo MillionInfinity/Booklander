@@ -10254,30 +10254,30 @@ return jQuery;
 } );
 
 },{}],2:[function(require,module,exports){
-                     "use strict";
-         console.log("Alarm! wake up early");
-let $ = require('jquery'),
-  firebase = require("./config"),
-  user = require("./user"),
-  books = require("./books-interaction"),
-  fapi = require("./api"),
- 
-  interaction = require("./user-interaction"),
-  booksDom = require("./booksDom"),
-  eventBooks = require("./eventBooks"),
-  meg = require("./meg");
-  
+//                      "use strict";
+//          console.log("Alarm! wake up early");
+// let $ = require('jquery'),
+//   firebase = require("./config"),
+//   user = require("./user"),
+//   books = require("./books-interaction"),
+//   fapi = require("./api"),
+//
+//   interaction = require("./user-interaction"),
+//   booksDom = require("./booksDom"),
+//   eventBooks = require("./eventBooks"),
+//   meg = require("./meg");
+//
 
 // var bookRef = firebase.database().ref("book/");
 
 // bookRef.orderByChild("due").on("child_added", function dueds(due){
 //   if(typeof(dueDate) !== 'undefined'){
 //     console.log(dueDate);
-  
+
 //   }
 
 // });
-           
+
 
 
 
@@ -10309,7 +10309,7 @@ let $ = require('jquery'),
 // let booky = books.getBook().val;
 
 // function getDueDate() {
- 
+
 //   return books.getDueBook().then((l) => {
 //       console.log("interactionetbook()", l);
     // const dueddate = [];
@@ -10329,12 +10329,13 @@ let $ = require('jquery'),
 
     // }
 
-   
+
 
 //   });
 // }
 // getDueDate();
-},{"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],3:[function(require,module,exports){
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 
@@ -10362,11 +10363,12 @@ let $ = require('jquery'),
 console.log("book-interaction");
 
 let $ = require('jquery'),
-                firebase = require("./config");
-        
+firebase = require("./config");
+
+// e-books
 
 
-    
+// getebook();
         // book withOut user
 
 function getBook() {
@@ -10388,9 +10390,9 @@ function getDueBook() {
                     dueDa.push(ove[key]);
                     console.log("getdueda", dueDa);
                 }
-              
+
          } return dueDa;
-       
+
         });
     }
 
@@ -10405,36 +10407,36 @@ function getUserBook(user) {
                 return error;
             });
 }
-  
+
 //read books
 function getReadBook() {
     return getBook().then((rea) => {
         const read = [];
         for (let key in rea) {
-            if (rea[key].read === "No") {
+if (rea[key].read === "No") {
                 read.push(rea[key]);
-              
-            } 
+
+            }
         } return read;
 
     });
 }
          //Library books
-         
+
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-             
+
         }
         } return library;
-       
+
     });
 }
 
-         //bought 
+         //bought
 
 function getBuyBook() {
     console.log("why get buy books",getBook());
@@ -10443,14 +10445,14 @@ function getBuyBook() {
         for (let key in bou) {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
-               
-            } 
-        } return bought;
-      
-    });
-}  
 
-          //borrow 
+            }
+        } return bought;
+
+    });
+}
+
+          //borrow
 
 function getBrBook() {
     return getBook().then((bro) => {
@@ -10458,23 +10460,23 @@ function getBrBook() {
         for (let key in bro) {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
-               
+
              }
-           
+
         } return borrow;
-          
+
     });
 }
           //ajaxCall
 
 
 function ajaxCalls(book) {
-    console.log("myBooks", book);
+    // console.log("myBooks", book);
      let myBookArr = [];
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
     }).done((bookData) => {
-        console.log("calling + ajax + users book",bookData);
+        // console.log("calling + ajax + users book",bookData);
         myBookArr.push(myBookArr);
         return myBookArr;
     });
@@ -10491,7 +10493,7 @@ function deleteBook(bookId) {
 }
 
 function addBook(bookObj) {
-    console.log("addBook", bookObj);
+    // console.log("addBook", bookObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json`,
         type: 'POST',
@@ -10502,14 +10504,14 @@ function addBook(bookObj) {
     });
 }
 function addUserBook(bookObj) {
-    console.log("addBook", bookObj);
+    // console.log("addBook", bookObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(bookObj),
         dataType: 'json'
     }).done((bookObj) => {
-        console.log("use book obj", bookObj);
+        // console.log("use book obj", bookObj);
         return bookObj;
     });
 }
@@ -10524,6 +10526,10 @@ function editBook(bookObj, bookId) {
         return data;
     });
 }
+// This module makes a call to the Open Library API
+
+
+
 
 module.exports = {
     getReadBook,
@@ -10537,38 +10543,28 @@ module.exports = {
     deleteBook,
     editBook,
     getBrBook,
-    getBuyBook
+    getBuyBook,
+    // booksGetter,
+    // getebook
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 },{"./config":6,"jquery":1}],5:[function(require,module,exports){
      "use strict";
            console.log("print on to dom");
            let $ = require('jquery');
-         
- 
+
+
 
 
 function makeDueList(bookList) {
 
-    let bookDisplay = $(`<div class="container" id="readground">
-                     
+    let bookDisplay = $(`<div class="col-md-4 id="readground">
+
                      <div class="row" id="toprint">
-                     
+
                      </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+    $(".Nbook1").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
@@ -10579,26 +10575,25 @@ function makeDueList(bookList) {
 
         bookListData.append(
             `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-
-              
-
-                <h5>${currentBook.due}</h5>`);
+                <h5>${currentBook.title}</h5>
+                <p>${currentBook.author}</p>
+                <p>${currentBook.due}</p>
+                <div class="card-footer">
+                  <div class="d-flex">`);
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 
-} 
+}
    //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
                        <h1> My Books Ready To Read</h1>
                      <div class="row" id="toprint">
-                     
+
                      </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+    $(".Nbook1").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
@@ -10623,13 +10618,13 @@ function makeLiBookList(bookList) {
     let bookDisplay = $(`<div class="container" id="libground">
                        <h1> My Library Books</h1>
                      <div class="row" id="toprint">
-                     
+
                      </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+    $(".myNbook1").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-12 col-md-3" }),
             bookListData = $("<div/>", { class: "caption" }),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
@@ -10639,7 +10634,7 @@ function makeLiBookList(bookList) {
             `<img src="imgs/${currentBook.image}">
                 <h4>${(currentBook.title)}</h4>
                 <h5>${currentBook.author}</h5>
-
+                <div class="card-body"></div>
 
                 <h5>${currentBook.due}</h5>`);
 
@@ -10654,10 +10649,10 @@ function makeBrBookList(bookList) {
     let bookDisplay = $(`<div class="container" id="brground">
                        <h1> My Borrowed Books</h1>
                      <div class="row" id="toprint">
-                     
+
                      </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+$(".myNbook1").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
@@ -10683,10 +10678,10 @@ function makeBoBookList(bookList) {
     let bookDisplay = $(`<div class="container" id="bouground">
                        <h1> My Own Books</h1>
                      <div class="row" id="toprint">
-                     
+
                      </div> </div>`);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+    $(".Nbook1").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
@@ -10707,28 +10702,45 @@ function makeBoBookList(bookList) {
 }
  //all books
 function makeBookList(bookList) {
-    let bookDisplay = $(`<div class="container">
-                       <h1> Your Book Shelf</h1>
-                     <div class="row" id="toprint">
-                     
-                     </div> </div>`);
+    let bookDisplay = $(`<div class="row" id="toprint"></div>
+                      `);
 
-    $(".uiContainer-wrapper").html(bookDisplay);
+    $(".myNbook").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListData = $("<div>", { class: "card"});
+        // bookListData.append(
+        //   for (let book in bookList) {
+        //       let currentBook = bookList[book],
+        //           bookListItem = $("<div>", { class: "col-sm-6 col-md-" }),
+        //           bookListData = $("<div/>", { class: "caption" }),
+        //           bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+        //           bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
 
 
-        bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>`);
-
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+              bookListData.append(
+`<img class="img-fluid" src="imgs/${currentBook.image}">
+                  <button type ="button" class ="btn btn-info btn-lg" data-toggle ="modal" data-target ="#myModal_${currentBook.uid}"> Open Large Modal </button>
+                      <div class="modal fade" id="myModal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                  <h4 class="modal-title">${currentBook.title}</h4>
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p >
+                           </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-secondary">Secondary</button>
+                     </div>
+                  </div >
+              </div>
+            </div>`);
+//   $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+        $("#toprint").append(bookListItem.append(bookListData));
     }
 
 }
@@ -10740,9 +10752,7 @@ function bookForm(book, bookId) {
                 let bookItem = {
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-
                     dueDate: book ? book.due : "",
-
                     image: book ? book.image : "",
                     // place: book ? book.place : "",
                     type: book ? book.type : "",
@@ -10752,46 +10762,44 @@ function bookForm(book, bookId) {
                     btnText: book ? "Save Changes" : "Save Book",
                     btnId: book ? "save_edit_btn" : "save_new_btn"
                 },
-                    form =
-                        `<h3>${bookItem.formTitle}</h3>
-                        
-                        <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
-                        <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-
-                      
-
-                        <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
-                      
-                        <select name="Type" id="form-type" value="${bookItem.type}">
-                           <option value="option">Book Type</option>
-                            <option value="library">library</option>
-                            <option value="borrow">borrow</option>
-                            <option value="bought">bought</option>
-                            <option value="e-mail">e-book</option>
-                        </select>
-                         <select name="Type" id="form-read" value="${bookItem.read}">
-                           <option value="option">Have you read this book?</option>
-                            <option value="library">Yes</option>
-                            <option value="borrow">No</option>
-                        </select>
-                        <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
-                        <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
-                        <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>`;
-                resolve(form);
-                {/* <input type="text" id="form-place" placeholder="Place" value="${bookItem.place}"></input> */}
-                // var types = $('#form-type').find('option:selected').text();
-                // bookItem.type=types;
-    });
-}
-//  function enableElements(){
-// if($('#form-type').val() == "library" || "borrow"){
-//     $("#date option[value='${ bookItem.dueDate }']").attr('disabled',true);
-// }
-//  }
+                form =
+                                    `    <div>
+                                     <div class="modal-header_addb">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">${bookItem.formTitle}</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>This is a large modal.</p>
+                                                            <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
+                                                                               <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
+                                                                                    <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
+                                                                                    <select name="Type" id="form-type" value="${bookItem.type}">
+                                                                                        <option value="option">Book Type</option>
+                                                                                        <option value="library">library</option>
+                                                                                       <option value="borrow">borrow</option>
+                                                                                         <option value="bought">bought</option>
+                                                                                       <option value="e-mail">e-book</option>
+                                                                                     </select>
+                                                                                    <select name="Type" id="form-read" value="${bookItem.read}">
+                                                                                        <option value="option">Have you read this book?</option>
+                                                                                         <option value="library">Yes</option>
+                                                                                        <option value="borrow">No</option>
+                                                                                     </select>
+                                                                                     <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
+                                                                                     <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
+                                                     </div>
+                                        </div>`;
+                                    resolve(form);
+                        });
+                    }
 
 
-       
-         module.exports = { 
+
+
+         module.exports = {
                             makeDueList,
                             makeBookReadList,
                             makeBookList,
@@ -10802,8 +10810,57 @@ function bookForm(book, bookId) {
 
 
 
-  
 
+                            //
+                            // function bookForm(book, bookId) {
+                            //             return new Promise((resolve, reject) => {
+                            //                 let bookItem = {
+                            //                     title: book ? book.title : "",
+                            //                     author: book ? book.author : "",
+                            //                     dueDate: book ? book.due : "",
+                            //                     image: book ? book.image : "",
+                            //                     // place: book ? book.place : "",
+                            //                     type: book ? book.type : "",
+                            //                     read: book ? book.read : "",
+                            //                     description: book ? book.description : "",
+                            //                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
+                            //                     btnText: book ? "Save Changes" : "Save Book",
+                            //                     btnId: book ? "save_edit_btn" : "save_new_btn"
+                            //                 },
+                            //                     form =
+                            //                         `<h3>${bookItem.formTitle}</h3>
+                            //
+                            //                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
+                            //                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
+                            //
+                            //
+                            //
+                            //                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
+                            //
+                            //                         <select name="Type" id="form-type" value="${bookItem.type}">
+                            //                            <option value="option">Book Type</option>
+                            //                             <option value="library">library</option>
+                            //                             <option value="borrow">borrow</option>
+                            //                             <option value="bought">bought</option>
+                            //                             <option value="e-mail">e-book</option>
+                            //                         </select>
+                            //                          <select name="Type" id="form-read" value="${bookItem.read}">
+                            //                            <option value="option">Have you read this book?</option>
+                            //                             <option value="library">Yes</option>
+                            //                             <option value="borrow">No</option>
+                            //                         </select>
+                            //                         <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
+                            //                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
+                            //                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
+                            //
+                            //
+                            //
+                            //
+                            //                         `;
+                            //                 resolve(form);
+                            //
+                            //     });
+                            // }
 
 },{"jquery":1}],6:[function(require,module,exports){
 "use strict";
@@ -10907,7 +10964,7 @@ function loadDueBooksDOM() {
             booksDom.makeDueList(bookData);
         });
 }
-    
+
             //save listner
 
 $(document).on("click", ".save_new_btn", function(){
@@ -10921,8 +10978,8 @@ $(document).on("click", ".save_new_btn", function(){
 
             //edit listner
 
-$(document).on("click", ".edit-btn", function () {
-    console.log("click edit book");
+$(document).on("click", ".btn btn-outline-info", function () {
+
     let bookID = $(this).data("edit-id");
     bookInter.getBook(bookID)
         .then((book) => {
@@ -10930,7 +10987,7 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $("#toprint").html(finishedForm);
+            $("#myNbook1").html(finishedForm);
         });
 });
 
@@ -10938,23 +10995,19 @@ $(document).on("click", ".edit-btn", function () {
 $(document).on("click", ".save_edit_btn", function () {
     let bookObj = buildBookObj(),
         bookID = $(this).attr("id");
-    console.log("i am saving my a bookID", bookID);
-    bookInter.editBook(bookObj, bookID)
+   bookInter.editBook(bookObj, bookID)
         .then((data) => {
             loadBookToDOM();
         });
 });
 
-           //save delete
-$(document).on("click", ".delete-btn", function () {
+           // delete
+$(document).on("click", ".btn, .btn-secondary", function () {
     console.log("you are about to delete a book", $(this).data("delete-id"));
     let bookID = $(this).data("delete-id");
-    bookInter.deleteBook(bookID)
-        .then(() => {
-            loadBookToDOM();
+    bookInter.deleteBook(bookID);
         });
-});
-   
+
        // book object
      function buildBookObj() {
     let bookObj = {
@@ -10974,55 +11027,55 @@ $(document).on("click", ".delete-btn", function () {
        //ready to read
      $("#read-book").click(function () {
             $("#welcome").remove();
-            $(".uniContainer-wrapper").html("");
+            $(".myNbook1").html("");
             loadToReadDOM();
-            meg.blue();
-         
+            // meg.blue();
+
 
         });
 
        // library listner
     $("#library").click(function () {
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook1").html("");
               $("#welcome").remove();
                loadLibBookToDOM();
-                meg.green();
-               
+                // meg.green();
+
         });
 
         //bought listner
     $("#bought").click(function () {
               $("#welcome").remove();
-               $(".uniContainer-wrapper").html("");
+               $(".myNbook1").html("");
                 loadBoughtBookToDOM();
-                meg.purple();
+                // meg.purple();
         });
-        
+
         //borrow listner
     $("#borrowed").click(function () {
         $("#welcome").remove();
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook1").html("");
                 loadBorrowBookToDOM();
-                meg.yellow();
-         }); 
+
+         });
 
         //view all books to dom
     $("#all-book").click(function () {
         $("#welcome").remove();
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook").html("");
 
                loadBookToDOM();
-                meg.purple();
+
         });
 
 
 
          //addbooks listner
-    $("#add-book").click(function () {
+    $("#booka").click(function () {
         console.log("clicked to add book");
         var bookForm = booksDom.bookForm()
             .then((bookForm) => {
-                $("#toprint").html(bookForm);
+      $("#modal-content_addbook").html(bookForm);
                    });
     // setTimeout(callback, 1000);
 });
@@ -11030,17 +11083,13 @@ $(document).on("click", ".delete-btn", function () {
    //due books li
 $("#over-book").click(function () {
      $("#welcome").remove();
-         $(".uniContainer-wrapper").html("");
+         $(".container").html("");
               loadDueBooksDOM();
     // $("#login").addClass("is-hidden");
         });
 
-
-
-
-      
 },{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],8:[function(require,module,exports){
-"use strict";
+'use strict';
 console.log("my mainjs");
 
 
@@ -11052,7 +11101,7 @@ let $ = require('jquery'),
     user = require("./user"),
     books = require("./books-interaction"),
     fapi = require("./api"),
-    
+
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
     eventBooks= require("./eventBooks"),
@@ -11067,7 +11116,7 @@ $("#login").click(function () {
 
     user.googleLogIn()
         .then((result) => {
-         
+
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
@@ -11109,45 +11158,163 @@ function sendToFirebase() {
 // home page
 
 // =============LOGIN AND LOGOUT ENDS======================//
-
+$('.carousel').carousel({
+  interval: 2000
+});
+//==========================================//
 
 },{"./alarm":2,"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],9:[function(require,module,exports){
 "use strict";
 
-function red() {
 
-    document.body.style.backgroundColor = "#c2de65";
+let $ = require("jquery"),
+ bookQuery = require("./books-interaction");
 
-}
+ $(document).ready(() => {
+   $('#searchForm').on('submit', (e) => {
+// console.log("what is undefined mean",($('#search-bar').val());
+     let query = $('#search-bar').val();
+     booksGetter(query);
+     e.preventDefault();
+   });
+ });
 
-function green() {
+  function booksGetter(query){
+   return $.ajax({
+     url:`https://openlibrary.org/search.json?title=${query}&limit=8`,
+     type:'GET',
+     data:JSON.stringify
+   }).done((searchdata)=>{
+     // console.log("data from api",searchdata);
+     return searchdata;
+   }) .then((response) => {
+     // console.log("response", response);
+           // let ebook= response;
+     //       let output='';
+     //       $.each(ebook, (index, book) => {
+     //   output += `
+     //     <div class="col-md-3">
+     //       <div class="well text-center">
+     //         <img src="http://covers.openlibrary.org/b/isbn/${book.bookThumbnail}-S.jpg" alt="book cover thumbnail image">
+     //         <h5>${book.title}</h5>
+     //          <p>${book.author_name}</p>
+     //       </div>
+     //     </div>
+     //   `;
+     // });
+     //
+     // $('#search-results').html(output);
+           // bookDisplay(bookResult);
+       }).catch((err)=>{
+         // console.log(err);
+       });
 
-    document.body.style.backgroundColor = "#ddefa4";
+ }
 
-}
+booksGetter();
 
-function blue() {
 
-    document.body.style.backgroundColor = "#a1b16d";
 
-}
-function purple() {
 
-    document.body.style.backgroundColor = "#b3ba9c";
+// //
+// let button;
+// let bookResult = [];
+// let bookshelf = [];
 
-}
 
-function yellow() {
+// let captureInput = () => {
+//     // Grabs the "search-bar" element
+//     const bookSearchBar = document.getElementById("search-bar");
+//     bookSearchBar.addEventListener("keypress", function(e) {
+//         if (e.keyCode === 13 && e.target.value != "")  {
+//     // Takes user input and makes it lowercase
+//             let userInput = e.target.value.toLowerCase();
+//             bookSearch(userInput);
+//         // If the "enter" key is pressed, but there is no value entered, an alert is triggered
+//         } else if (e.keyCode === 13) {
+//                 window.alert("Please enter something to search for.");
+//         }
+//     });
+// };
+// //
+//
+// // search();
+// // // From the API Call, get the data and search through it for matches to the parameter passed into it...
+// let bookSearch = (userInput) => {
+//     bookQuery.booksGetter(userInput)
+//     // and return the response once it is done
+//     .then((response) => {
+//         let bookResponse = response;
+//         bookResult = response.docs;
+//         bookDisplay(bookResult);
+//     }).then(() => {
+//         let books = $(".book-search-result");
+//         for (let i = 0; i < books.length; i++) {
+//             button = $(`#save--book--btn-${i}`);
+//             clickAddToBookshelf(button);
+//         }
+//     });
+// };
+// // //
+// // // This builds the list of books with their title, author, and the published year
+// let bookDisplay = (arrayBooks) => {
+//     let searchResult = "";
+//     for (let i = 0; i < arrayBooks.length; i++) {
+//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+//         if (arrayBooks[i].isbn) {
+//             let bookThumbnail = arrayBooks[i].isbn[0];
+//             searchResult += `<img src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-S.jpg" alt="book cover thumbnail image">`;
+//         }
+//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+//     }
+//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+//     document.getElementById('search-results').innerHTML = searchResult;
+// };
+// // //
+// let bookshelfDisplay = (arrayBooks) => {
+//     let searchResult = "";
+//     for (let i = 0; i < arrayBooks.length; i++) {
+//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+//         searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
+//         searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
+//         searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
+//     }
+// //     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+// //     document.getElementById('search-results').innerHTML = searchResult;
+// };
 
-    document.body.style.backgroundColor = "#ddefa4";
+// function clickAddToBookshelf(button) {
+//     $(button).on("click", (e) => {
+//         let savedBook = {};
+//         savedBook.title = e.target.parentNode.childNodes[0].innerText;
+//         savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
+//         savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
+//         bookshelf.push(savedBook);
+//     });
+// }
 
-}
-module.exports= {red,
-    blue,
-    purple,
-    yellow,
-     green};
-},{}],10:[function(require,module,exports){
+// function displayBookshelf() {
+//     $("#bookshelf-button").on("click", (e) => {
+//         $("#search-results").html("");
+//         bookshelfDisplay(bookshelf);
+//     });
+// }
+
+// function deleteBookResult() {
+//     $(".delete-button").on("click", (e) => {
+//         console.log(e.target.id);
+//     });
+// }
+// // //
+// displayBookshelf();
+// deleteBookResult();
+
+// module.exports = {bookSearch};
+
+},{"./books-interaction":4,"jquery":1}],10:[function(require,module,exports){
 "use strict";
 
 console.log("user-interaction");

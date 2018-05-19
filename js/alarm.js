@@ -1,27 +1,27 @@
-                     "use strict";
-         console.log("Alarm! wake up early");
-let $ = require('jquery'),
-  firebase = require("./config"),
-  user = require("./user"),
-  books = require("./books-interaction"),
-  fapi = require("./api"),
- 
-  interaction = require("./user-interaction"),
-  booksDom = require("./booksDom"),
-  eventBooks = require("./eventBooks"),
-  meg = require("./meg");
-  
+//                      "use strict";
+//          console.log("Alarm! wake up early");
+// let $ = require('jquery'),
+//   firebase = require("./config"),
+//   user = require("./user"),
+//   books = require("./books-interaction"),
+//   fapi = require("./api"),
+//
+//   interaction = require("./user-interaction"),
+//   booksDom = require("./booksDom"),
+//   eventBooks = require("./eventBooks"),
+//   meg = require("./meg");
+//
 
 // var bookRef = firebase.database().ref("book/");
 
 // bookRef.orderByChild("due").on("child_added", function dueds(due){
 //   if(typeof(dueDate) !== 'undefined'){
 //     console.log(dueDate);
-  
+
 //   }
 
 // });
-           
+
 
 
 
@@ -53,7 +53,7 @@ let $ = require('jquery'),
 // let booky = books.getBook().val;
 
 // function getDueDate() {
- 
+
 //   return books.getDueBook().then((l) => {
 //       console.log("interactionetbook()", l);
     // const dueddate = [];
@@ -73,7 +73,7 @@ let $ = require('jquery'),
 
     // }
 
-   
+
 
 //   });
 // }

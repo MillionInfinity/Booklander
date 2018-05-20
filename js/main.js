@@ -67,7 +67,5 @@ function sendToFirebase() {
 // home page
 
 // =============LOGIN AND LOGOUT ENDS======================//
-$('.carousel').carousel({
-  interval: 2000
-});
+
 //==========================================//

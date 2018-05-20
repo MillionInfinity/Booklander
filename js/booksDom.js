@@ -8,9 +8,7 @@
 function makeDueList(bookList) {
 
     let bookDisplay = $(`<div class="col-md-4 id="readground">
-
                      <div class="row" id="toprint">
-
                      </div> </div>`);
 
     $(".Nbook1").html(bookDisplay);
@@ -32,14 +30,12 @@ function makeDueList(bookList) {
 
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
-
 }
    //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`<div class="container" id="readground">
                        <h1> My Books Ready To Read</h1>
                      <div class="row" id="toprint">
-
                      </div> </div>`);
 
     $(".Nbook1").html(bookDisplay);
@@ -199,6 +195,7 @@ function makeBookList(bookList) {
 function bookForm(book, bookId) {
             return new Promise((resolve, reject) => {
                 let bookItem = {
+                   
                     title: book ? book.title : "",
                     author: book ? book.author : "",
                     dueDate: book ? book.due : "",
@@ -207,46 +204,59 @@ function bookForm(book, bookId) {
                     type: book ? book.type : "",
                     read: book ? book.read : "",
                     description: book ? book.description : "",
-                    formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                    btnText: book ? "Save Changes" : "Save Book",
+                    formTitle: book ? `Edit "${book.title}"` : "Add New Book",
+                    btnText: book ? "Save Changes" : "Save New Book",
                     btnId: book ? "save_edit_btn" : "save_new_btn"
                 },
-                form =
-                                    `    <div>
-                                     <div class="modal-header_addb">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">${bookItem.formTitle}</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>This is a large modal.</p>
-                                                            <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
-                                                                               <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                                                                                    <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
-                                                                                    <select name="Type" id="form-type" value="${bookItem.type}">
-                                                                                        <option value="option">Book Type</option>
-                                                                                        <option value="library">library</option>
-                                                                                       <option value="borrow">borrow</option>
-                                                                                         <option value="bought">bought</option>
-                                                                                       <option value="e-mail">e-book</option>
-                                                                                     </select>
-                                                                                    <select name="Type" id="form-read" value="${bookItem.read}">
-                                                                                        <option value="option">Have you read this book?</option>
-                                                                                         <option value="library">Yes</option>
-                                                                                        <option value="borrow">No</option>
-                                                                                     </select>
-                                                                                     <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
-                                                                                     <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
-                                                     </div>
-                                        </div>`;
-                                    resolve(form);
-                        });
-                    }
+                form = `<div class="modal fade" id="mModal_" role="dialog">
+                                    <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                      <h2 class="modal-title">${bookItem.formTitle}</h2>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                        <p>This will be one of your favorite book</p>
+                                           <div class="input-group mb-3">
+                                             <input class="form-control" type ="text" id ="form-title" placeholder="Title" value="${bookItem.title}"></input>
+                                           </div>
+                                           <div class="input-group mb-3">
+                                             <input class="form-control" type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
+                                           </div>
+                                          <div class="input-group mb-3">
+                                               <input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
+                                                  </div>
+                                                      <div class="input-group mb-3">
+                                                            <select class="form-control" name="Type" id="form-type" value="${bookItem.type}">
+                                                                    <option value="option">Book Type</option>
+                                                                    <option value="library">library</option>
+                                                                    <option value="borrow">borrow</option>
+                                                                    <option value="bought">bought</option>
+                                                                    <option value="e-mail">e-book</option>
+                                                            </select>
+                                                            <select class="form-control" name="Type" id="form-read" value="${bookItem.read}">
+                                                                    <option value="option">Have you read this book?</option>
+                                                                    <option value="library">Yes</option>
+                                                                    <option value="borrow">No</option>
+                                                            </select>
+                                                      </div>
+                                                    <div class="input-group mb-3">
+                                                <input class="form-control" type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
+                                           </div>
+                                           <div class="input-group mb-3">
+                                           <textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${bookItem.description}" row="5"> </textarea> <br/>
+                                           </div>
+                                         </div>
+                                       <div class="modal-footer">
+                                        <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
+                                      </div>
+                                    </div>
+                                     </div>
+                                 </div>`;
 
-
-
+                                resolve(form);
+                           });
+                        }
 
          module.exports = {
                             makeDueList,
@@ -255,58 +265,6 @@ function bookForm(book, bookId) {
                             makeLiBookList,
                             makeBrBookList,
                             makeBoBookList,
-                            bookForm };
-
-
-
-
-                            //
-                            // function bookForm(book, bookId) {
-                            //             return new Promise((resolve, reject) => {
-                            //                 let bookItem = {
-                            //                     title: book ? book.title : "",
-                            //                     author: book ? book.author : "",
-                            //                     dueDate: book ? book.due : "",
-                            //                     image: book ? book.image : "",
-                            //                     // place: book ? book.place : "",
-                            //                     type: book ? book.type : "",
-                            //                     read: book ? book.read : "",
-                            //                     description: book ? book.description : "",
-                            //                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                            //                     btnText: book ? "Save Changes" : "Save Book",
-                            //                     btnId: book ? "save_edit_btn" : "save_new_btn"
-                            //                 },
-                            //                     form =
-                            //                         `<h3>${bookItem.formTitle}</h3>
-                            //
-                            //                         <input type="text" id="form-title" placeholder="Title" value="${bookItem.title}"></input>
-                            //                         <input type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
-                            //
-                            //
-                            //
-                            //                         <input type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
-                            //
-                            //                         <select name="Type" id="form-type" value="${bookItem.type}">
-                            //                            <option value="option">Book Type</option>
-                            //                             <option value="library">library</option>
-                            //                             <option value="borrow">borrow</option>
-                            //                             <option value="bought">bought</option>
-                            //                             <option value="e-mail">e-book</option>
-                            //                         </select>
-                            //                          <select name="Type" id="form-read" value="${bookItem.read}">
-                            //                            <option value="option">Have you read this book?</option>
-                            //                             <option value="library">Yes</option>
-                            //                             <option value="borrow">No</option>
-                            //                         </select>
-                            //                         <input type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
-                            //                         <input type="text" id="form-desc" placeholder="Description" value="${bookItem.description}"  align="right" width="48" height="48"></input><br/>
-                            //                         <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
-                            //
-                            //
-                            //
-                            //
-                            //                         `;
-                            //                 resolve(form);
-                            //
-                            //     });
-                            // }
+                            bookForm
+                           };
+{/* <button type="button" class="btn btn-default">${bookItem.btnText}</button> */}

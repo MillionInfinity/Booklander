@@ -64,7 +64,28 @@ function loadDueBooksDOM() {
         });
 }
 
-            //save listner
+              //save about edit
+$(document).on("click", ".save_edit_btn", function () {
+    let bookObj = buildBookObj(),
+        bookID = $(this).attr("id");
+   bookInter.editBook(bookObj, bookID)
+        .then((data) => {
+            loadBookToDOM();
+        });
+});
+
+//addbooks listner
+$("#add-book").click(function () {
+    console.log("clicked to add book");
+    var bookForm = booksDom.bookForm()
+        .then((bookForm) => {
+            $(".container-add").html(bookForm);
+               
+        });
+    // setTimeout(callback, 1000);
+});
+
+         //save listner
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -90,15 +111,6 @@ $(document).on("click", ".btn btn-outline-info", function () {
         });
 });
 
-           //save about edit
-$(document).on("click", ".save_edit_btn", function () {
-    let bookObj = buildBookObj(),
-        bookID = $(this).attr("id");
-   bookInter.editBook(bookObj, bookID)
-        .then((data) => {
-            loadBookToDOM();
-        });
-});
 
            // delete
 $(document).on("click", ".btn, .btn-secondary", function () {
@@ -166,18 +178,6 @@ $(document).on("click", ".btn, .btn-secondary", function () {
                loadBookToDOM();
 
         });
-
-
-
-         //addbooks listner
-    $("#booka").click(function () {
-        console.log("clicked to add book");
-        var bookForm = booksDom.bookForm()
-            .then((bookForm) => {
-      $("#modal-content_addbook").html(bookForm);
-                   });
-    // setTimeout(callback, 1000);
-});
 
    //due books li
 $("#over-book").click(function () {

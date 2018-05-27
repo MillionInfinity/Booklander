@@ -63,8 +63,29 @@ function loadDueBooksDOM() {
             booksDom.makeDueList(bookData);
         });
 }
-    
-            //save listner
+
+              //save about edit
+$(document).on("click", ".save_edit_btn", function () {
+    let bookObj = buildBookObj(),
+        bookID = $(this).attr("id");
+   bookInter.editBook(bookObj, bookID)
+        .then((data) => {
+            loadBookToDOM();
+        });
+});
+
+//addbooks listner
+$("#add-book").click(function () {
+    console.log("clicked to add book");
+    var bookForm = booksDom.bookForm()
+        .then((bookForm) => {
+            $(".container-add").html(bookForm);
+               
+        });
+    // setTimeout(callback, 1000);
+});
+
+         //save listner
 
 $(document).on("click", ".save_new_btn", function(){
     console.log("click and save new book");
@@ -77,8 +98,8 @@ $(document).on("click", ".save_new_btn", function(){
 
             //edit listner
 
-$(document).on("click", ".edit-btn", function () {
-    console.log("click edit book");
+$(document).on("click", ".btn btn-outline-info", function () {
+
     let bookID = $(this).data("edit-id");
     bookInter.getBook(bookID)
         .then((book) => {
@@ -86,31 +107,18 @@ $(document).on("click", ".edit-btn", function () {
             return booksDom.bookForm(book[key], bookID);
         })
         .then((finishedForm) => {
-            $("#toprint").html(finishedForm);
+            $("#myNbook1").html(finishedForm);
         });
 });
 
-           //save about edit
-$(document).on("click", ".save_edit_btn", function () {
-    let bookObj = buildBookObj(),
-        bookID = $(this).attr("id");
-    console.log("i am saving my a bookID", bookID);
-    bookInter.editBook(bookObj, bookID)
-        .then((data) => {
-            loadBookToDOM();
-        });
-});
 
-           //save delete
-$(document).on("click", ".delete-btn", function () {
+           // delete
+$(document).on("click", ".btn, .btn-secondary", function () {
     console.log("you are about to delete a book", $(this).data("delete-id"));
     let bookID = $(this).data("delete-id");
-    bookInter.deleteBook(bookID)
-        .then(() => {
-            loadBookToDOM();
+    bookInter.deleteBook(bookID);
         });
-});
-   
+
        // book object
      function buildBookObj() {
     let bookObj = {
@@ -130,68 +138,51 @@ $(document).on("click", ".delete-btn", function () {
        //ready to read
      $("#read-book").click(function () {
             $("#welcome").remove();
-            $(".uniContainer-wrapper").html("");
+            $(".myNbook1").html("");
             loadToReadDOM();
-            meg.blue();
-         
+            // meg.blue();
+
 
         });
 
        // library listner
     $("#library").click(function () {
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook1").html("");
               $("#welcome").remove();
                loadLibBookToDOM();
-                meg.green();
-               
+                // meg.green();
+
         });
 
         //bought listner
     $("#bought").click(function () {
               $("#welcome").remove();
-               $(".uniContainer-wrapper").html("");
+               $(".myNbook1").html("");
                 loadBoughtBookToDOM();
-                meg.purple();
+                // meg.purple();
         });
-        
+
         //borrow listner
     $("#borrowed").click(function () {
         $("#welcome").remove();
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook1").html("");
                 loadBorrowBookToDOM();
-                meg.yellow();
-         }); 
+
+         });
 
         //view all books to dom
     $("#all-book").click(function () {
         $("#welcome").remove();
-        $(".uniContainer-wrapper").html("");
+        $(".myNbook").html("");
 
                loadBookToDOM();
-                meg.purple();
+
         });
-
-
-
-         //addbooks listner
-    $("#add-book").click(function () {
-        console.log("clicked to add book");
-        var bookForm = booksDom.bookForm()
-            .then((bookForm) => {
-                $("#toprint").html(bookForm);
-                   });
-    // setTimeout(callback, 1000);
-});
 
    //due books li
 $("#over-book").click(function () {
      $("#welcome").remove();
-         $(".uniContainer-wrapper").html("");
+         $(".container").html("");
               loadDueBooksDOM();
     // $("#login").addClass("is-hidden");
         });
-
-
-
-
-      

@@ -2,11 +2,12 @@
 console.log("book-interaction");
 
 let $ = require('jquery'),
-                firebase = require("./config");
-        
+firebase = require("./config");
+
+// e-books
 
 
-    
+// getebook();
         // book withOut user
 
 function getBook() {
@@ -28,9 +29,9 @@ function getDueBook() {
                     dueDa.push(ove[key]);
                     console.log("getdueda", dueDa);
                 }
-              
+
          } return dueDa;
-       
+
         });
     }
 
@@ -45,36 +46,36 @@ function getUserBook(user) {
                 return error;
             });
 }
-  
+
 //read books
 function getReadBook() {
     return getBook().then((rea) => {
         const read = [];
         for (let key in rea) {
-            if (rea[key].read === "No") {
+if (rea[key].read === "No") {
                 read.push(rea[key]);
-              
-            } 
+
+            }
         } return read;
 
     });
 }
          //Library books
-         
+
 function getLibBook(){
     return getBook().then((lib) => {
         const library = [];
             for (let key in lib) {
             if (lib[key].type === "library") {
                 library.push(lib[key]);
-             
+
         }
         } return library;
-       
+
     });
 }
 
-         //bought 
+         //bought
 
 function getBuyBook() {
     console.log("why get buy books",getBook());
@@ -83,14 +84,14 @@ function getBuyBook() {
         for (let key in bou) {
             if (bou[key].type === "bought") {
                 bought.push(bou[key]);
-               
-            } 
-        } return bought;
-      
-    });
-}  
 
-          //borrow 
+            }
+        } return bought;
+
+    });
+}
+
+          //borrow
 
 function getBrBook() {
     return getBook().then((bro) => {
@@ -98,23 +99,23 @@ function getBrBook() {
         for (let key in bro) {
             if (bro[key].type === "borrow") {
                 borrow.push(bro[key]);
-               
+
              }
-           
+
         } return borrow;
-          
+
     });
 }
           //ajaxCall
 
 
 function ajaxCalls(book) {
-    console.log("myBooks", book);
+    // console.log("myBooks", book);
      let myBookArr = [];
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
     }).done((bookData) => {
-        console.log("calling + ajax + users book",bookData);
+        // console.log("calling + ajax + users book",bookData);
         myBookArr.push(myBookArr);
         return myBookArr;
     });
@@ -131,7 +132,7 @@ function deleteBook(bookId) {
 }
 
 function addBook(bookObj) {
-    console.log("addBook", bookObj);
+    // console.log("addBook", bookObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book.json`,
         type: 'POST',
@@ -142,14 +143,14 @@ function addBook(bookObj) {
     });
 }
 function addUserBook(bookObj) {
-    console.log("addBook", bookObj);
+    // console.log("addBook", bookObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json`,
         type: 'POST',
         data: JSON.stringify(bookObj),
         dataType: 'json'
     }).done((bookObj) => {
-        console.log("use book obj", bookObj);
+        // console.log("use book obj", bookObj);
         return bookObj;
     });
 }
@@ -164,6 +165,10 @@ function editBook(bookObj, bookId) {
         return data;
     });
 }
+// This module makes a call to the Open Library API
+
+
+
 
 module.exports = {
     getReadBook,
@@ -177,17 +182,7 @@ module.exports = {
     deleteBook,
     editBook,
     getBrBook,
-    getBuyBook
+    getBuyBook,
+    // booksGetter,
+    // getebook
 };
-
-
-
-
-
-
-
-
-
-
-
-

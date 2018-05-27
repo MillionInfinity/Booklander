@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 console.log("my mainjs");
 
 
@@ -10,7 +10,7 @@ let $ = require('jquery'),
     user = require("./user"),
     books = require("./books-interaction"),
     fapi = require("./api"),
-    
+
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
     eventBooks= require("./eventBooks"),
@@ -25,7 +25,7 @@ $("#login").click(function () {
 
     user.googleLogIn()
         .then((result) => {
-         
+
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
@@ -68,3 +68,4 @@ function sendToFirebase() {
 
 // =============LOGIN AND LOGOUT ENDS======================//
 
+//==========================================//

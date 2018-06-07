@@ -10347,9 +10347,9 @@ return jQuery;
                             //                     type: book ? book.type : "",
                             //                     read: book ? book.read : "",
                             //                     description: book ? book.description : "",
-                            //                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                            //                     btnText: book ? "Save Changes" : "Save Book",
-                            //                     btnId: book ? "save_edit_btn" : "save_new_btn"
+                                                // formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
+                                                // btnText: book ? "Save Changes" : "Save Book",
+                                                // btnId: book ? "save_edit_btn" : "save_new_btn"
                             //                 },
                             //                     form =
                             //                         `<h3>${bookItem.formTitle}</h3>
@@ -10410,17 +10410,30 @@ return jQuery;
 
 
 },{}],4:[function(require,module,exports){
+// This module makes a call to the Open Library API
+"use strict";
+
+let $ = require("jquery");
+
+let booksGetter = (query) => {
+    // Link to books search API; no API key needed.  "query" will be the search string obtained from the input field
+    let url = `https://openlibrary.org/search.json?title=${query}&limit=10`;
+    // Returns ajax promise
+    return $.ajax({
+    // Where the request is being sent
+    url: url,
+    // Specifies the type of data expected back from the server (JavaScript Object)
+    dataType: "json"
+    });
+};
+
+module.exports = {booksGetter};
+},{"jquery":1}],5:[function(require,module,exports){
 "use strict";
 console.log("book-interaction");
 
 let $ = require('jquery'),
 firebase = require("./config");
-
-// e-books
-
-
-// getebook();
-        // book withOut user
 
 function getBook() {
     return $.ajax({
@@ -10567,20 +10580,17 @@ function addUserBook(bookObj) {
     });
 }
 
-
 function editBook(bookObj, bookId) {
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
         type: 'PUT',
-        data: JSON.stringify(bookObj)
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
     }).done((data) => {
         return data;
     });
 }
 // This module makes a call to the Open Library API
-
-
-
 
 module.exports = {
     getReadBook,
@@ -10599,7 +10609,163 @@ module.exports = {
     // getebook
 };
 
-},{"./config":6,"jquery":1}],5:[function(require,module,exports){
+},{"./config":8,"jquery":1}],6:[function(require,module,exports){
+"use strict";
+
+let $ = require("jquery");
+
+// Gets API call from "books-getter.js"
+const bookQuery = require("./books-getter");
+
+let button;
+let bookResult = [];
+// Saved books will go into the bookshelf
+let bookshelf = [];
+displayBookshelf();
+deleteBookResult();
+// This function captures the value typed into the search bar once the "enter" key is pressed
+let captureInput = () => {
+    // Grabs the "search-bar" element
+    const bookSearchBar = document.getElementById("search-bar");
+    bookSearchBar.addEventListener("keyup", function(e) {
+      console.log("button clicked",e);
+        if (e.keyCode === 13 && e.target.value != "")  {
+    // Takes user input and makes it lowercase
+            let userInput = e.target.value.toLowerCase();
+            bookSearch(userInput);
+            console.log("button get users input", userInput);
+        // If the "enter" keimgy is pressed, but there is no value entered, an alert is triggered
+        } else if (e.keyCode === 13) {
+                window.alert("Please enter something to search for.");
+        }
+    });
+};
+
+captureInput();
+
+// From the API Call, get the data and search through it for matches to the parameter passed into it...
+let bookSearch = (userInput) => {
+    bookQuery.booksGetter(userInput)
+    // and return the response once it is done
+    .then((response) => {
+
+        // let bookResponse = response;
+        bookResult = response.docs;
+        bookDisplay(bookResult);
+    }).then(() => {
+        let books = $(".book-search-result");
+        for (let i = 0; i < books.length; i++) {
+            button = $(`#save--book--btn-${i}`);
+            clickAddToBookshelf(button);
+            console.console.log("save button", button);
+        }
+    });
+};
+
+
+let bookDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        searchResult+=`<div class="col-sm-2 col-md-2">`;
+        searchResult +='<div class="card">';
+        if (arrayBooks[i].isbn) {
+          let bookThumbnail = arrayBooks[i].isbn[0];
+
+            searchResult += `<img class="img-thumbnail" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+          } else{
+            // searchResult +=`<img class=""src="imgs/unav.png" alt"cover not found" style="height=80px;">`;
+        }
+        searchResult += `<div class="book-search-result"><h4 class="card-title">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="card-text">${arrayBooks[i].author_name}</p>`;
+        searchResult += `<button id="save--book--btn-${i}" type="button" class="btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+        searchResult +='</div>';
+        searchResult +='</div>';
+    }
+      document.getElementById('myNbook').innerHTML += searchResult;
+};
+
+let bookshelfDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
+        searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
+        searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
+    }
+    // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+    document.getElementById('myNbook').innerHTML = searchResult;
+};
+
+function clickAddToBookshelf(button) {
+    $(button).on("click", (e) => {
+      console.log("clickAddToBookshelf");
+        let savedBook = {};
+
+        // savedBook.img= e.target.parentNode.childNodes[0];
+        savedBook.title = e.target.parentNode.childNodes[0].innerText;
+        savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
+        // savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
+        bookshelf.push(savedBook);
+    });
+}
+
+// $(document).on("click", ".save_new_btn", function(){
+//     console.log("click and save new book");
+//     let bookObj=buildBookObj();
+//     bookInter.addBook(bookObj)
+//     .then((bookId)=>{
+//     loadBookToDOM();
+// });
+// });
+
+
+
+function displayBookshelf() {
+  console.log("your book shelf clicked");
+    $("#e-book").on("click", (e) => {
+        $(".myNbook").html("");
+        bookshelfDisplay(bookshelf);
+    });
+}
+
+function deleteBookResult() {
+    $(".delete-button").on("click", (e) => {
+        console.log(e.target.id);
+    });
+}
+
+
+
+module.exports = {bookSearch};
+
+
+// function makeEbook(bookList){
+// // This builds the list of books with their title, author, and the published year
+// let bookDisplay = (arrayBooks) => {
+//     let searchResult = "";
+//     for (let i = 0; i < arrayBooks.length; i++) {
+//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+//         if (arrayBooks[i].isbn) {
+//             let bookThumbnail = arrayBooks[i].isbn[0];
+//             searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+//             // searchResult +=`img src="./imgs/unav.png" all"cover not found"`;
+//         };
+//
+// //   searchResult +=`img src="imgs/unav.png" all"cover not found"`;
+//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+//     }
+//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+//     document.getElementById('myNbook').innerHTML = searchResult;
+// }
+// }
+
+// function makeEbook(bookList){
+// This builds the list of books with their title, author, and the published year
+
+},{"./books-getter":4,"jquery":1}],7:[function(require,module,exports){
      "use strict";
            console.log("print on to dom");
            let $ = require('jquery');
@@ -10608,113 +10774,144 @@ module.exports = {
 
 
 function makeDueList(bookList) {
-
-    let bookDisplay = $(`<div class="col-md-4 id="readground">
-                     <div class="row" id="toprint">
-                     </div> </div>`);
-
-    $(".Nbook1").html(bookDisplay);
-    for (let book in bookList) {
+    let bookDisplay = $(`<div class="row" id="toprint">
+              <h1>Due Book</h1>
+                     </div>`);
+    $(".myNbook5").html(bookDisplay);
+     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
+            bookListItem = $("<div>", { class: "col-md-3" }),
+            bookListData = $("<div>", { class: "card"}),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListData.append(
+                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
 
-
-        bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h5>${currentBook.title}</h5>
-                <p>${currentBook.author}</p>
-                <p>${currentBook.due}</p>
-                <div class="card-footer">
-                  <div class="d-flex">`);
-
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p >
+                           </div>
+                        <div class="modal-footer">
+                      </div>
+                  </div >
+              </div>
+            </div>`);
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
-}
+    }
+
+
    //book not read
 function makeBookReadList(bookList) {
-    let bookDisplay = $(`<div class="container" id="readground">
-                       <h1> My Books Ready To Read</h1>
-                     <div class="row" id="toprint">
-                     </div> </div>`);
-
-    $(".Nbook1").html(bookDisplay);
-    for (let book in bookList) {
+    let bookDisplay = $(`
+      <h1 class="text-center">Books Ready to Read
+      <div class="row" id="toprint">
+    </div>
+                      `);
+    $(".myNbook4").html(bookDisplay);
+     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListData = $("<div>", { class: "card"}),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListData.append(
+                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
 
-
-        bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <h5>${currentBook.due}</h5>`);
-
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p >
+                           </div>
+                        <div class="modal-footer">
+                      </div>
+                  </div >
+              </div>
+            </div>`);
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
+    }
 
-}
+
      //Library
 
 function makeLiBookList(bookList) {
-    let bookDisplay = $(`<div class="container" id="libground">
-                       <h1> My Library Books</h1>
-                     <div class="row" id="toprint">
+    let bookDisplay = $(`
 
-                     </div> </div>`);
-
-    $(".myNbook1").html(bookDisplay);
+      <div class="row" id="toprint">
+      </div>
+                      `);
+    $(".myNbook5").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-12 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListData = $("<div>", { class: "card-body"}),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-
-
-        bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <div class="card-body"></div>
-
-                <h5>${currentBook.due}</h5>`);
-
+            bookListData.append(
+                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p>
+                           </div>
+                        <div class="modal-footer">
+                      </div>
+                  </div >
+              </div>
+            </div>`);
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
+    }
 
-}
+
 
 //Borrowed
 
 function makeBrBookList(bookList) {
-    let bookDisplay = $(`<div class="container" id="brground">
-                       <h1> My Borrowed Books</h1>
-                     <div class="row" id="toprint">
-
-                     </div> </div>`);
-
-$(".myNbook1").html(bookDisplay);
+    let bookDisplay = $(`<div class="row" id="toprint"></div>
+                      `);
+    $(".myNbook2").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListData = $("<div>", { class: "card" }),
             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-
-
         bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
+            `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
 
-                <h5>${currentBook.due}</h5>`);
-
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p >
+                           </div>
+                        <div class="modal-footer">
+                      </div>
+                  </div >
+              </div>
+            </div>`);
         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 
@@ -10722,72 +10919,73 @@ $(".myNbook1").html(bookDisplay);
 //bought
 
 function makeBoBookList(bookList) {
-    let bookDisplay = $(`<div class="container" id="bouground">
-                       <h1> My Own Books</h1>
-                     <div class="row" id="toprint">
+    let bookDisplay = $(`<div class="row" id="toprint">
 
-                     </div> </div>`);
-
-    $(".Nbook1").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-6 col-md-3" }),
-            bookListData = $("<div/>", { class: "caption" }),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-
-
-        bookListData.append(
-            `<img src="imgs/${currentBook.image}">
-                <h4>${(currentBook.title)}</h4>
-                <h5>${currentBook.author}</h5>
-                <h5>${currentBook.type}</h5>
-                <h5>${currentBook.due}</h5>`);
-
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-}
- //all books
-function makeBookList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint"></div>
-                      `);
-
-    $(".myNbook").html(bookDisplay);
+    </div>`);
+    $(".myNbook3").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
-            bookListData = $("<div>", { class: "card"});
-        // bookListData.append(
-        //   for (let book in bookList) {
-        //       let currentBook = bookList[book],
-        //           bookListItem = $("<div>", { class: "col-sm-6 col-md-" }),
-        //           bookListData = $("<div/>", { class: "caption" }),
-        //           bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-        //           bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
-
-
-              bookListData.append(
-`<img class="img-fluid" src="imgs/${currentBook.image}">
-                  <button type ="button" class ="btn btn-info btn-lg" data-toggle ="modal" data-target ="#myModal_${currentBook.uid}"> Open Large Modal </button>
-                      <div class="modal fade" id="myModal_${currentBook.uid}" role="dialog">
+            bookListData = $("<div>", { class: "card"}),
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListData.append(
+                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
                           <div class="modal-dialog ">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                  <h4 class="modal-title">${currentBook.title}</h4>
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
                                   </div>
                                  <div class="modal-body">
                                 <p>${book.description}</p >
                            </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-secondary">Secondary</button>
-                     </div>
+                      </div>
                   </div >
               </div>
             </div>`);
-//   $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-        $("#toprint").append(bookListItem.append(bookListData));
+        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+    }
+
+}
+ //all books
+function makeBookList(bookList) {
+    let bookDisplay = $(`
+<h1 class="text-center"> Collection of Books</h1>
+      <div class="row" id="toprint">
+
+    </div>
+                      `);
+
+    $(".myNbook4").html(bookDisplay);
+    for (let book in bookList) {
+        let currentBook = bookList[book],
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListData = $("<div>", { class: "card-body"}),
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn btn", text: "edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn btn waves-effect waves-light btn", text: "delete" });
+            bookListData.append(
+                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+                          <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+                                   <h4 class="modal-title">${currentBook.title}</h4>
+                                  <p>${book.description}</p>
+                                  </div>
+                                 <div class="modal-body">
+                                <p>${book.description}</p>
+                           </div>
+                        <div class="modal-footer">
+                        <a><button class="delete-btn btn waves-effect waves-light">delete</button></a>
+                      </div>
+                  </div >
+              </div>
+            </div>`);
+        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
     }
 
 }
@@ -10797,7 +10995,7 @@ function makeBookList(bookList) {
 function bookForm(book, bookId) {
             return new Promise((resolve, reject) => {
                 let bookItem = {
-                   
+                   uid:"",
                     title: book ? book.title : "",
                     author: book ? book.author : "",
                     dueDate: book ? book.due : "",
@@ -10806,17 +11004,17 @@ function bookForm(book, bookId) {
                     type: book ? book.type : "",
                     read: book ? book.read : "",
                     description: book ? book.description : "",
-                    formTitle: book ? `Edit "${book.title}"` : "Add New Book",
-                    btnText: book ? "Save Changes" : "Save New Book",
+                    formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
+                    btnText: book ? "Save Changes" : "Save Book",
                     btnId: book ? "save_edit_btn" : "save_new_btn"
                 },
-                form = `<div class="modal fade" id="mModal_" role="dialog">
+                form = `<div class="modal fade" id="mModal_a" role="dialog">
                                     <div class="modal-dialog">
                                      <div class="modal-content">
                                         <div class="modal-header">
                                       <h2 class="modal-title">${bookItem.formTitle}</h2>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
+                                       </div>
                                         <div class="modal-body">
                                         <p>This will be one of your favorite book</p>
                                            <div class="input-group mb-3">
@@ -10859,6 +11057,7 @@ function bookForm(book, bookId) {
                                 resolve(form);
                            });
                         }
+                        
 
          module.exports = {
                             makeDueList,
@@ -10871,7 +11070,7 @@ function bookForm(book, bookId) {
                            };
 {/* <button type="button" class="btn btn-default">${bookItem.btnText}</button> */}
 
-},{"jquery":1}],6:[function(require,module,exports){
+},{"jquery":1}],8:[function(require,module,exports){
 "use strict";
 console.log("i configarate");
 
@@ -10907,7 +11106,7 @@ console.log("eyesus yegeba sew");
 
 
 module.exports = firebase;
-},{"./api":3,"firebase/app":120,"firebase/auth":121,"firebase/database":122}],7:[function(require,module,exports){
+},{"./api":3,"firebase/app":122,"firebase/auth":123,"firebase/database":124}],9:[function(require,module,exports){
 "use strict";
 console.log("event listners for book");
 let $ = require('jquery'),
@@ -10915,9 +11114,25 @@ let $ = require('jquery'),
     bookInter=require("./books-interaction"),
     booksDom =require("./booksDom"),
     interaction=require("./user-interaction"),
-    meg =require("./meg"),
+    search =require("./search"),
     user = require("./user");
 
+
+function buildBookObj() {
+    let bookObj = {
+        title: $("#form-title").val(),
+        author: $("#form-author").val(),
+        // due: $("#date").val(),
+        image: $("#form-image").val(),
+        place: $("#form-place").val(),
+        read: $("#form-read").val(),
+        type: $("#form-type").val(),
+        description: $("#form-desc").val(),
+        status: false,
+        uid: user.getUser()
+    };
+    return bookObj;
+}
       //loading all books
 
 function loadBookToDOM(){
@@ -10929,13 +11144,13 @@ function loadBookToDOM(){
 }
         //loaing ready to read
 
-        function loadToReadDOM() {
-            let currentUser = user.getUser();
-            bookInter.getReadBook(currentUser)
-                .then((bookData) => {
-                    booksDom.makeBookReadList(bookData);
-                });
-        }
+  function loadToReadDOM() {
+      let currentUser = user.getUser();
+        bookInter.getReadBook(currentUser)
+          .then((bookData) => {
+              booksDom.makeBookReadList(bookData);
+        });
+    }
 
            //loaing bought books
 
@@ -10949,20 +11164,22 @@ function loadBoughtBookToDOM(){
          //loaing borrow books
 
 function loadBorrowBookToDOM() {
+  console.log("borrow book clicked");
     let currentUser = user.getUser();
     bookInter.getBrBook(currentUser)
-        .then((books) => {
-            booksDom.makeBrBookList(books);
+        .then((bookData) => {
+            booksDom.makeBrBookList(bookData);
         });
 }
 
           //loaing library books
 
 function loadLibBookToDOM() {
+  console.log("library button clicked");
     let currentUser = user.getUser();
     bookInter.getLibBook(currentUser)
-        .then((books) => {
-            booksDom.makeLiBookList(books);
+        .then((bookData) => {
+            booksDom.makeLiBookList(bookData);
         });
 }
     //   loading edit books
@@ -10975,129 +11192,129 @@ function loadDueBooksDOM() {
 }
 
               //save about edit
-$(document).on("click", ".save_edit_btn", function () {
-    let bookObj = buildBookObj(),
-        bookID = $(this).attr("id");
-   bookInter.editBook(bookObj, bookID)
-        .then((data) => {
-            loadBookToDOM();
-        });
-});
 
-//addbooks listner
-$("#add-book").click(function () {
-    console.log("clicked to add book");
-    var bookForm = booksDom.bookForm()
-        .then((bookForm) => {
-            $(".container-add").html(bookForm);
-               
-        });
-    // setTimeout(callback, 1000);
-});
 
-         //save listner
-
-$(document).on("click", ".save_new_btn", function(){
-    console.log("click and save new book");
-    let bookObj=buildBookObj();
-    bookInter.addBook(bookObj)
-    .then((bookId)=>{
-    loadBookToDOM();
-});
-});
-
-            //edit listner
-
-$(document).on("click", ".btn btn-outline-info", function () {
-
-    let bookID = $(this).data("edit-id");
-    bookInter.getBook(bookID)
-        .then((book) => {
-            const key = Object.keys(book)[0];
-            return booksDom.bookForm(book[key], bookID);
-        })
-        .then((finishedForm) => {
-            $("#myNbook1").html(finishedForm);
-        });
-});
+// $(document).on("click", ".edit-btn", function () {
+//  console.log("edit button clicked");
+//     let bookID = $(this).data("edit-id");
+//     bookInter.getBook(bookID)
+//         .then((book) => {
+//             const key = Object.keys(book)[0];
+//             return booksDom.bookForm(book[key], bookID);
+//         })
+//         .then((finishedForm) => {
+// $(".container-fluid_add ").html(finishedForm);
+//         });
+// });
 
 
            // delete
-$(document).on("click", ".btn, .btn-secondary", function () {
+$(document).on("click", ".btn-outline-danger_delete", function () {
     console.log("you are about to delete a book", $(this).data("delete-id"));
     let bookID = $(this).data("delete-id");
     bookInter.deleteBook(bookID);
         });
 
-       // book object
-     function buildBookObj() {
-    let bookObj = {
-        title: $("#form-title").val(),
-        author: $("#form-author").val(),
-        due: $("#date").val(),
-        image: $("#form-image").val(),
-        place: $("#form-place").val(),
-        read: $("#form-read").val(),
-        type: $("#form-type").val(),
-        description: $("#form-desc").val(),
-        status: false,
-        uid: user.getUser()
-    };
-    return bookObj;
-}
        //ready to read
      $("#read-book").click(function () {
-            $("#welcome").remove();
+         $(".myNbook").remove();
             $(".myNbook1").html("");
             loadToReadDOM();
-            // meg.blue();
-
 
         });
 
        // library listner
     $("#library").click(function () {
-        $(".myNbook1").html("");
-              $("#welcome").remove();
+        $(".myNbook").html("");
+              $(".myNbook1").remove();
                loadLibBookToDOM();
-                // meg.green();
-
-        });
+                  });
 
         //bought listner
     $("#bought").click(function () {
-              $("#welcome").remove();
-               $(".myNbook1").html("");
+        $(".myNbook1").remove();
+               $(".myNbook3").html("");
                 loadBoughtBookToDOM();
-                // meg.purple();
-        });
+                });
 
         //borrow listner
     $("#borrowed").click(function () {
-        $("#welcome").remove();
-        $(".myNbook1").html("");
+        $(".myNbook1").remove();
+        $(".myNbook2").html("");
                 loadBorrowBookToDOM();
-
          });
 
         //view all books to dom
     $("#all-book").click(function () {
-        $("#welcome").remove();
-        $(".myNbook").html("");
-
-               loadBookToDOM();
-
+$(".myNbook1").remove();
+        $(".myNbook4de").html("");
+            loadBookToDOM();
         });
 
    //due books li
 $("#over-book").click(function () {
-     $("#welcome").remove();
-         $(".container").html("");
+     $(".myNbook1").remove();
+    $("..myNbook").html("");
               loadDueBooksDOM();
     // $("#login").addClass("is-hidden");
         });
 
-},{"./books-interaction":4,"./booksDom":5,"./config":6,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],8:[function(require,module,exports){
+$(document).on("click", ".save_edit_btn", function () {
+    let bookObj = buildBookObj(),
+        bookID = $(this).attr("id");
+    bookInter.editBook(bookObj, bookID)
+        .then((data) => {
+            loadBookToDOM();
+        });
+});
+
+//save listner
+
+$(document).on("click", ".save_new_btn", function () {
+    console.log("click and save new book");
+    let bookObj = buildBookObj();
+    bookInter.addBook(bookObj)
+        .then((bookId) => {
+            loadBookToDOM();
+        });
+});
+//edit listner
+
+$(document).on("click", ".edit-btn", function () {
+  // console.log("edit button clicked");
+    let bookID = $(this).data("edit-id");
+    // console.log("edit-id", bookID);
+    bookInter.getBook(bookID)
+        .then((book) => {
+          // console.log("book tobe edited",book);
+            const key = Object.keys(book)[0];
+            var finishedForm=booksDom.bookForm(book[key], bookID);
+
+        // .then((finishedForm) => {
+            $("#edit").html(finishedForm);
+        })
+        .catch((error)=>{
+          console.log("error edit",error);
+        });
+
+});
+//addbooks listner
+$("#add-book")
+    .click(function () {
+        console.log("clicked to add book");
+        var bookForm = booksDom
+            .bookForm()
+            .then((bookForm) => {
+                $(".container-fluid_add").html(bookForm);
+            });
+        // setTimeout(callback, 1000);
+    });
+
+module.exports={loadBookToDOM,
+                 loadBorrowBookToDOM,
+                };
+
+},{"./books-interaction":5,"./booksDom":7,"./config":8,"./search":11,"./user":13,"./user-interaction":12,"jquery":1}],10:[function(require,module,exports){
 'use strict';
 console.log("my mainjs");
 
@@ -11110,11 +11327,11 @@ let $ = require('jquery'),
     user = require("./user"),
     books = require("./books-interaction"),
     fapi = require("./api"),
-
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
     eventBooks= require("./eventBooks"),
-    meg=require("./meg"),
+    bookSearch = require("./books-getter"),
+     booklist = require("./books-setter"),
     alarm = require("./alarm");
 
 
@@ -11143,11 +11360,11 @@ $("#logout").click(() => {
     $("#logout").addClass("is-hidden");
 });
 
-// $("#add-book").click(() => {
-//     console.log("i want to see");
-//     loadBooksToDOM();
-//     sendToFirebase();
-// });
+$("#add-book").click(() => {
+    console.log("i want to see");
+    eventBooks.loadBookToDOM();
+    sendToFirebase();
+});
 
 function createUserObj(a) {
     let userObj = {
@@ -11170,158 +11387,256 @@ function sendToFirebase() {
 
 //==========================================//
 
-},{"./alarm":2,"./api":3,"./books-interaction":4,"./booksDom":5,"./config":6,"./eventBooks":7,"./meg":9,"./user":11,"./user-interaction":10,"jquery":1}],9:[function(require,module,exports){
+},{"./alarm":2,"./api":3,"./books-getter":4,"./books-interaction":5,"./books-setter":6,"./booksDom":7,"./config":8,"./eventBooks":9,"./user":13,"./user-interaction":12,"jquery":1}],11:[function(require,module,exports){
 "use strict";
 
 
-let $ = require("jquery"),
- bookQuery = require("./books-interaction");
+let $ = require("jquery");
 
- $(document).ready(() => {
-   $('#searchForm').on('submit', (e) => {
-// console.log("what is undefined mean",($('#search-bar').val());
-     let query = $('#search-bar').val();
-     booksGetter(query);
-     e.preventDefault();
-   });
- });
+// Gets API call from "books-getter.js"
+const bookQuery = require("./eventBooks");
 
-  function booksGetter(query){
+let button;
+let bookResult = [];
+// Saved books will go into the bookshelf
+let bookshelf = [];
+
+// This function captures the value typed into the search bar once the "enter" key is pressed
+let captureInput = () => {
+    // Grabs the "search-bar" element
+    const bookSearchBar = document.getElementById("search-bar");
+    bookSearchBar.addEventListener("keyup", function (e) {
+        if (e.keyCode === 13 && e.target.value != "") {
+            // Takes user input and makes it lowercase
+            let userInput = e.target.value.toLowerCase();
+            bookSearch(userInput);
+            // If the "enter" key is pressed, but there is no value entered, an alert is triggered
+        } else if (e.keyCode === 13) {
+            window.alert("Please enter something to search for.");
+        }
+    });
+};
+
+captureInput();
+
+// From the API Call, get the data and search through it for matches to the parameter passed into it...
+let bookSearch = (userInput) => {
+    bookQuery.booksGetter(userInput)
+        // and return the response once it is done
+        .then((response) => {
+            // let bookResponse = response;
+            bookResult = response.docs;
+            bookDisplay(bookResult);
+        }).then(() => {
+            let books = $(".book-search-result");
+            for (let i = 0; i < books.length; i++) {
+                button = $(`#save--book--btn-${i}`);
+                clickAddToBookshelf(button);
+            }
+        });
+};
+
+// This builds the list of books with their title, author, and the published year
+let bookDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+          searchResult += `<div class="col-sm-3">`;
+
+
+        if (arrayBooks[i].isbn) {
+            let bookThumbnail = arrayBooks[i].isbn[0];
+            searchResult += `<img src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-S.jpg" alt="book cover thumbnail image">`;
+        }
+        searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+        searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+        searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+       searchResult +=`</div>`;
+    }
+    // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+    document.getElementById('search-results').innerHTML = searchResult;
+};
+
+let bookshelfDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
+        searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
+        searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
+    }
+    // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+    document.getElementById('search-results').innerHTML = searchResult;
+};
+
+function clickAddToBookshelf(button) {
+    $(button).on("click", (e) => {
+        let savedBook = {};
+        savedBook.title = e.target.parentNode.childNodes[0].innerText;
+        savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
+        savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
+        bookshelf.push(savedBook);
+    });
+}
+
+function displayBookshelf() {
+    $("#bookshelf-button").on("click", (e) => {
+        $("#search-results").html("");
+        bookshelfDisplay(bookshelf);
+    });
+}
+
+function deleteBookResult() {
+    $(".delete-button").on("click", (e) => {
+        console.log(e.target.id);
+    });
+}
+
+displayBookshelf();
+deleteBookResult();
+
+module.exports = { bookSearch };
+
+
+
+
+
+
+
+  let booksGetter=(query)=>{
    return $.ajax({
      url:`https://openlibrary.org/search.json?title=${query}&limit=8`,
      type:'GET',
      data:JSON.stringify
    }).done((searchdata)=>{
     //  console.log("data from api",searchdata);
+    //  document.getElementsByClassName('.myNbook').innerHTML=searchdata;
      return searchdata;
    }) .then((response) => {
     //  console.log("response", response);
-           // let ebook= response;
-     //       let output='';
-     //       $.each(ebook, (index, book) => {
-     //   output += `
-     //     <div class="col-md-3">
-     //       <div class="well text-center">
-     //         <img src="http://covers.openlibrary.org/b/isbn/${book.bookThumbnail}-S.jpg" alt="book cover thumbnail image">
-     //         <h5>${book.title}</h5>
-     //          <p>${book.author_name}</p>
-     //       </div>
-     //     </div>
-     //   `;
-     // });
-     //
-     // $('#search-results').html(output);
-           // bookDisplay(bookResult);
-       }).catch((err)=>{
-         // console.log(err);
+           let ebook= response;
+           let output='';
+           $.each(ebook, (index, book) => {
+       output += `
+         <div class="col-md-3">
+           <div class="well text-center">
+             <img src="http://covers.openlibrary.org/b/isbn/${book.bookThumbnail}-S.jpg" alt="book cover thumbnail image">
+             <h5>${book.title}</h5>
+              <p>${book.author_name}</p>
+           </div>
+         </div>
+       `;
+     });
+
        });
 
- }
+ };
 
 booksGetter();
 
 
 
 
-// // //
-// // let button;
-// // let bookResult = [];
-// // let bookshelf = [];
-
-
-// // let captureInput = () => {
-// //     // Grabs the "search-bar" element
-// //     const bookSearchBar = document.getElementById("search-bar");
-// //     bookSearchBar.addEventListener("keypress", function(e) {
-// //         if (e.keyCode === 13 && e.target.value != "")  {
-// //     // Takes user input and makes it lowercase
-// //             let userInput = e.target.value.toLowerCase();
-// //             bookSearch(userInput);
-// //         // If the "enter" key is pressed, but there is no value entered, an alert is triggered
-// //         } else if (e.keyCode === 13) {
-// //                 window.alert("Please enter something to search for.");
-// //         }
-// //     });
-// // };
-// // //
 // //
-// // // search();
-// // // // From the API Call, get the data and search through it for matches to the parameter passed into it...
-// // let bookSearch = (userInput) => {
-// //     bookQuery.booksGetter(userInput)
-// //     // and return the response once it is done
-// //     .then((response) => {
-// //         let bookResponse = response;
-// //         bookResult = response.docs;
-// //         bookDisplay(bookResult);
-// //     }).then(() => {
-// //         let books = $(".book-search-result");
-// //         for (let i = 0; i < books.length; i++) {
-// //             button = $(`#save--book--btn-${i}`);
-// //             clickAddToBookshelf(button);
-// //         }
-// //     });
-// // };
-// // // //
-// // // // This builds the list of books with their title, author, and the published year
-// // let bookDisplay = (arrayBooks) => {
-// //     let searchResult = "";
-// //     for (let i = 0; i < arrayBooks.length; i++) {
-// //         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-// //         if (arrayBooks[i].isbn) {
-// //             let bookThumbnail = arrayBooks[i].isbn[0];
-// //             searchResult += `<img src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-S.jpg" alt="book cover thumbnail image">`;
-// //         }
-// //         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-// //         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
-// //         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
-// //         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
-// //     }
+// let button;
+// let bookResult = [];
+// let bookshelf = [];
+
+
+// let captureInput = () => {
+//     // Grabs the "search-bar" element
+//     const bookSearchBar = document.getElementById("search-bar");
+//     bookSearchBar.addEventListener("keypress", function(e) {
+//         if (e.keyCode === 13 && e.target.value != "")  {
+//     // Takes user input and makes it lowercase
+//             let userInput = e.target.value.toLowerCase();
+//             bookSearch(userInput);
+//         // If the "enter" key is pressed, but there is no value entered, an alert is triggered
+//         } else if (e.keyCode === 13) {
+//                 window.alert("Please enter something to search for.");
+//         }
+//     });
+// };
+// //
+//
+// // search();
+// // // From the API Call, get the data and search through it for matches to the parameter passed into it...
+// let bookSearch = (userInput) => {
+//     bookQuery.booksGetter(userInput)
+//     // and return the response once it is done
+//     .then((response) => {
+//         let bookResponse = response;
+//         bookResult = response.docs;
+//         bookDisplay(bookResult);
+//     }).then(() => {
+//         let books = $(".book-search-result");
+//         for (let i = 0; i < books.length; i++) {
+//             button = $(`#save--book--btn-${i}`);
+//             clickAddToBookshelf(button);
+//         }
+//     });
+// };
+// // //
+// // // This builds the list of books with their title, author, and the published year
+// let bookDisplay = (arrayBooks) => {
+//     let searchResult = "";
+//     for (let i = 0; i < arrayBooks.length; i++) {
+//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+//         if (arrayBooks[i].isbn) {
+//             let bookThumbnail = arrayBooks[i].isbn[0];
+//             searchResult += `<img src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-S.jpg" alt="book cover thumbnail image">`;
+//         }
+//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+//     }
+//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+//     document.getElementById('search-results').innerHTML = searchResult;
+// };
+// // //
+// let bookshelfDisplay = (arrayBooks) => {
+//     let searchResult = "";
+//     for (let i = 0; i < arrayBooks.length; i++) {
+//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+//         searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
+//         searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
+//         searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
+//     }
 // //     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
 // //     document.getElementById('search-results').innerHTML = searchResult;
-// // };
-// // // //
-// // let bookshelfDisplay = (arrayBooks) => {
-// //     let searchResult = "";
-// //     for (let i = 0; i < arrayBooks.length; i++) {
-// //         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-// //         searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
-// //         searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
-// //         searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
-// //     }
-// // //     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
-// // //     document.getElementById('search-results').innerHTML = searchResult;
-// // };
+// };
 
-// // function clickAddToBookshelf(button) {
-// //     $(button).on("click", (e) => {
-// //         let savedBook = {};
-// //         savedBook.title = e.target.parentNode.childNodes[0].innerText;
-// //         savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
-// //         savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
-// //         bookshelf.push(savedBook);
-// //     });
-// // }
+// function clickAddToBookshelf(button) {
+//     $(button).on("click", (e) => {
+//         let savedBook = {};
+//         savedBook.title = e.target.parentNode.childNodes[0].innerText;
+//         savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
+//         savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
+//         bookshelf.push(savedBook);
+//     });
+// }
 
-// // function displayBookshelf() {
-// //     $("#bookshelf-button").on("click", (e) => {
-// //         $("#search-results").html("");
-// //         bookshelfDisplay(bookshelf);
-// //     });
-// // }
+// function displayBookshelf() {
+//     $("#bookshelf-button").on("click", (e) => {
+//         $("#search-results").html("");
+//         bookshelfDisplay(bookshelf);
+//     });
+// }
 
-// // function deleteBookResult() {
-// //     $(".delete-button").on("click", (e) => {
-// //         console.log(e.target.id);
-// //     });
-// // }
-// // // //
-// // displayBookshelf();
-// // deleteBookResult();
+// function deleteBookResult() {
+//     $(".delete-button").on("click", (e) => {
+//         console.log(e.target.id);
+//     });
+// }
+// // //
+// displayBookshelf();
+// deleteBookResult();
 
-// // module.exports = {bookSearch};
+module.exports = {bookSearch};
 
-},{"./books-interaction":4,"jquery":1}],10:[function(require,module,exports){
+},{"./eventBooks":9,"jquery":1}],12:[function(require,module,exports){
 "use strict";
 
 console.log("user-interaction");
@@ -11394,7 +11709,7 @@ function loginUser(userObj) {
 module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
 
 
-},{"./config":6,"./user":11,"jquery":1}],11:[function(require,module,exports){
+},{"./config":8,"./user":13,"jquery":1}],13:[function(require,module,exports){
 "use strict";
      console.log("iam user");
 
@@ -11518,7 +11833,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
         };
 
 
-},{"./api":3,"./books-interaction":4,"./config":6,"./user-interaction":10,"jquery":1}],12:[function(require,module,exports){
+},{"./api":3,"./books-interaction":5,"./config":8,"./user-interaction":12,"jquery":1}],14:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11543,7 +11858,7 @@ exports.default = exports.firebase;
 
 
 
-},{"./src/firebaseApp":13}],13:[function(require,module,exports){
+},{"./src/firebaseApp":15}],15:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -11908,7 +12223,7 @@ var appErrors = new util_1.ErrorFactory('app', 'Firebase', errors);
 
 
 
-},{"@firebase/util":103}],14:[function(require,module,exports){
+},{"@firebase/util":105}],16:[function(require,module,exports){
 (function (global){
 (function() {
   var firebase = require('@firebase/app').default;
@@ -12201,7 +12516,7 @@ c){a=new pl(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Xb,a),addAuthToken
 }).call(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : typeof window !== 'undefined' ? window : {});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"@firebase/app":12}],15:[function(require,module,exports){
+},{"@firebase/app":14}],17:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12260,7 +12575,7 @@ exports.OnDisconnect = onDisconnect_1.OnDisconnect;
 
 
 
-},{"./src/api/DataSnapshot":16,"./src/api/Database":17,"./src/api/Query":18,"./src/api/Reference":19,"./src/api/internal":21,"./src/api/onDisconnect":22,"./src/api/test_access":23,"./src/core/RepoManager":30,"./src/core/util/util":74,"@firebase/app":12,"@firebase/util":103}],16:[function(require,module,exports){
+},{"./src/api/DataSnapshot":18,"./src/api/Database":19,"./src/api/Query":20,"./src/api/Reference":21,"./src/api/internal":23,"./src/api/onDisconnect":24,"./src/api/test_access":25,"./src/core/RepoManager":32,"./src/core/util/util":76,"@firebase/app":14,"@firebase/util":105}],18:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12435,7 +12750,7 @@ exports.DataSnapshot = DataSnapshot;
 
 
 
-},{"../core/snap/indexes/PriorityIndex":52,"../core/util/Path":68,"../core/util/validation":75,"@firebase/util":103}],17:[function(require,module,exports){
+},{"../core/snap/indexes/PriorityIndex":54,"../core/util/Path":70,"../core/util/validation":77,"@firebase/util":105}],19:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -12573,7 +12888,7 @@ exports.DatabaseInternals = DatabaseInternals;
 
 
 
-},{"../core/Repo":28,"../core/RepoManager":30,"../core/util/Path":68,"../core/util/libs/parser":73,"../core/util/util":74,"../core/util/validation":75,"./Reference":19,"@firebase/util":103,"tslib":125}],18:[function(require,module,exports){
+},{"../core/Repo":30,"../core/RepoManager":32,"../core/util/Path":70,"../core/util/libs/parser":75,"../core/util/util":76,"../core/util/validation":77,"./Reference":21,"@firebase/util":105,"tslib":127}],20:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13081,7 +13396,7 @@ exports.Query = Query;
 
 
 
-},{"../core/snap/indexes/KeyIndex":50,"../core/snap/indexes/PathIndex":51,"../core/snap/indexes/PriorityIndex":52,"../core/snap/indexes/ValueIndex":53,"../core/util/Path":68,"../core/util/util":74,"../core/util/validation":75,"../core/view/EventRegistration":83,"@firebase/util":103}],19:[function(require,module,exports){
+},{"../core/snap/indexes/KeyIndex":52,"../core/snap/indexes/PathIndex":53,"../core/snap/indexes/PriorityIndex":54,"../core/snap/indexes/ValueIndex":55,"../core/util/Path":70,"../core/util/util":76,"../core/util/validation":77,"../core/view/EventRegistration":85,"@firebase/util":105}],21:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13382,7 +13697,7 @@ SyncPoint_1.SyncPoint.__referenceConstructor = Reference;
 
 
 
-},{"../core/Repo":28,"../core/SyncPoint":35,"../core/util/NextPushId":66,"../core/util/Path":68,"../core/util/util":74,"../core/util/validation":75,"../core/view/QueryParams":84,"./Query":18,"./TransactionResult":20,"./onDisconnect":22,"@firebase/util":103,"tslib":125}],20:[function(require,module,exports){
+},{"../core/Repo":30,"../core/SyncPoint":37,"../core/util/NextPushId":68,"../core/util/Path":70,"../core/util/util":76,"../core/util/validation":77,"../core/view/QueryParams":86,"./Query":20,"./TransactionResult":22,"./onDisconnect":24,"@firebase/util":105,"tslib":127}],22:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13425,7 +13740,7 @@ exports.TransactionResult = TransactionResult;
 
 
 
-},{"@firebase/util":103}],21:[function(require,module,exports){
+},{"@firebase/util":105}],23:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13481,7 +13796,7 @@ exports.interceptServerData = function (ref, callback) {
 
 
 
-},{"../realtime/BrowserPollConnection":91,"../realtime/WebSocketConnection":95}],22:[function(require,module,exports){
+},{"../realtime/BrowserPollConnection":93,"../realtime/WebSocketConnection":97}],24:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13597,7 +13912,7 @@ exports.OnDisconnect = OnDisconnect;
 
 
 
-},{"../core/util/util":74,"../core/util/validation":75,"@firebase/util":103}],23:[function(require,module,exports){
+},{"../core/util/util":76,"../core/util/validation":77,"@firebase/util":105}],25:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13681,7 +13996,7 @@ exports.forceRestClient = function (forceRestClient) {
 
 
 
-},{"../core/PersistentConnection":26,"../core/RepoInfo":29,"../core/RepoManager":30,"../realtime/Connection":92}],24:[function(require,module,exports){
+},{"../core/PersistentConnection":28,"../core/RepoInfo":31,"../core/RepoManager":32,"../realtime/Connection":94}],26:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13768,7 +14083,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 
 
 
-},{"./util/util":74}],25:[function(require,module,exports){
+},{"./util/util":76}],27:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -13987,7 +14302,7 @@ exports.CompoundWrite = CompoundWrite;
 
 
 
-},{"./snap/Node":46,"./snap/indexes/PriorityIndex":52,"./util/ImmutableTree":65,"./util/Path":68,"@firebase/util":103}],26:[function(require,module,exports){
+},{"./snap/Node":48,"./snap/indexes/PriorityIndex":54,"./util/ImmutableTree":67,"./util/Path":70,"@firebase/util":105}],28:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -14789,7 +15104,7 @@ exports.PersistentConnection = PersistentConnection;
 
 
 
-},{"../realtime/Connection":92,"./ServerActions":32,"./util/OnlineMonitor":67,"./util/Path":68,"./util/VisibilityMonitor":72,"./util/util":74,"@firebase/app":12,"@firebase/util":103,"tslib":125}],27:[function(require,module,exports){
+},{"../realtime/Connection":94,"./ServerActions":34,"./util/OnlineMonitor":69,"./util/Path":70,"./util/VisibilityMonitor":74,"./util/util":76,"@firebase/app":14,"@firebase/util":105,"tslib":127}],29:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -14972,7 +15287,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 
 
 
-},{"./ServerActions":32,"./util/util":74,"@firebase/util":103,"tslib":125}],28:[function(require,module,exports){
+},{"./ServerActions":34,"./util/util":76,"@firebase/util":105,"tslib":127}],30:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15502,7 +15817,7 @@ exports.Repo = Repo;
 
 
 
-},{"../api/Database":17,"./AuthTokenProvider":24,"./PersistentConnection":26,"./ReadonlyRestClient":27,"./SnapshotHolder":33,"./SparseSnapshotTree":34,"./SyncTree":36,"./snap/nodeFromJSON":54,"./stats/StatsListener":57,"./stats/StatsManager":58,"./stats/StatsReporter":59,"./util/Path":68,"./util/ServerValues":69,"./util/util":74,"./view/EventQueue":82,"@firebase/util":103}],29:[function(require,module,exports){
+},{"../api/Database":19,"./AuthTokenProvider":26,"./PersistentConnection":28,"./ReadonlyRestClient":29,"./SnapshotHolder":35,"./SparseSnapshotTree":36,"./SyncTree":38,"./snap/nodeFromJSON":56,"./stats/StatsListener":59,"./stats/StatsManager":60,"./stats/StatsReporter":61,"./util/Path":70,"./util/ServerValues":71,"./util/util":76,"./view/EventQueue":84,"@firebase/util":105}],31:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15615,7 +15930,7 @@ exports.RepoInfo = RepoInfo;
 
 
 
-},{"../realtime/Constants":93,"./storage/storage":62,"@firebase/util":103}],30:[function(require,module,exports){
+},{"../realtime/Constants":95,"./storage/storage":64,"@firebase/util":105}],32:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -15750,7 +16065,7 @@ exports.RepoManager = RepoManager;
 
 
 
-},{"./Repo":28,"./Repo_transaction":31,"./util/libs/parser":73,"./util/util":74,"./util/validation":75,"@firebase/util":103}],31:[function(require,module,exports){
+},{"./Repo":30,"./Repo_transaction":33,"./util/libs/parser":75,"./util/util":76,"./util/validation":77,"@firebase/util":105}],33:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16317,7 +16632,7 @@ Repo_1.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 
 
 
-},{"../api/DataSnapshot":16,"../api/Reference":19,"./Repo":28,"./snap/ChildrenNode":43,"./snap/indexes/PriorityIndex":52,"./snap/nodeFromJSON":54,"./util/Path":68,"./util/ServerValues":69,"./util/Tree":71,"./util/util":74,"./util/validation":75,"@firebase/util":103}],32:[function(require,module,exports){
+},{"../api/DataSnapshot":18,"../api/Reference":21,"./Repo":30,"./snap/ChildrenNode":45,"./snap/indexes/PriorityIndex":54,"./snap/nodeFromJSON":56,"./util/Path":70,"./util/ServerValues":71,"./util/Tree":73,"./util/util":76,"./util/validation":77,"@firebase/util":105}],34:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16390,7 +16705,7 @@ exports.ServerActions = ServerActions;
 
 
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16430,7 +16745,7 @@ exports.SnapshotHolder = SnapshotHolder;
 
 
 
-},{"./snap/ChildrenNode":43}],34:[function(require,module,exports){
+},{"./snap/ChildrenNode":45}],36:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16608,7 +16923,7 @@ exports.SparseSnapshotTree = SparseSnapshotTree;
 
 
 
-},{"./snap/indexes/PriorityIndex":52,"./util/CountedSet":63,"./util/Path":68}],35:[function(require,module,exports){
+},{"./snap/indexes/PriorityIndex":54,"./util/CountedSet":65,"./util/Path":70}],37:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -16860,7 +17175,7 @@ exports.SyncPoint = SyncPoint;
 
 
 
-},{"./snap/ChildrenNode":43,"./view/CacheNode":76,"./view/View":85,"./view/ViewCache":86,"@firebase/util":103}],36:[function(require,module,exports){
+},{"./snap/ChildrenNode":45,"./view/CacheNode":78,"./view/View":87,"./view/ViewCache":88,"@firebase/util":105}],38:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -17573,7 +17888,7 @@ exports.SyncTree = SyncTree;
 
 
 
-},{"./SyncPoint":35,"./WriteTree":37,"./operation/AckUserWrite":38,"./operation/ListenComplete":39,"./operation/Merge":40,"./operation/Operation":41,"./operation/Overwrite":42,"./snap/ChildrenNode":43,"./util/ImmutableTree":65,"./util/Path":68,"./util/util":74,"@firebase/util":103}],37:[function(require,module,exports){
+},{"./SyncPoint":37,"./WriteTree":39,"./operation/AckUserWrite":40,"./operation/ListenComplete":41,"./operation/Merge":42,"./operation/Operation":43,"./operation/Overwrite":44,"./snap/ChildrenNode":45,"./util/ImmutableTree":67,"./util/Path":70,"./util/util":76,"@firebase/util":105}],39:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18208,7 +18523,7 @@ exports.WriteTreeRef = WriteTreeRef;
 
 
 
-},{"./CompoundWrite":25,"./snap/ChildrenNode":43,"./snap/indexes/PriorityIndex":52,"./util/Path":68,"@firebase/util":103}],38:[function(require,module,exports){
+},{"./CompoundWrite":27,"./snap/ChildrenNode":45,"./snap/indexes/PriorityIndex":54,"./util/Path":70,"@firebase/util":105}],40:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18272,7 +18587,7 @@ exports.AckUserWrite = AckUserWrite;
 
 
 
-},{"../util/Path":68,"./Operation":41,"@firebase/util":103}],39:[function(require,module,exports){
+},{"../util/Path":70,"./Operation":43,"@firebase/util":105}],41:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18319,7 +18634,7 @@ exports.ListenComplete = ListenComplete;
 
 
 
-},{"../util/Path":68,"./Operation":41}],40:[function(require,module,exports){
+},{"../util/Path":70,"./Operation":43}],42:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18401,7 +18716,7 @@ exports.Merge = Merge;
 
 
 
-},{"../util/Path":68,"./Operation":41,"./Overwrite":42,"@firebase/util":103}],41:[function(require,module,exports){
+},{"../util/Path":70,"./Operation":43,"./Overwrite":44,"@firebase/util":105}],43:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18475,7 +18790,7 @@ exports.OperationSource = OperationSource;
 
 
 
-},{"@firebase/util":103}],42:[function(require,module,exports){
+},{"@firebase/util":105}],44:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -18524,7 +18839,7 @@ exports.Overwrite = Overwrite;
 
 
 
-},{"../util/Path":68,"./Operation":41}],43:[function(require,module,exports){
+},{"../util/Path":70,"./Operation":43}],45:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19021,7 +19336,7 @@ PriorityIndex_1.setMaxNode(exports.MAX_NODE);
 
 
 
-},{"../util/SortedMap":70,"../util/util":74,"./IndexMap":44,"./LeafNode":45,"./Node":46,"./comparators":48,"./indexes/KeyIndex":50,"./indexes/PriorityIndex":52,"./snap":55,"@firebase/util":103,"tslib":125}],44:[function(require,module,exports){
+},{"../util/SortedMap":72,"../util/util":76,"./IndexMap":46,"./LeafNode":47,"./Node":48,"./comparators":50,"./indexes/KeyIndex":52,"./indexes/PriorityIndex":54,"./snap":57,"@firebase/util":105,"tslib":127}],46:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19204,7 +19519,7 @@ exports.IndexMap = IndexMap;
 
 
 
-},{"./Node":46,"./childSet":47,"./indexes/KeyIndex":50,"./indexes/PriorityIndex":52,"@firebase/util":103}],45:[function(require,module,exports){
+},{"./Node":48,"./childSet":49,"./indexes/KeyIndex":52,"./indexes/PriorityIndex":54,"@firebase/util":105}],47:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19473,7 +19788,7 @@ exports.LeafNode = LeafNode;
 
 
 
-},{"../util/util":74,"./snap":55,"@firebase/util":103}],46:[function(require,module,exports){
+},{"../util/util":76,"./snap":57,"@firebase/util":105}],48:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19518,7 +19833,7 @@ exports.NamedNode = NamedNode;
 
 
 
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19650,7 +19965,7 @@ exports.buildChildSet = function (childList, cmp, keyFn, mapSortFn) {
 
 
 
-},{"../util/SortedMap":70}],48:[function(require,module,exports){
+},{"../util/SortedMap":72}],50:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19680,7 +19995,7 @@ exports.NAME_COMPARATOR = NAME_COMPARATOR;
 
 
 
-},{"../util/util":74}],49:[function(require,module,exports){
+},{"../util/util":76}],51:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19740,7 +20055,7 @@ exports.Index = Index;
 
 
 
-},{"../../util/util":74,"../Node":46}],50:[function(require,module,exports){
+},{"../../util/util":76,"../Node":48}],52:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19836,7 +20151,7 @@ exports.KEY_INDEX = new KeyIndex();
 
 
 
-},{"../../util/util":74,"../Node":46,"./Index":49,"@firebase/util":103,"tslib":125}],51:[function(require,module,exports){
+},{"../../util/util":76,"../Node":48,"./Index":51,"@firebase/util":105,"tslib":127}],53:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -19929,7 +20244,7 @@ exports.PathIndex = PathIndex;
 
 
 
-},{"../../util/util":74,"../ChildrenNode":43,"../Node":46,"../nodeFromJSON":54,"./Index":49,"@firebase/util":103,"tslib":125}],52:[function(require,module,exports){
+},{"../../util/util":76,"../ChildrenNode":45,"../Node":48,"../nodeFromJSON":56,"./Index":51,"@firebase/util":105,"tslib":127}],54:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20032,7 +20347,7 @@ exports.PRIORITY_INDEX = new PriorityIndex();
 
 
 
-},{"../../util/util":74,"../LeafNode":45,"../Node":46,"./Index":49,"tslib":125}],53:[function(require,module,exports){
+},{"../../util/util":76,"../LeafNode":47,"../Node":48,"./Index":51,"tslib":127}],55:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20123,7 +20438,7 @@ exports.VALUE_INDEX = new ValueIndex();
 
 
 
-},{"../../util/util":74,"../Node":46,"../nodeFromJSON":54,"./Index":49,"tslib":125}],54:[function(require,module,exports){
+},{"../../util/util":76,"../Node":48,"../nodeFromJSON":56,"./Index":51,"tslib":127}],56:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20226,7 +20541,7 @@ PriorityIndex_1.setNodeFromJSON(nodeFromJSON);
 
 
 
-},{"./ChildrenNode":43,"./IndexMap":44,"./LeafNode":45,"./Node":46,"./childSet":47,"./comparators":48,"./indexes/PriorityIndex":52,"@firebase/util":103}],55:[function(require,module,exports){
+},{"./ChildrenNode":45,"./IndexMap":46,"./LeafNode":47,"./Node":48,"./childSet":49,"./comparators":50,"./indexes/PriorityIndex":54,"@firebase/util":105}],57:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20283,7 +20598,7 @@ exports.validatePriorityNode = function (priorityNode) {
 
 
 
-},{"../util/util":74,"@firebase/util":103}],56:[function(require,module,exports){
+},{"../util/util":76,"@firebase/util":105}],58:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20327,7 +20642,7 @@ exports.StatsCollection = StatsCollection;
 
 
 
-},{"@firebase/util":103}],57:[function(require,module,exports){
+},{"@firebase/util":105}],59:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20374,7 +20689,7 @@ exports.StatsListener = StatsListener;
 
 
 
-},{"@firebase/util":103}],58:[function(require,module,exports){
+},{"@firebase/util":105}],60:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20418,7 +20733,7 @@ exports.StatsManager = StatsManager;
 
 
 
-},{"./StatsCollection":56}],59:[function(require,module,exports){
+},{"./StatsCollection":58}],61:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20488,7 +20803,7 @@ exports.StatsReporter = StatsReporter;
 
 
 
-},{"../util/util":74,"./StatsListener":57,"@firebase/util":103}],60:[function(require,module,exports){
+},{"../util/util":76,"./StatsListener":59,"@firebase/util":105}],62:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20573,7 +20888,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 
 
 
-},{"@firebase/util":103}],61:[function(require,module,exports){
+},{"@firebase/util":105}],63:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20626,7 +20941,7 @@ exports.MemoryStorage = MemoryStorage;
 
 
 
-},{"@firebase/util":103}],62:[function(require,module,exports){
+},{"@firebase/util":105}],64:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20680,7 +20995,7 @@ exports.SessionStorage = createStoragefor('sessionStorage');
 
 
 
-},{"./DOMStorageWrapper":60,"./MemoryStorage":61}],63:[function(require,module,exports){
+},{"./DOMStorageWrapper":62,"./MemoryStorage":63}],65:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20778,7 +21093,7 @@ exports.CountedSet = CountedSet;
 
 
 
-},{"@firebase/util":103}],64:[function(require,module,exports){
+},{"@firebase/util":105}],66:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -20859,7 +21174,7 @@ exports.EventEmitter = EventEmitter;
 
 
 
-},{"@firebase/util":103}],65:[function(require,module,exports){
+},{"@firebase/util":105}],67:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21218,7 +21533,7 @@ exports.ImmutableTree = ImmutableTree;
 
 
 
-},{"./Path":68,"./SortedMap":70,"./util":74,"@firebase/util":103}],66:[function(require,module,exports){
+},{"./Path":70,"./SortedMap":72,"./util":76,"@firebase/util":105}],68:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21298,7 +21613,7 @@ exports.nextPushId = (function () {
 
 
 
-},{"@firebase/util":103}],67:[function(require,module,exports){
+},{"@firebase/util":105}],69:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21379,7 +21694,7 @@ exports.OnlineMonitor = OnlineMonitor;
 
 
 
-},{"./EventEmitter":64,"@firebase/util":103,"tslib":125}],68:[function(require,module,exports){
+},{"./EventEmitter":66,"@firebase/util":105,"tslib":127}],70:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21707,7 +22022,7 @@ exports.ValidationPath = ValidationPath;
 
 
 
-},{"./util":74,"@firebase/util":103}],69:[function(require,module,exports){
+},{"./util":76,"@firebase/util":105}],71:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -21812,7 +22127,7 @@ exports.resolveDeferredValueSnapshot = function (node, serverValues) {
 
 
 
-},{"../SparseSnapshotTree":34,"../snap/LeafNode":45,"../snap/indexes/PriorityIndex":52,"../snap/nodeFromJSON":54,"./Path":68,"@firebase/util":103}],70:[function(require,module,exports){
+},{"../SparseSnapshotTree":36,"../snap/LeafNode":47,"../snap/indexes/PriorityIndex":54,"../snap/nodeFromJSON":56,"./Path":70,"@firebase/util":105}],72:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22472,7 +22787,7 @@ exports.SortedMap = SortedMap;
 
 
 
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22701,7 +23016,7 @@ exports.Tree = Tree;
 
 
 
-},{"./Path":68,"@firebase/util":103}],72:[function(require,module,exports){
+},{"./Path":70,"@firebase/util":105}],74:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22784,7 +23099,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 
 
 
-},{"./EventEmitter":64,"@firebase/util":103,"tslib":125}],73:[function(require,module,exports){
+},{"./EventEmitter":66,"@firebase/util":105,"tslib":127}],75:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -22946,7 +23261,7 @@ exports.parseURL = function (dataURL) {
 
 
 
-},{"../../RepoInfo":29,"../Path":68,"../util":74}],74:[function(require,module,exports){
+},{"../../RepoInfo":31,"../Path":70,"../util":76}],76:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23558,7 +23873,7 @@ exports.setTimeoutNonBlocking = function (fn, time) {
 
 
 
-},{"../storage/storage":62,"@firebase/logger":97,"@firebase/util":103}],75:[function(require,module,exports){
+},{"../storage/storage":64,"@firebase/logger":99,"@firebase/util":105}],77:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -23942,7 +24257,7 @@ exports.validateObjectContainsKey = function (fnName, argumentNumber, obj, key, 
 
 
 
-},{"./Path":68,"./util":74,"@firebase/util":103}],76:[function(require,module,exports){
+},{"./Path":70,"./util":76,"@firebase/util":105}],78:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24021,7 +24336,7 @@ exports.CacheNode = CacheNode;
 
 
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24113,7 +24428,7 @@ exports.Change = Change;
 
 
 
-},{}],78:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24196,7 +24511,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 
 
 
-},{"./Change":77,"@firebase/util":103}],79:[function(require,module,exports){
+},{"./Change":79,"@firebase/util":105}],81:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24301,7 +24616,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 
 
 
-},{"./CacheNode":76}],80:[function(require,module,exports){
+},{"./CacheNode":78}],82:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24415,7 +24730,7 @@ exports.CancelEvent = CancelEvent;
 
 
 
-},{"@firebase/util":103}],81:[function(require,module,exports){
+},{"@firebase/util":105}],83:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24547,7 +24862,7 @@ exports.EventGenerator = EventGenerator;
 
 
 
-},{"../snap/Node":46,"./Change":77,"@firebase/util":103}],82:[function(require,module,exports){
+},{"../snap/Node":48,"./Change":79,"@firebase/util":105}],84:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24721,7 +25036,7 @@ exports.EventList = EventList;
 
 
 
-},{"../util/util":74}],83:[function(require,module,exports){
+},{"../util/util":76}],85:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -24938,7 +25253,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 
 
 
-},{"../../api/DataSnapshot":16,"./Event":80,"@firebase/util":103}],84:[function(require,module,exports){
+},{"../../api/DataSnapshot":18,"./Event":82,"@firebase/util":105}],86:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25346,7 +25661,7 @@ exports.QueryParams = QueryParams;
 
 
 
-},{"../snap/indexes/KeyIndex":50,"../snap/indexes/PathIndex":51,"../snap/indexes/PriorityIndex":52,"../snap/indexes/ValueIndex":53,"../util/util":74,"./filter/IndexedFilter":88,"./filter/LimitedFilter":89,"./filter/RangedFilter":90,"@firebase/util":103}],85:[function(require,module,exports){
+},{"../snap/indexes/KeyIndex":52,"../snap/indexes/PathIndex":53,"../snap/indexes/PriorityIndex":54,"../snap/indexes/ValueIndex":55,"../util/util":76,"./filter/IndexedFilter":90,"./filter/LimitedFilter":91,"./filter/RangedFilter":92,"@firebase/util":105}],87:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25556,7 +25871,7 @@ exports.View = View;
 
 
 
-},{"../operation/Operation":41,"../snap/ChildrenNode":43,"../snap/indexes/PriorityIndex":52,"./CacheNode":76,"./Change":77,"./EventGenerator":81,"./ViewCache":86,"./ViewProcessor":87,"./filter/IndexedFilter":88,"@firebase/util":103}],86:[function(require,module,exports){
+},{"../operation/Operation":43,"../snap/ChildrenNode":45,"../snap/indexes/PriorityIndex":54,"./CacheNode":78,"./Change":79,"./EventGenerator":83,"./ViewCache":88,"./ViewProcessor":89,"./filter/IndexedFilter":90,"@firebase/util":105}],88:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -25654,7 +25969,7 @@ exports.ViewCache = ViewCache;
 
 
 
-},{"../snap/ChildrenNode":43,"./CacheNode":76}],87:[function(require,module,exports){
+},{"../snap/ChildrenNode":45,"./CacheNode":78}],89:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26251,7 +26566,7 @@ exports.ViewProcessor = ViewProcessor;
 
 
 
-},{"../operation/Operation":41,"../snap/ChildrenNode":43,"../snap/indexes/KeyIndex":50,"../util/ImmutableTree":65,"../util/Path":68,"./Change":77,"./ChildChangeAccumulator":78,"./CompleteChildSource":79,"@firebase/util":103}],88:[function(require,module,exports){
+},{"../operation/Operation":43,"../snap/ChildrenNode":45,"../snap/indexes/KeyIndex":52,"../util/ImmutableTree":67,"../util/Path":70,"./Change":79,"./ChildChangeAccumulator":80,"./CompleteChildSource":81,"@firebase/util":105}],90:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26386,7 +26701,7 @@ exports.IndexedFilter = IndexedFilter;
 
 
 
-},{"../../snap/ChildrenNode":43,"../../snap/indexes/PriorityIndex":52,"../Change":77,"@firebase/util":103}],89:[function(require,module,exports){
+},{"../../snap/ChildrenNode":45,"../../snap/indexes/PriorityIndex":54,"../Change":79,"@firebase/util":105}],91:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26647,7 +26962,7 @@ exports.LimitedFilter = LimitedFilter;
 
 
 
-},{"../../snap/ChildrenNode":43,"../../snap/Node":46,"../Change":77,"./RangedFilter":90,"@firebase/util":103}],90:[function(require,module,exports){
+},{"../../snap/ChildrenNode":45,"../../snap/Node":48,"../Change":79,"./RangedFilter":92,"@firebase/util":105}],92:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -26792,7 +27107,7 @@ exports.RangedFilter = RangedFilter;
 
 
 
-},{"../../../core/snap/Node":46,"../../snap/ChildrenNode":43,"../../snap/indexes/PriorityIndex":52,"./IndexedFilter":88}],91:[function(require,module,exports){
+},{"../../../core/snap/Node":48,"../../snap/ChildrenNode":45,"../../snap/indexes/PriorityIndex":54,"./IndexedFilter":90}],93:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27423,7 +27738,7 @@ exports.FirebaseIFrameScriptHolder = FirebaseIFrameScriptHolder;
 
 
 
-},{"../core/stats/StatsManager":58,"../core/util/CountedSet":63,"../core/util/util":74,"./Constants":93,"./polling/PacketReceiver":96,"@firebase/util":103}],92:[function(require,module,exports){
+},{"../core/stats/StatsManager":60,"../core/util/CountedSet":65,"../core/util/util":76,"./Constants":95,"./polling/PacketReceiver":98,"@firebase/util":105}],94:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27918,7 +28233,7 @@ exports.Connection = Connection;
 
 
 
-},{"../core/storage/storage":62,"../core/util/util":74,"./Constants":93,"./TransportManager":94}],93:[function(require,module,exports){
+},{"../core/storage/storage":64,"../core/util/util":76,"./Constants":95,"./TransportManager":96}],95:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -27948,7 +28263,7 @@ exports.LONG_POLLING = 'long_polling';
 
 
 
-},{}],94:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28049,7 +28364,7 @@ exports.TransportManager = TransportManager;
 
 
 
-},{"../core/util/util":74,"./BrowserPollConnection":91,"./WebSocketConnection":95}],95:[function(require,module,exports){
+},{"../core/util/util":76,"./BrowserPollConnection":93,"./WebSocketConnection":97}],97:[function(require,module,exports){
 (function (process){
 "use strict";
 /**
@@ -28404,7 +28719,7 @@ exports.WebSocketConnection = WebSocketConnection;
 
 
 }).call(this,require('_process'))
-},{"../core/stats/StatsManager":58,"../core/storage/storage":62,"../core/util/util":74,"./Constants":93,"@firebase/app":12,"@firebase/util":103,"_process":123}],96:[function(require,module,exports){
+},{"../core/stats/StatsManager":60,"../core/storage/storage":64,"../core/util/util":76,"./Constants":95,"@firebase/app":14,"@firebase/util":105,"_process":125}],98:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28492,7 +28807,7 @@ exports.PacketReceiver = PacketReceiver;
 
 
 
-},{"../../core/util/util":74}],97:[function(require,module,exports){
+},{"../../core/util/util":76}],99:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28523,7 +28838,7 @@ exports.LogLevel = logger_2.LogLevel;
 
 
 
-},{"./src/logger":98}],98:[function(require,module,exports){
+},{"./src/logger":100}],100:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28700,7 +29015,7 @@ exports.Logger = Logger;
 
 
 
-},{}],99:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28724,7 +29039,7 @@ require("./src/shims/String");
 
 
 
-},{"./src/polyfills/promise":100,"./src/shims/Array":101,"./src/shims/String":102}],100:[function(require,module,exports){
+},{"./src/polyfills/promise":102,"./src/shims/Array":103,"./src/shims/String":104}],102:[function(require,module,exports){
 (function (global){
 /**
  * Copyright 2017 Google Inc.
@@ -28762,7 +29077,7 @@ if (typeof Promise === 'undefined') {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"promise-polyfill":124}],101:[function(require,module,exports){
+},{"promise-polyfill":126}],103:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -28863,7 +29178,7 @@ if (!Array.prototype.findIndex) {
 
 
 
-},{}],102:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 /**
  * Copyright 2018 Google Inc.
  *
@@ -28891,7 +29206,7 @@ if (!String.prototype.startsWith) {
 
 
 
-},{}],103:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -28977,7 +29292,7 @@ exports.stringToByteArray = utf8_1.stringToByteArray;
 
 
 
-},{"./src/assert":104,"./src/constants":105,"./src/crypt":106,"./src/deepCopy":107,"./src/deferred":108,"./src/environment":109,"./src/errors":110,"./src/json":112,"./src/jwt":113,"./src/obj":114,"./src/query":115,"./src/sha1":116,"./src/subscribe":117,"./src/utf8":118,"./src/validation":119}],104:[function(require,module,exports){
+},{"./src/assert":106,"./src/constants":107,"./src/crypt":108,"./src/deepCopy":109,"./src/deferred":110,"./src/environment":111,"./src/errors":112,"./src/json":114,"./src/jwt":115,"./src/obj":116,"./src/query":117,"./src/sha1":118,"./src/subscribe":119,"./src/utf8":120,"./src/validation":121}],106:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29020,7 +29335,7 @@ exports.assertionError = function (message) {
 
 
 
-},{"./constants":105}],105:[function(require,module,exports){
+},{"./constants":107}],107:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29058,7 +29373,7 @@ exports.CONSTANTS = {
 
 
 
-},{}],106:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29371,7 +29686,7 @@ exports.base64Decode = function (str) {
 
 
 
-},{}],107:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29448,7 +29763,7 @@ exports.patchProperty = patchProperty;
 
 
 
-},{}],108:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29511,7 +29826,7 @@ exports.Deferred = Deferred;
 
 
 
-},{}],109:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29575,7 +29890,7 @@ exports.isNodeSdk = function () {
 
 
 
-},{"./constants":105}],110:[function(require,module,exports){
+},{"./constants":107}],112:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ERROR_NAME = 'FirebaseError';
@@ -29660,7 +29975,7 @@ exports.ErrorFactory = ErrorFactory;
 
 
 
-},{}],111:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29717,7 +30032,7 @@ exports.Hash = Hash;
 
 
 
-},{}],112:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29757,7 +30072,7 @@ exports.stringify = stringify;
 
 
 
-},{}],113:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -29887,7 +30202,7 @@ exports.isAdmin = function (token) {
 
 
 
-},{"./crypt":106,"./json":112}],114:[function(require,module,exports){
+},{"./crypt":108,"./json":114}],116:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30024,7 +30339,7 @@ exports.every = function (obj, fn) {
 
 
 
-},{}],115:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30085,7 +30400,7 @@ exports.querystringDecode = function (querystring) {
 
 
 
-},{"./obj":114}],116:[function(require,module,exports){
+},{"./obj":116}],118:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30357,7 +30672,7 @@ exports.Sha1 = Sha1;
 
 
 
-},{"./hash":111,"tslib":125}],117:[function(require,module,exports){
+},{"./hash":113,"tslib":127}],119:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
@@ -30579,7 +30894,7 @@ function noop() {
 
 
 
-},{}],118:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30673,7 +30988,7 @@ exports.stringLength = function (str) {
 
 
 
-},{"./assert":104}],119:[function(require,module,exports){
+},{"./assert":106}],121:[function(require,module,exports){
 "use strict";
 /**
  * Copyright 2017 Google Inc.
@@ -30785,7 +31100,7 @@ exports.validateContextObject = validateContextObject;
 
 
 
-},{}],120:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30805,7 +31120,7 @@ exports.validateContextObject = validateContextObject;
 require('@firebase/polyfill');
 module.exports = require('@firebase/app').default;
 
-},{"@firebase/app":12,"@firebase/polyfill":99}],121:[function(require,module,exports){
+},{"@firebase/app":14,"@firebase/polyfill":101}],123:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30824,7 +31139,7 @@ module.exports = require('@firebase/app').default;
 
 require('@firebase/auth');
 
-},{"@firebase/auth":14}],122:[function(require,module,exports){
+},{"@firebase/auth":16}],124:[function(require,module,exports){
 /**
  * Copyright 2017 Google Inc.
  *
@@ -30843,7 +31158,7 @@ require('@firebase/auth');
 
 module.exports = require('@firebase/database');
 
-},{"@firebase/database":15}],123:[function(require,module,exports){
+},{"@firebase/database":17}],125:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -31029,7 +31344,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],124:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
@@ -31273,7 +31588,7 @@ Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
 
 module.exports = Promise;
 
-},{}],125:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 (function (global){
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -31518,4 +31833,4 @@ var __importDefault;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[8]);
+},{}]},{},[10]);

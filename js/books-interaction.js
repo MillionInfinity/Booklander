@@ -4,12 +4,6 @@ console.log("book-interaction");
 let $ = require('jquery'),
 firebase = require("./config");
 
-// e-books
-
-
-// getebook();
-        // book withOut user
-
 function getBook() {
     return $.ajax({
        url: `${firebase.getFBsettings().databaseURL}/book.json`
@@ -155,20 +149,17 @@ function addUserBook(bookObj) {
     });
 }
 
-
 function editBook(bookObj, bookId) {
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
         type: 'PUT',
-        data: JSON.stringify(bookObj)
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
     }).done((data) => {
         return data;
     });
 }
 // This module makes a call to the Open Library API
-
-
-
 
 module.exports = {
     getReadBook,

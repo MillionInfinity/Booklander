@@ -91,9 +91,9 @@
                             //                     type: book ? book.type : "",
                             //                     read: book ? book.read : "",
                             //                     description: book ? book.description : "",
-                            //                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                            //                     btnText: book ? "Save Changes" : "Save Book",
-                            //                     btnId: book ? "save_edit_btn" : "save_new_btn"
+                                                // formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
+                                                // btnText: book ? "Save Changes" : "Save Book",
+                                                // btnId: book ? "save_edit_btn" : "save_new_btn"
                             //                 },
                             //                     form =
                             //                         `<h3>${bookItem.formTitle}</h3>

@@ -17,11 +17,22 @@ h1{
 .is-hidden{
    display: none;
 }
-
+#sixth-sec,
+#fourth-sec,
 #second-sec{
     background-color: #546E7A;
-
+  }
+#sixth-sec,
+#fiveth-sec,
+#fourth-sec,
+#third-sec,
+#second-sec {
+position: relative;
+max-height: 573.82px;
+width: 100%;
+ overflow-x: scroll;
 }
+
 div.card {
   background-color: rgb(255, 255, 255);
    margin-bottom: 45px;
@@ -36,21 +47,73 @@ margin-top: 100px;
   margin-top:1%;
   margin-bottom: 25px;
   background-color:rgb(253, 253, 253);
-
 }
+
+#search-bar {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+
+
 div.modal-dialog{
 width:50% !important;
 height:900px;
 }
-img.img-thumbnail{
-  max-height: 20px;
+img.img-fluid{
+    border-radius: 2px;
 }
-@media (max-width: 375px) {
+.close_b{
+  position: absolute;
+  left:0px;
+}
+
+.col-sm-3, .col-md-3{
+  // background-color:#546E7A;
+  border-radius: 3px;
+  margin-right: 18px;
+    margin-bottom: 18px;
+    border:1px solid rgb(145, 161, 168);
+}
+.col-sm-3:nth-child(1){
+  margin-left: 80px;
+}
+.edit-btn{
+  margin-right: 130px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+.delete-btn{
+    margin-top: -10px;
+      margin-bottom: 10px;
+}
+
+// @media (max-width: 992px) {
+// .edit-btn{
+//   margin-right: 130px;
+// }
+ // }
+@media (max-width: 414px) {
 
 #search-bar{
   margin-top:-11%;
   margin-bottom: 25px;
   background-color:rgb(253, 253, 253);
 
+}
+#search-results {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.edit-btn{
+  margin-right: -55px;
+  margin-top: -50px;
+    margin-bottom: 5px;
+
+}
+.delete-btn{
+    margin-top: -50px;
+      margin-bottom: 5px;
 }
 }

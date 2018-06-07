@@ -10,11 +10,11 @@ let $ = require('jquery'),
     user = require("./user"),
     books = require("./books-interaction"),
     fapi = require("./api"),
-
     interaction = require("./user-interaction"),
     booksDom = require("./booksDom"),
     eventBooks= require("./eventBooks"),
-    meg=require("./meg"),
+    bookSearch = require("./books-getter"),
+     booklist = require("./books-setter"),
     alarm = require("./alarm");
 
 
@@ -43,11 +43,11 @@ $("#logout").click(() => {
     $("#logout").addClass("is-hidden");
 });
 
-// $("#add-book").click(() => {
-//     console.log("i want to see");
-//     loadBooksToDOM();
-//     sendToFirebase();
-// });
+$("#add-book").click(() => {
+    console.log("i want to see");
+    eventBooks.loadBookToDOM();
+    sendToFirebase();
+});
 
 function createUserObj(a) {
     let userObj = {

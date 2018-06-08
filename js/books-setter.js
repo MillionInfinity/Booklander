@@ -54,16 +54,16 @@ let bookSearch = (userInput) => {
 let bookDisplay = (arrayBooks) => {
     let searchResult = "";
     for (let i = 0; i < arrayBooks.length; i++) {
-        searchResult+=`<div class="col-sm-2 col-md-2">`;
+        searchResult+=`<div class="col-sm-3 col-md-3 card">`;
         searchResult +='<div class="card">';
         if (arrayBooks[i].isbn) {
           let bookThumbnail = arrayBooks[i].isbn[0];
 
-            searchResult += `<img class="img-thumbnail" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
           } else{
             // searchResult +=`<img class=""src="imgs/unav.png" alt"cover not found" style="height=80px;">`;
         }
-        searchResult += `<div class="book-search-result"><h4 class="card-title">${arrayBooks[i].title}</h4>`;
+        searchResult += `<div class="book-search-result"><h4 class="text-left">${arrayBooks[i].title}</h4>`;
         searchResult += `<p class="card-text">${arrayBooks[i].author_name}</p>`;
         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
         searchResult +='</div>';

@@ -3,13 +3,15 @@
   background-color: #546E7A; }
 
 body {
-  background-color: #c7cfd3; }
-
+  background-color: #c7cfd3; 
+  font-family: 'Montserrat',
+  sans-serif;
+}
 h1 {
   font-family: 'Montserrat', sans-serif;
   color: white;
-  padding: 30px; }
-
+   padding: 30px;
+}
 .navbar-brand {
   font-size: 2rem;
   font-family: Montserrat; }
@@ -71,14 +73,70 @@ img.img-fluid {
   margin-left: 80px; }
 
 .edit-btn {
-  margin-right: 130px;
-  margin-top: -10px;
-  margin-bottom: 10px; }
+  position: absolute;
+  left: 15px;
+  top: 280px;
+  padding-right: 10px;
+  /* border: 1px solid #a6b3ba;
+  background-color: #a6b3ba; */
+ }
 
-.delete-btn {
-  margin-top: -10px;
-  margin-bottom: 10px; }
-
+.delete-btn.waves-effect {
+  position: relative;
+  left: 80px;
+  top:-10px;
+  /* padding-left: 20px;
+  padding-right: 20px; */
+  /* border: 1px solid #a6b3ba;
+  background-color: #a6b3ba; */
+ }
+.img-thumbnail{
+  width:250px;
+}
+/* .modal-header{
+  margin-top: 
+} */
+h1.modal-title{
+  color: #546E7A;
+  font-size: 16px;
+  position: absolute;
+  top:5px;
+ left:250px;
+margin-bottom: 50px;
+ }
+h3.text-left{
+  color: #546E7A;
+  position: relative;
+  font-size:14px;
+  top:25px;
+  left: -5px;
+  margin:20px;
+  /* padding:  */
+}
+h5.text-left.due{
+  color: #546E7A;
+  position: relative;
+  font-size:14px;
+  top:48px;
+  left: -95px;
+  margin:20px;
+}
+h5.text-left.type {
+  color: #546E7A;
+  position: relative;
+  font-size: 14px;
+  top: 72px;
+  left: -208px;
+  margin: 20px;
+}
+h5.text-left.read {
+  color: #546E7A;
+  position: relative;
+  font-size: 14px;
+  top: 95px;
+  left: -293px;
+  margin: 20px;
+}
 @media (max-width: 414px) {
   #search-bar {
     margin-top: -11%;
@@ -90,12 +148,15 @@ img.img-fluid {
     grid-column-end: 3; }
 
   .edit-btn {
-    margin-right: -55px;
-    margin-top: -50px;
-    margin-bottom: 5px; }
+    position: absolute;
+    top: -90px;
+    left:120px;
+  }
 
   .delete-btn {
-    margin-top: -50px;
-    margin-bottom: 5px; } }
-
-/*# sourceMappingURL=main.css.map */
+    /* margin-top: -50px;
+    margin-bottom: 5px;*/
+  
+  
+  }
+}

@@ -51,7 +51,7 @@ let bookDisplay = (arrayBooks) => {
     let searchResult = "";
     for (let i = 0; i < arrayBooks.length; i++) {
         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-          searchResult += `<div class="col-sm-3">`;
+          searchResult += `<div class="col-sm-3 card">`;
 
 
         if (arrayBooks[i].isbn) {

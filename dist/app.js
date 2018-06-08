@@ -10666,16 +10666,16 @@ let bookSearch = (userInput) => {
 let bookDisplay = (arrayBooks) => {
     let searchResult = "";
     for (let i = 0; i < arrayBooks.length; i++) {
-        searchResult+=`<div class="col-sm-2 col-md-2">`;
+        searchResult+=`<div class="col-sm-3 col-md-3 card">`;
         searchResult +='<div class="card">';
         if (arrayBooks[i].isbn) {
           let bookThumbnail = arrayBooks[i].isbn[0];
 
-            searchResult += `<img class="img-thumbnail" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
           } else{
             // searchResult +=`<img class=""src="imgs/unav.png" alt"cover not found" style="height=80px;">`;
         }
-        searchResult += `<div class="book-search-result"><h4 class="card-title">${arrayBooks[i].title}</h4>`;
+        searchResult += `<div class="book-search-result"><h4 class="text-left">${arrayBooks[i].title}</h4>`;
         searchResult += `<p class="card-text">${arrayBooks[i].author_name}</p>`;
         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
         searchResult +='</div>';
@@ -10777,13 +10777,13 @@ function makeDueList(bookList) {
     let bookDisplay = $(`<div class="row" id="toprint">
               <h1>Due Book</h1>
                      </div>`);
-    $(".myNbook5").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
      for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-md-3" }),
+            bookListItem = $("<div>", { class: "col-md-3 card" }),
             bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
             bookListData.append(
                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10817,10 +10817,10 @@ function makeBookReadList(bookList) {
     $(".myNbook4").html(bookDisplay);
      for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
             bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
             bookListData.append(
                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10832,7 +10832,7 @@ function makeBookReadList(bookList) {
 
                                   </div>
                                  <div class="modal-body">
-                                <p>${book.description}</p >
+                                <p class="text-left">${book.description}</p >
                            </div>
                         <div class="modal-footer">
                       </div>
@@ -10855,10 +10855,10 @@ function makeLiBookList(bookList) {
     $(".myNbook5").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
             bookListData = $("<div>", { class: "card-body"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
             bookListData.append(
                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10890,10 +10890,10 @@ function makeBrBookList(bookList) {
     $(".myNbook2").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
             bookListData = $("<div>", { class: "card" }),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
         bookListData.append(
             `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10925,10 +10925,10 @@ function makeBoBookList(bookList) {
     $(".myNbook3").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card " }),
             bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
             bookListData.append(
                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10962,10 +10962,10 @@ function makeBookList(bookList) {
     $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3" }),
+            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
             bookListData = $("<div>", { class: "card-body"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn btn", text: "edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn btn waves-effect waves-light btn", text: "delete" });
+            bookListEdit = $("<div>", { "data-edit-id": book, class: "edit-btn btn", text: "Edit" }),
+            bookListDelete = $("<div>", { "data-delete-id": book, class: "delete-btn btn waves-effect waves-light btn", text: "Delete" });
             bookListData.append(
                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
@@ -10973,14 +10973,19 @@ function makeBookList(bookList) {
                             <div class="modal-content">
                                 <div class="modal-header">
                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
-                                  <p>${book.description}</p>
+
+                                   <h1 class="modal-title">Title:- ${currentBook.title}</h1>
+                                    <h3 class="text-left"> ${currentBook.author}</h3>
+                                    <h5 class="text-left due"> ${currentBook.dueDate}</h5>
+                                    <h5 class="text-left type"> ${currentBook.type}</h5>
+                                    <h5 class="text-left read"> ${currentBook.read}</h5>
                                   </div>
                                  <div class="modal-body">
                                 <p>${book.description}</p>
                            </div>
                         <div class="modal-footer">
-                        <a><button class="delete-btn btn waves-effect waves-light">delete</button></a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                             
                       </div>
                   </div >
               </div>
@@ -11000,7 +11005,7 @@ function bookForm(book, bookId) {
                     author: book ? book.author : "",
                     dueDate: book ? book.due : "",
                     image: book ? book.image : "",
-                    // place: book ? book.place : "",
+                    place: book ? book.place : "",
                     type: book ? book.type : "",
                     read: book ? book.read : "",
                     description: book ? book.description : "",
@@ -11057,7 +11062,7 @@ function bookForm(book, bookId) {
                                 resolve(form);
                            });
                         }
-                        
+
 
          module.exports = {
                             makeDueList,
@@ -11441,7 +11446,7 @@ let bookDisplay = (arrayBooks) => {
     let searchResult = "";
     for (let i = 0; i < arrayBooks.length; i++) {
         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-          searchResult += `<div class="col-sm-3">`;
+          searchResult += `<div class="col-sm-3 card">`;
 
 
         if (arrayBooks[i].isbn) {

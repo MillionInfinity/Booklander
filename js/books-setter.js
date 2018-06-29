@@ -16,12 +16,12 @@ let captureInput = () => {
     // Grabs the "search-bar" element
     const bookSearchBar = document.getElementById("search-bar");
     bookSearchBar.addEventListener("keyup", function(e) {
-      console.log("button clicked",e);
+    //   console.log("button clicked",e);
         if (e.keyCode === 13 && e.target.value != "")  {
     // Takes user input and makes it lowercase
             let userInput = e.target.value.toLowerCase();
             bookSearch(userInput);
-            console.log("button get users input", userInput);
+            // console.log("button get users input", userInput);
         // If the "enter" keimgy is pressed, but there is no value entered, an alert is triggered
         } else if (e.keyCode === 13) {
                 window.alert("Please enter something to search for.");
@@ -33,8 +33,8 @@ captureInput();
 
 // From the API Call, get the data and search through it for matches to the parameter passed into it...
 let bookSearch = (userInput) => {
+  console.log("user input", userInput);
     bookQuery.booksGetter(userInput)
-    // and return the response once it is done
     .then((response) => {
 
         // let bookResponse = response;
@@ -45,7 +45,7 @@ let bookSearch = (userInput) => {
         for (let i = 0; i < books.length; i++) {
             button = $(`#save--book--btn-${i}`);
             clickAddToBookshelf(button);
-            console.console.log("save button", button);
+            // console.console.log("save button", button);
         }
     });
 };
@@ -53,13 +53,15 @@ let bookSearch = (userInput) => {
 
 let bookDisplay = (arrayBooks) => {
     let searchResult = "";
+   
     for (let i = 0; i < arrayBooks.length; i++) {
+   
         searchResult+=`<div class="col-sm-3 col-md-3 card">`;
         searchResult +='<div class="card">';
         if (arrayBooks[i].isbn) {
           let bookThumbnail = arrayBooks[i].isbn[0];
 
-            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found" style="background:'url(../imgs/unav.png)'">`;
           } else{
             // searchResult +=`<img class=""src="imgs/unav.png" alt"cover not found" style="height=80px;">`;
         }
@@ -86,7 +88,7 @@ let bookshelfDisplay = (arrayBooks) => {
 
 function clickAddToBookshelf(button) {
     $(button).on("click", (e) => {
-      console.log("clickAddToBookshelf");
+    //   console.log("clickAddToBookshelf");
         let savedBook = {};
 
         // savedBook.img= e.target.parentNode.childNodes[0];
@@ -109,7 +111,7 @@ function clickAddToBookshelf(button) {
 
 
 function displayBookshelf() {
-  console.log("your book shelf clicked");
+//   console.log("your book shelf clicked");
     $("#e-book").on("click", (e) => {
         $(".myNbook").html("");
         bookshelfDisplay(bookshelf);
@@ -118,7 +120,7 @@ function displayBookshelf() {
 
 function deleteBookResult() {
     $(".delete-button").on("click", (e) => {
-        console.log(e.target.id);
+        // console.log(e.target.id);
     });
 }
 
@@ -127,28 +129,28 @@ function deleteBookResult() {
 module.exports = {bookSearch};
 
 
-// function makeEbook(bookList){
-// // This builds the list of books with their title, author, and the published year
-// let bookDisplay = (arrayBooks) => {
-//     let searchResult = "";
-//     for (let i = 0; i < arrayBooks.length; i++) {
-//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-//         if (arrayBooks[i].isbn) {
-//             let bookThumbnail = arrayBooks[i].isbn[0];
-//             searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
-//             // searchResult +=`img src="./imgs/unav.png" all"cover not found"`;
-//         };
-//
-// //   searchResult +=`img src="imgs/unav.png" all"cover not found"`;
-//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
-//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
-//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
-//     }
-//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
-//     document.getElementById('myNbook').innerHTML = searchResult;
-// }
-// }
+function makeEbook(bookList){
+// This builds the list of books with their title, author, and the published year
+let bookDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+        if (arrayBooks[i].isbn) {
+            let bookThumbnail = arrayBooks[i].isbn[0];
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            // searchResult +=`img src="./imgs/unav.png" all"cover not found"`;
+        }
+
+//   searchResult +=`img src="imgs/unav.png" all"cover not found"`;
+        searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+        searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+        searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+    }
+    // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+    document.getElementById('myNbook').innerHTML = searchResult;
+};
+}
 
 // function makeEbook(bookList){
 // This builds the list of books with their title, author, and the published year

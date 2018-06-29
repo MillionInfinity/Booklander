@@ -1,14 +1,15 @@
-     "use strict";
-           console.log("print on to dom");
+      'use strict';
+           // console.log("print on to dom");
            let $ = require('jquery');
 
 
 
 
 function makeDueList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint">
-              <h1>Due Book</h1>
-                     </div>`);
+    let bookDisplay = $(`
+                 <h1 class="text-center">Due Books</h1>
+    <div class="row" id="toprint">
+           </div>`);
     $(".myNbook4").html(bookDisplay);
      for (let book in bookList) {
         let currentBook = bookList[book],
@@ -42,7 +43,7 @@ function makeDueList(bookList) {
    //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`
-      <h1 class="text-center">Books Ready to Read
+      <h1 class="text-center">Books Ready to Read</h1>
       <div class="row" id="toprint">
     </div>
                       `);
@@ -80,11 +81,11 @@ function makeBookReadList(bookList) {
 
 function makeLiBookList(bookList) {
     let bookDisplay = $(`
-
+<h1 clas="text-center">A Collection of Library Books</h1>
       <div class="row" id="toprint">
       </div>
                       `);
-    $(".myNbook5").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
@@ -117,9 +118,11 @@ function makeLiBookList(bookList) {
 //Borrowed
 
 function makeBrBookList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint"></div>
+    let bookDisplay = $(`
+<h1 clas="text-center">A Collection of Borrowed Books</h1>
+      <div class="row" id="toprint"></div>
                       `);
-    $(".myNbook2").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
@@ -151,10 +154,12 @@ function makeBrBookList(bookList) {
 //bought
 
 function makeBoBookList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint">
+    let bookDisplay = $(`
+<h1 clas="text-center">A Collection of Bought Books</h1>
+    <div class="row" id="toprint">
 
     </div>`);
-    $(".myNbook3").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card " }),
@@ -183,49 +188,29 @@ function makeBoBookList(bookList) {
 
 }
  //all books
-function makeBookList(bookList) {
-    let bookDisplay = $(`
-<h1 class="text-center"> Collection of Books</h1>
-      <div class="row" id="toprint">
-
-    </div>
-                      `);
-
-    $(".myNbook4").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
-            bookListData = $("<div>", { class: "card-body"}),
-            bookListEdit = $("<div>", { "data-edit-id": book, class: "edit-btn btn", text: "Edit" }),
-            bookListDelete = $("<div>", { "data-delete-id": book, class: "delete-btn btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-
-                                   <h1 class="modal-title">Title:- ${currentBook.title}</h1>
-                                    <h3 class="text-left"> ${currentBook.author}</h3>
-                                    <h5 class="text-left due"> ${currentBook.dueDate}</h5>
-                                    <h5 class="text-left type"> ${currentBook.type}</h5>
-                                    <h5 class="text-left read"> ${currentBook.read}</h5>
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p>
-                           </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                             
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-
+ let output=document.getElementById("myNbook");
+let makeBookList=(bookarray)=>{
+// console.log("make my bookarray",bookarray);
+     let bookList='';
+     let books;
+  for(books in bookarray) {
+     let currentBook=bookarray[books];
+     console.log(currentBook);
+          bookList += `<div class= "col-sm-2 col-md-2">`;
+     //   bookList += `<div class= "card ">`;
+          bookList += `<img class="img-thumbnail" src="imgs/${currentBook.image}"/>`;
+        //   bookList +=`</div>`;
+        bookList += `<p class="text-left">${currentBook.title}</p>`;
+        bookList += `<p class="text-left">${currentBook.author}</p>`;
+        bookList +=`</div>`;
+      output.innerHTML = bookList;
 }
+
+};
+
+
+
+
 
 
 

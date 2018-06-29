@@ -1,5 +1,5 @@
 "use strict";
-console.log("book-interaction");
+// console.log("book-interaction");
 
 let $ = require('jquery'),
 firebase = require("./config");
@@ -21,7 +21,7 @@ function getDueBook() {
             for (let key in ove) {
                 if (ove[key].due !== null || 'undefined') {
                     dueDa.push(ove[key]);
-                    console.log("getdueda", dueDa);
+                    // console.log("getdueda", dueDa);
                 }
 
          } return dueDa;

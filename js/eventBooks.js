@@ -1,5 +1,5 @@
 "use strict";
-console.log("event listners for book");
+// console.log("event listners for book");
 let $ = require('jquery'),
     firebase = require("./config"),
     bookInter=require("./books-interaction"),

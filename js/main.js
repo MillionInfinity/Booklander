@@ -1,5 +1,5 @@
 'use strict';
-console.log("my mainjs");
+// console.log("my mainjs");
 
 
 //======================= REQUIRED STAFFS============================//
@@ -29,7 +29,7 @@ $("#login").click(function () {
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
-            console.log("login complete!");
+            // console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
             sendToFirebase();
@@ -37,14 +37,14 @@ $("#login").click(function () {
 });
 
 $("#logout").click(() => {
-    console.log("main.logout clicked");
+    // console.log("main.logout clicked");
     user.logOut();
     $("#login").removeClass("is-hidden");
     $("#logout").addClass("is-hidden");
 });
 
 $("#add-book").click(() => {
-    console.log("i want to see");
+    // console.log("i want to see");
     eventBooks.loadBookToDOM();
     sendToFirebase();
 });
@@ -55,14 +55,14 @@ function createUserObj(a) {
         email: '',
         uid: user.getUser()
     };
-    console.log("userObj", userObj);
+    // console.log("userObj", userObj);
     return userObj;
 }
 
 function sendToFirebase() {
     let userBuild = createUserObj();
     interaction.addUser(userBuild);
-    console.log("my user is saved in firebase", userBuild);
+    // console.log("my user is saved in firebase", userBuild);
 }
 // home page
 

@@ -10,11 +10,11 @@ let firebase= require("./config"),
 
 //WE ARE GOING TO USE THIS WEAPONS (method)..i never use this words before.kkk
 function getbooks(user){
-    console.log("hey url", firebase.myConfig().dataBaseURL);
+    // console.log("hey url", firebase.myConfig().dataBaseURL);
     return $.ajax({
         url:`{firebase.myConfig().dataBaseURL}/books.json?orderBy="uid"&equalTo="${user}"`
     }).done((bookData)=>{
-        console.log("i am expecting...",bookData);
+        // console.log("i am expecting...",bookData);
     });
 }
 // getbooks();

@@ -1,5 +1,5 @@
 "use strict";
-     console.log("iam user");
+    //  console.log("iam user");
 
     let $ = require('jquery'),
          firebase = require("./config"),
@@ -17,7 +17,7 @@
                };
 
     firebase.auth().onAuthStateChanged(function (user) {  
-            console.log("onAuthGoogle user", user);
+            // console.log("onAuthGoogle user", user);
            if (user) {
                     currentUser.uid = user.uid;
                 } else {
@@ -27,7 +27,7 @@
                     currentUser.bookId = null;
                     currentUser.fbID=null;
             
-                    console.log("NO USER LOGGED IN", currentUser);
+                    // console.log("NO USER LOGGED IN", currentUser);
                }
         });
 
@@ -43,7 +43,7 @@
         }
     
     function setUserVars(obj) {
-            console.log("user.setUserVars: obj", obj);
+            // console.log("user.setUserVars: obj", obj);
             return new Promise((resolve, reject) => {
                     currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
@@ -55,19 +55,19 @@
         }
      function showUser(obj) {
             let userDetails = getUserObj();
-            console.log("user.showUser: userDetails:", userDetails);
+            // console.log("user.showUser: userDetails:", userDetails);
         }
     
     function checkUserFB(uid) {
        interaction.getFBDetails(uid)
           .then((result) => {
     let data = Object.values(result);
-            console.log("user: any data?", data.length);
+            // console.log("user: any data?", data.length);
        if (data.length === 0) {
-           console.log("need to add this user to FB", data);
+        //    console.log("need to add this user to FB", data);
            interaction.addUser(makeUserObj(uid))
                .then((result) => {
-           console.log("user: user added", uid, result.name);
+        //    console.log("user: user added", uid, result.name);
        let tmpUser = {
             fbID: result.name,
             uid: uid
@@ -77,7 +77,7 @@
             return setUserVars(tmpUser);
         });
     } else {
-        console.log("user: already a user", data);
+        // console.log("user: already a user", data);
             var key = Object.keys(result);
                 data[0].fbID = key[0];
                 setUserVars(data[0]);
@@ -94,7 +94,7 @@
                 email: currentUser.email,
                 fbID: null
             };
-    console.log("userObj", userObj);
+    // console.log("userObj", userObj);
     return userObj;
 }
 

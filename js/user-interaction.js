@@ -1,6 +1,6 @@
 "use strict";
 
-console.log("user-interaction");
+// console.log("user-interaction");
 let $ = require("jquery"),
     user = require("./user"),
     firebase = require("./config"),
@@ -10,7 +10,7 @@ let $ = require("jquery"),
 
 
 function getFBDetails(user) {
-    console.log("user", user);
+    // console.log("user", user);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
 
@@ -24,7 +24,7 @@ function getFBDetails(user) {
 //FIREBASE KNOCK KNOCK //
 function addUser(userObj) {
 
-    console.log("add user tofirebase", userObj);
+    // console.log("add user tofirebase", userObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json`,
 
@@ -32,7 +32,7 @@ function addUser(userObj) {
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
-        console.log("userID",userID);
+        // console.log("userID",userID);
         return userID;
     });
 }
@@ -52,7 +52,7 @@ function createUser(userObj) {
         .catch(function (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log("error:", errorCode, errorMessage);
+            // console.log("error:", errorCode, errorMessage);
         });
 }
 function loginUser(userObj) {
@@ -60,7 +60,7 @@ function loginUser(userObj) {
         .catch(function (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log("error:", errorCode, errorMessage);
+            // console.log("error:", errorCode, errorMessage);
         });
 }
 

@@ -1,5 +1,5 @@
 "use strict";
-console.log("i configarate");
+// console.log("i configarate");
 
 
 let firebase = require("firebase/app"),
@@ -25,10 +25,10 @@ var config = {
 firebase.initializeApp(config);
 
 firebase.getFBsettings = () => {
-    console.log("getFBsettings", config);
+    // console.log("getFBsettings", config);
     return config;
 };
-console.log("eyesus yegeba sew");
+// console.log("eyesus yegeba sew");
 
 
 

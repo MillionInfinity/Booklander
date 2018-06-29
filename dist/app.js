@@ -10416,21 +10416,18 @@ return jQuery;
 let $ = require("jquery");
 
 let booksGetter = (query) => {
-    // Link to books search API; no API key needed.  "query" will be the search string obtained from the input field
     let url = `https://openlibrary.org/search.json?title=${query}&limit=10`;
-    // Returns ajax promise
-    return $.ajax({
-    // Where the request is being sent
-    url: url,
-    // Specifies the type of data expected back from the server (JavaScript Object)
-    dataType: "json"
+      return $.ajax({
+      url: url,
+      dataType: "json"
     });
 };
 
 module.exports = {booksGetter};
+
 },{"jquery":1}],5:[function(require,module,exports){
 "use strict";
-console.log("book-interaction");
+// console.log("book-interaction");
 
 let $ = require('jquery'),
 firebase = require("./config");
@@ -10452,7 +10449,7 @@ function getDueBook() {
             for (let key in ove) {
                 if (ove[key].due !== null || 'undefined') {
                     dueDa.push(ove[key]);
-                    console.log("getdueda", dueDa);
+                    // console.log("getdueda", dueDa);
                 }
 
          } return dueDa;
@@ -10628,12 +10625,12 @@ let captureInput = () => {
     // Grabs the "search-bar" element
     const bookSearchBar = document.getElementById("search-bar");
     bookSearchBar.addEventListener("keyup", function(e) {
-      console.log("button clicked",e);
+    //   console.log("button clicked",e);
         if (e.keyCode === 13 && e.target.value != "")  {
     // Takes user input and makes it lowercase
             let userInput = e.target.value.toLowerCase();
             bookSearch(userInput);
-            console.log("button get users input", userInput);
+            // console.log("button get users input", userInput);
         // If the "enter" keimgy is pressed, but there is no value entered, an alert is triggered
         } else if (e.keyCode === 13) {
                 window.alert("Please enter something to search for.");
@@ -10645,8 +10642,8 @@ captureInput();
 
 // From the API Call, get the data and search through it for matches to the parameter passed into it...
 let bookSearch = (userInput) => {
+  console.log("user input", userInput);
     bookQuery.booksGetter(userInput)
-    // and return the response once it is done
     .then((response) => {
 
         // let bookResponse = response;
@@ -10657,7 +10654,7 @@ let bookSearch = (userInput) => {
         for (let i = 0; i < books.length; i++) {
             button = $(`#save--book--btn-${i}`);
             clickAddToBookshelf(button);
-            console.console.log("save button", button);
+            // console.console.log("save button", button);
         }
     });
 };
@@ -10665,13 +10662,15 @@ let bookSearch = (userInput) => {
 
 let bookDisplay = (arrayBooks) => {
     let searchResult = "";
+   
     for (let i = 0; i < arrayBooks.length; i++) {
+   
         searchResult+=`<div class="col-sm-3 col-md-3 card">`;
         searchResult +='<div class="card">';
         if (arrayBooks[i].isbn) {
           let bookThumbnail = arrayBooks[i].isbn[0];
 
-            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found" style="background:'url(../imgs/unav.png)'">`;
           } else{
             // searchResult +=`<img class=""src="imgs/unav.png" alt"cover not found" style="height=80px;">`;
         }
@@ -10698,7 +10697,7 @@ let bookshelfDisplay = (arrayBooks) => {
 
 function clickAddToBookshelf(button) {
     $(button).on("click", (e) => {
-      console.log("clickAddToBookshelf");
+    //   console.log("clickAddToBookshelf");
         let savedBook = {};
 
         // savedBook.img= e.target.parentNode.childNodes[0];
@@ -10721,7 +10720,7 @@ function clickAddToBookshelf(button) {
 
 
 function displayBookshelf() {
-  console.log("your book shelf clicked");
+//   console.log("your book shelf clicked");
     $("#e-book").on("click", (e) => {
         $(".myNbook").html("");
         bookshelfDisplay(bookshelf);
@@ -10730,7 +10729,7 @@ function displayBookshelf() {
 
 function deleteBookResult() {
     $(".delete-button").on("click", (e) => {
-        console.log(e.target.id);
+        // console.log(e.target.id);
     });
 }
 
@@ -10739,44 +10738,45 @@ function deleteBookResult() {
 module.exports = {bookSearch};
 
 
-// function makeEbook(bookList){
-// // This builds the list of books with their title, author, and the published year
-// let bookDisplay = (arrayBooks) => {
-//     let searchResult = "";
-//     for (let i = 0; i < arrayBooks.length; i++) {
-//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-//         if (arrayBooks[i].isbn) {
-//             let bookThumbnail = arrayBooks[i].isbn[0];
-//             searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
-//             // searchResult +=`img src="./imgs/unav.png" all"cover not found"`;
-//         };
-//
-// //   searchResult +=`img src="imgs/unav.png" all"cover not found"`;
-//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
-//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
-//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
-//     }
-//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
-//     document.getElementById('myNbook').innerHTML = searchResult;
-// }
-// }
+function makeEbook(bookList){
+// This builds the list of books with their title, author, and the published year
+let bookDisplay = (arrayBooks) => {
+    let searchResult = "";
+    for (let i = 0; i < arrayBooks.length; i++) {
+        // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
+        if (arrayBooks[i].isbn) {
+            let bookThumbnail = arrayBooks[i].isbn[0];
+            searchResult += `<img class="img-fluid" src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-L.jpg" alt="book cover not found">`;
+            // searchResult +=`img src="./imgs/unav.png" all"cover not found"`;
+        }
+
+//   searchResult +=`img src="imgs/unav.png" all"cover not found"`;
+        searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
+        searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
+        searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
+        searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
+    }
+    // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
+    document.getElementById('myNbook').innerHTML = searchResult;
+};
+}
 
 // function makeEbook(bookList){
 // This builds the list of books with their title, author, and the published year
 
 },{"./books-getter":4,"jquery":1}],7:[function(require,module,exports){
-     "use strict";
-           console.log("print on to dom");
+      'use strict';
+           // console.log("print on to dom");
            let $ = require('jquery');
 
 
 
 
 function makeDueList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint">
-              <h1>Due Book</h1>
-                     </div>`);
+    let bookDisplay = $(`
+                 <h1 class="text-center">Due Books</h1>
+    <div class="row" id="toprint">
+           </div>`);
     $(".myNbook4").html(bookDisplay);
      for (let book in bookList) {
         let currentBook = bookList[book],
@@ -10810,7 +10810,7 @@ function makeDueList(bookList) {
    //book not read
 function makeBookReadList(bookList) {
     let bookDisplay = $(`
-      <h1 class="text-center">Books Ready to Read
+      <h1 class="text-center">Books Ready to Read</h1>
       <div class="row" id="toprint">
     </div>
                       `);
@@ -10848,11 +10848,11 @@ function makeBookReadList(bookList) {
 
 function makeLiBookList(bookList) {
     let bookDisplay = $(`
-
+<h1 clas="text-center">A Collection of Library Books</h1>
       <div class="row" id="toprint">
       </div>
                       `);
-    $(".myNbook5").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
@@ -10885,9 +10885,11 @@ function makeLiBookList(bookList) {
 //Borrowed
 
 function makeBrBookList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint"></div>
+    let bookDisplay = $(`
+<h1 clas="text-center">A Collection of Borrowed Books</h1>
+      <div class="row" id="toprint"></div>
                       `);
-    $(".myNbook2").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
@@ -10919,10 +10921,12 @@ function makeBrBookList(bookList) {
 //bought
 
 function makeBoBookList(bookList) {
-    let bookDisplay = $(`<div class="row" id="toprint">
+    let bookDisplay = $(`
+<h1 clas="text-center">A Collection of Bought Books</h1>
+    <div class="row" id="toprint">
 
     </div>`);
-    $(".myNbook3").html(bookDisplay);
+    $(".myNbook4").html(bookDisplay);
     for (let book in bookList) {
         let currentBook = bookList[book],
             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card " }),
@@ -10951,49 +10955,29 @@ function makeBoBookList(bookList) {
 
 }
  //all books
-function makeBookList(bookList) {
-    let bookDisplay = $(`
-<h1 class="text-center"> Collection of Books</h1>
-      <div class="row" id="toprint">
-
-    </div>
-                      `);
-
-    $(".myNbook4").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
-            bookListData = $("<div>", { class: "card-body"}),
-            bookListEdit = $("<div>", { "data-edit-id": book, class: "edit-btn btn", text: "Edit" }),
-            bookListDelete = $("<div>", { "data-delete-id": book, class: "delete-btn btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-
-                                   <h1 class="modal-title">Title:- ${currentBook.title}</h1>
-                                    <h3 class="text-left"> ${currentBook.author}</h3>
-                                    <h5 class="text-left due"> ${currentBook.dueDate}</h5>
-                                    <h5 class="text-left type"> ${currentBook.type}</h5>
-                                    <h5 class="text-left read"> ${currentBook.read}</h5>
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p>
-                           </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                             
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-
+ let output=document.getElementById("myNbook");
+let makeBookList=(bookarray)=>{
+// console.log("make my bookarray",bookarray);
+     let bookList='';
+     let books;
+  for(books in bookarray) {
+     let currentBook=bookarray[books];
+     console.log(currentBook);
+          bookList += `<div class= "col-sm-2 col-md-2">`;
+     //   bookList += `<div class= "card ">`;
+          bookList += `<img class="img-thumbnail" src="imgs/${currentBook.image}"/>`;
+        //   bookList +=`</div>`;
+        bookList += `<p class="text-left">${currentBook.title}</p>`;
+        bookList += `<p class="text-left">${currentBook.author}</p>`;
+        bookList +=`</div>`;
+      output.innerHTML = bookList;
 }
+
+};
+
+
+
+
 
 
 
@@ -11077,7 +11061,7 @@ function bookForm(book, bookId) {
 
 },{"jquery":1}],8:[function(require,module,exports){
 "use strict";
-console.log("i configarate");
+// console.log("i configarate");
 
 
 let firebase = require("firebase/app"),
@@ -11103,17 +11087,17 @@ var config = {
 firebase.initializeApp(config);
 
 firebase.getFBsettings = () => {
-    console.log("getFBsettings", config);
+    // console.log("getFBsettings", config);
     return config;
 };
-console.log("eyesus yegeba sew");
+// console.log("eyesus yegeba sew");
 
 
 
 module.exports = firebase;
 },{"./api":3,"firebase/app":122,"firebase/auth":123,"firebase/database":124}],9:[function(require,module,exports){
 "use strict";
-console.log("event listners for book");
+// console.log("event listners for book");
 let $ = require('jquery'),
     firebase = require("./config"),
     bookInter=require("./books-interaction"),
@@ -11321,7 +11305,7 @@ module.exports={loadBookToDOM,
 
 },{"./books-interaction":5,"./booksDom":7,"./config":8,"./search":11,"./user":13,"./user-interaction":12,"jquery":1}],10:[function(require,module,exports){
 'use strict';
-console.log("my mainjs");
+// console.log("my mainjs");
 
 
 //======================= REQUIRED STAFFS============================//
@@ -11351,7 +11335,7 @@ $("#login").click(function () {
             user.setUser(result.user.uid);
             $("#login").addClass("is-hidden");
             $("#userPic").removeClass("d-none").html(`<img src="${result.user.photoURL}" alt="${result.user.displayName} photo from Google" class="profPic rounded-circle" style.width='80px'>`);
-            console.log("login complete!");
+            // console.log("login complete!");
             $("#logout").removeClass("is-hidden");
             user.checkUserFB(result.user.uid);
             sendToFirebase();
@@ -11359,14 +11343,14 @@ $("#login").click(function () {
 });
 
 $("#logout").click(() => {
-    console.log("main.logout clicked");
+    // console.log("main.logout clicked");
     user.logOut();
     $("#login").removeClass("is-hidden");
     $("#logout").addClass("is-hidden");
 });
 
 $("#add-book").click(() => {
-    console.log("i want to see");
+    // console.log("i want to see");
     eventBooks.loadBookToDOM();
     sendToFirebase();
 });
@@ -11377,14 +11361,14 @@ function createUserObj(a) {
         email: '',
         uid: user.getUser()
     };
-    console.log("userObj", userObj);
+    // console.log("userObj", userObj);
     return userObj;
 }
 
 function sendToFirebase() {
     let userBuild = createUserObj();
     interaction.addUser(userBuild);
-    console.log("my user is saved in firebase", userBuild);
+    // console.log("my user is saved in firebase", userBuild);
 }
 // home page
 
@@ -11494,7 +11478,7 @@ function displayBookshelf() {
 
 function deleteBookResult() {
     $(".delete-button").on("click", (e) => {
-        console.log(e.target.id);
+        // console.log(e.target.id);
     });
 }
 
@@ -11509,142 +11493,46 @@ module.exports = { bookSearch };
 
 
 
-  let booksGetter=(query)=>{
-   return $.ajax({
-     url:`https://openlibrary.org/search.json?title=${query}&limit=8`,
-     type:'GET',
-     data:JSON.stringify
-   }).done((searchdata)=>{
-    //  console.log("data from api",searchdata);
-    //  document.getElementsByClassName('.myNbook').innerHTML=searchdata;
-     return searchdata;
-   }) .then((response) => {
-    //  console.log("response", response);
-           let ebook= response;
-           let output='';
-           $.each(ebook, (index, book) => {
-       output += `
-         <div class="col-md-3">
-           <div class="well text-center">
-             <img src="http://covers.openlibrary.org/b/isbn/${book.bookThumbnail}-S.jpg" alt="book cover thumbnail image">
-             <h5>${book.title}</h5>
-              <p>${book.author_name}</p>
-           </div>
-         </div>
-       `;
-     });
+//   let booksGetter=(query)=>{
+//    return $.ajax({
+//      url:`https://openlibrary.org/search.json?title=${query}&limit=8`,
+//      type:'GET',
+//      data:JSON.stringify
+//    }).done((searchdata)=>{
+//     //  console.log("data from api",searchdata);
+//     //  document.getElementsByClassName('.myNbook').innerHTML=searchdata;
+//      return searchdata;
+//    }) .then((response) => {
+//     //  console.log("response", response);
+//            let ebook= response;
+//            let output='';
+//            $.each(ebook, (index, book) => {
+//        output += `
+//          <div class="col-md-3">
+//            <div class="well text-center">
+//              <img src="http://covers.openlibrary.org/b/isbn/${book.bookThumbnail}-S.jpg" alt="book cover thumbnail image">
+//              <h5>${book.title}</h5>
+//               <p>${book.author_name}</p>
+//            </div>
+//          </div>
+//        `;
+//      });
 
-       });
+//        });
 
- };
+//  };
 
-booksGetter();
-
-
+// booksGetter();
 
 
-// //
-// let button;
-// let bookResult = [];
-// let bookshelf = [];
 
 
-// let captureInput = () => {
-//     // Grabs the "search-bar" element
-//     const bookSearchBar = document.getElementById("search-bar");
-//     bookSearchBar.addEventListener("keypress", function(e) {
-//         if (e.keyCode === 13 && e.target.value != "")  {
-//     // Takes user input and makes it lowercase
-//             let userInput = e.target.value.toLowerCase();
-//             bookSearch(userInput);
-//         // If the "enter" key is pressed, but there is no value entered, an alert is triggered
-//         } else if (e.keyCode === 13) {
-//                 window.alert("Please enter something to search for.");
-//         }
-//     });
-// };
-// //
-//
-// // search();
-// // // From the API Call, get the data and search through it for matches to the parameter passed into it...
-// let bookSearch = (userInput) => {
-//     bookQuery.booksGetter(userInput)
-//     // and return the response once it is done
-//     .then((response) => {
-//         let bookResponse = response;
-//         bookResult = response.docs;
-//         bookDisplay(bookResult);
-//     }).then(() => {
-//         let books = $(".book-search-result");
-//         for (let i = 0; i < books.length; i++) {
-//             button = $(`#save--book--btn-${i}`);
-//             clickAddToBookshelf(button);
-//         }
-//     });
-// };
-// // //
-// // // This builds the list of books with their title, author, and the published year
-// let bookDisplay = (arrayBooks) => {
-//     let searchResult = "";
-//     for (let i = 0; i < arrayBooks.length; i++) {
-//         // Adds thumbnail image of book cover; takes too long to load & sometimes returns no image at all
-//         if (arrayBooks[i].isbn) {
-//             let bookThumbnail = arrayBooks[i].isbn[0];
-//             searchResult += `<img src="http://covers.openlibrary.org/b/isbn/${bookThumbnail}-S.jpg" alt="book cover thumbnail image">`;
-//         }
-//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-//         searchResult += `<p class="author-name list-summary">By: ${arrayBooks[i].author_name}</p>`;
-//         searchResult += `<footer class="pub-date list-footer">Published: ${arrayBooks[i].first_publish_year}</footer>`;
-//         searchResult += `<button id="save--book--btn-${i}" type="button" class="btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Add to Bookshelf</button></div>`;
-//     }
-//     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
-//     document.getElementById('search-results').innerHTML = searchResult;
-// };
-// // //
-// let bookshelfDisplay = (arrayBooks) => {
-//     let searchResult = "";
-//     for (let i = 0; i < arrayBooks.length; i++) {
-//         searchResult += `<div class="book-search-result"><h4 class="book-title list-headline">${arrayBooks[i].title}</h4>`;
-//         searchResult += `<p class="author-name list-summary">${arrayBooks[i].author_name}</p>`;
-//         searchResult += `<footer class="pub-date list-footer">${arrayBooks[i].first_publish_year}</footer>`;
-//         searchResult += `<button id="delete--book--btn-${i}" type="button" class="delete-button btn btn-light btn-sm" aria-pressed="false" autocomplete="off" target="my--btn--news">Delete Book</button></div>`;
-//     }
-// //     // Grabs the empty <div> from index.html with the ID of "content" and fills it with "newContent"
-// //     document.getElementById('search-results').innerHTML = searchResult;
-// };
-
-// function clickAddToBookshelf(button) {
-//     $(button).on("click", (e) => {
-//         let savedBook = {};
-//         savedBook.title = e.target.parentNode.childNodes[0].innerText;
-//         savedBook.author_name = e.target.parentNode.childNodes[1].innerText;
-//         savedBook.first_publish_year = e.target.parentNode.childNodes[2].innerText;
-//         bookshelf.push(savedBook);
-//     });
-// }
-
-// function displayBookshelf() {
-//     $("#bookshelf-button").on("click", (e) => {
-//         $("#search-results").html("");
-//         bookshelfDisplay(bookshelf);
-//     });
-// }
-
-// function deleteBookResult() {
-//     $(".delete-button").on("click", (e) => {
-//         console.log(e.target.id);
-//     });
-// }
-// // //
-// displayBookshelf();
-// deleteBookResult();
-
-module.exports = {bookSearch};
+// module.exports = {bookSearch};
 
 },{"./eventBooks":9,"jquery":1}],12:[function(require,module,exports){
 "use strict";
 
-console.log("user-interaction");
+// console.log("user-interaction");
 let $ = require("jquery"),
     user = require("./user"),
     firebase = require("./config"),
@@ -11654,7 +11542,7 @@ let $ = require("jquery"),
 
 
 function getFBDetails(user) {
-    console.log("user", user);
+    // console.log("user", user);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
 
@@ -11668,7 +11556,7 @@ function getFBDetails(user) {
 //FIREBASE KNOCK KNOCK //
 function addUser(userObj) {
 
-    console.log("add user tofirebase", userObj);
+    // console.log("add user tofirebase", userObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json`,
 
@@ -11676,7 +11564,7 @@ function addUser(userObj) {
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
-        console.log("userID",userID);
+        // console.log("userID",userID);
         return userID;
     });
 }
@@ -11696,7 +11584,7 @@ function createUser(userObj) {
         .catch(function (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log("error:", errorCode, errorMessage);
+            // console.log("error:", errorCode, errorMessage);
         });
 }
 function loginUser(userObj) {
@@ -11704,7 +11592,7 @@ function loginUser(userObj) {
         .catch(function (error) {
             let errorCode = error.code;
             let errorMessage = error.message;
-            console.log("error:", errorCode, errorMessage);
+            // console.log("error:", errorCode, errorMessage);
         });
 }
 
@@ -11716,7 +11604,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
 
 },{"./config":8,"./user":13,"jquery":1}],13:[function(require,module,exports){
 "use strict";
-     console.log("iam user");
+    //  console.log("iam user");
 
     let $ = require('jquery'),
          firebase = require("./config"),
@@ -11734,7 +11622,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                };
 
     firebase.auth().onAuthStateChanged(function (user) {  
-            console.log("onAuthGoogle user", user);
+            // console.log("onAuthGoogle user", user);
            if (user) {
                     currentUser.uid = user.uid;
                 } else {
@@ -11744,7 +11632,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                     currentUser.bookId = null;
                     currentUser.fbID=null;
             
-                    console.log("NO USER LOGGED IN", currentUser);
+                    // console.log("NO USER LOGGED IN", currentUser);
                }
         });
 
@@ -11760,7 +11648,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
         }
     
     function setUserVars(obj) {
-            console.log("user.setUserVars: obj", obj);
+            // console.log("user.setUserVars: obj", obj);
             return new Promise((resolve, reject) => {
                     currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
@@ -11772,19 +11660,19 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
         }
      function showUser(obj) {
             let userDetails = getUserObj();
-            console.log("user.showUser: userDetails:", userDetails);
+            // console.log("user.showUser: userDetails:", userDetails);
         }
     
     function checkUserFB(uid) {
        interaction.getFBDetails(uid)
           .then((result) => {
     let data = Object.values(result);
-            console.log("user: any data?", data.length);
+            // console.log("user: any data?", data.length);
        if (data.length === 0) {
-           console.log("need to add this user to FB", data);
+        //    console.log("need to add this user to FB", data);
            interaction.addUser(makeUserObj(uid))
                .then((result) => {
-           console.log("user: user added", uid, result.name);
+        //    console.log("user: user added", uid, result.name);
        let tmpUser = {
             fbID: result.name,
             uid: uid
@@ -11794,7 +11682,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
             return setUserVars(tmpUser);
         });
     } else {
-        console.log("user: already a user", data);
+        // console.log("user: already a user", data);
             var key = Object.keys(result);
                 data[0].fbID = key[0];
                 setUserVars(data[0]);
@@ -11811,7 +11699,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                 email: currentUser.email,
                 fbID: null
             };
-    console.log("userObj", userObj);
+    // console.log("userObj", userObj);
     return userObj;
 }
 

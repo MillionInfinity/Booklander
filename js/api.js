@@ -1,10 +1,5 @@
 "use strict";
 
-
-
-
-
-
                 function getKey() {
                             return {
                                     apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
@@ -13,9 +8,6 @@
                                     storageBucket: "my-capstone-new.appspot.com"
                                 };
                     }
-                           
-                    
-                    
-                    
+                     
      module.exports = { getKey };
 

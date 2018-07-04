@@ -13,7 +13,7 @@
                       displayName:null,
                       email: null,
                       bookId: null,
-                      fbID:null
+                      fbId:null
                };
 
     firebase.auth().onAuthStateChanged(function (user) {  
@@ -25,7 +25,7 @@
                     currentUser.displayName = null;
                     currentUser.email = null;
                     currentUser.bookId = null;
-                    currentUser.fbID=null;
+                    currentUser.fbId=null;
             
                     // console.log("NO USER LOGGED IN", currentUser);
                }
@@ -47,7 +47,7 @@
             return new Promise((resolve, reject) => {
                     currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
-                    currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
+                    currentUser.fbId = obj.fbId ? obj.fbId : currentUser.fbId;
                     currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
                     currentUser.book = obj.book ? obj.book : currentUser.book;
                     resolve(currentUser);
@@ -69,7 +69,7 @@
                .then((result) => {
         //    console.log("user: user added", uid, result.name);
        let tmpUser = {
-            fbID: result.name,
+            fbId: result.name,
             uid: uid
              };
     return tmpUser;
@@ -79,7 +79,7 @@
     } else {
         // console.log("user: already a user", data);
             var key = Object.keys(result);
-                data[0].fbID = key[0];
+                data[0].fbId = key[0];
                 setUserVars(data[0]);
                 }
             // $("#zip-container").removeClass("is-hidden");
@@ -92,7 +92,7 @@
                 uid: null,
         displayName: currentUser.displayName,
                 email: currentUser.email,
-                fbID: null
+                fbId: null
             };
     // console.log("userObj", userObj);
     return userObj;

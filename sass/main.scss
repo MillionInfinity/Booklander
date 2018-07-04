@@ -3,7 +3,7 @@
   background-color: #546E7A;
 }
 body{
-  background-color: rgb(199, 207, 211);
+  background-color: rgb(229, 234, 236);
 }
 h1{
   font-family: 'Montserrat', sans-serif;
@@ -69,15 +69,15 @@ img.img-fluid{
   left:0px;
 }
 
-.col-sm-3, .col-md-3{
-  // background-color:#546E7A;
-  border-radius: 5px;
-  margin-right: 18px;
-    margin-bottom: 18px;
-    border:1px solid rgb(145, 161, 168);
-    -webkit-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
-    -moz-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
-    box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
+// .col-sm-3, .col-md-3{
+//   // background-color:#546E7A;
+//   border-radius: 5px;
+//   margin-right: 18px;
+//     margin-bottom: 18px;
+//     border:1px solid rgb(145, 161, 168);
+//     -webkit-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
+//     -moz-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
+//     box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
 
 // &:hover{
 //   -webkit-transform: scale(1.1);
@@ -86,12 +86,12 @@ img.img-fluid{
 //   transform: scale(1.1);
 //   opacity: 1;
 // }
-}
+// }
 
-.col-sm-3:nth-child(1){
-  margin-left: 80px;
+// .col-sm-3:nth-child(1){
+//   margin-left: 80px;
 
-}
+// }
 .edit-btn{
 position: absolute;
 min-width: 90px;

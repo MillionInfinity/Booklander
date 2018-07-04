@@ -10389,11 +10389,6 @@ return jQuery;
 },{}],3:[function(require,module,exports){
 "use strict";
 
-
-
-
-
-
                 function getKey() {
                             return {
                                     apiKey: "AIzaSyDcaC8ykAYol45hlRTpen9KmjLONfuLwT4",
@@ -10402,10 +10397,7 @@ return jQuery;
                                     storageBucket: "my-capstone-new.appspot.com"
                                 };
                     }
-                           
-                    
-                    
-                    
+                     
      module.exports = { getKey };
 
 
@@ -10436,9 +10428,49 @@ function getBook() {
     return $.ajax({
        url: `${firebase.getFBsettings().databaseURL}/book.json`
             }).done((bookData) => {
+                // console.log("book-int line-11",bookData);
                 return bookData;
     }).fail((error)=>{
         return error;
+    });
+}
+
+function addBook(bookObj) {
+    console.log("addBook", bookObj);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json`,
+        type: 'POST',
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
+    }).done((bookID) => {
+        
+        return bookID;
+    });
+}
+
+function deleteBook(bookId) {
+    // console.log("deletebook line-30",bookId);
+        return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        // method: "DELETE"
+    }).done((bookData) => {
+        console.log("book-interaction line-35",bookData);
+        return bookData;
+
+    });
+}
+deleteBook();
+
+
+function editBook(bookObj, bookId) {
+    console.log("edit button clicked", bookObj);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        type: 'PUT',
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
+    }).done((data) => {
+        return data;
     });
 }
 
@@ -10459,15 +10491,15 @@ function getDueBook() {
 
          //book with userId
 
-function getUserBook(user) {
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-            }).done((bookData) => {
-                return bookData;
-            }).fail((error) => {
-                return error;
-            });
-}
+// function getUserBook(user) {
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+//             }).done((bookData) => {
+//                 return bookData;
+//             }).fail((error) => {
+//                 return error;
+//             });
+// }
 
 //read books
 function getReadBook() {
@@ -10528,80 +10560,50 @@ function getBrBook() {
 
     });
 }
-          //ajaxCall
 
 
-function ajaxCalls(book) {
-    // console.log("myBooks", book);
-     let myBookArr = [];
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
-    }).done((bookData) => {
-        // console.log("calling + ajax + users book",bookData);
-        myBookArr.push(myBookArr);
-        return myBookArr;
-    });
-}
+// function addUserBook(bookObj) {
+//     // console.log("addBook", bookObj);
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/user.json`,
+//         type: 'POST',
+//         data: JSON.stringify(bookObj),
+//         dataType: 'json'
+//     }).done((bookObj) => {
+//         // console.log("use book obj", bookObj);
+//         return bookObj;
+//     });
+// }
 
+    //ajaxCall
 
-function deleteBook(bookId) {
-    $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
-        method: "DELETE"
-    }).done((data) => {
-        return data;
-    });
-}
+// function ajaxCalls(book) {
+//     console.log("myBooks", book);
+//      let myBookArr = [];
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book/${book.fbId}.json?`
+//     }).done((bookData) => {
+//         // console.log("calling + ajax + users book",bookData);
+//         myBookArr.push(myBookArr);
+//         return myBookArr;
+//     });
+// }
 
-function addBook(bookObj) {
-    // console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookID) => {
-        return bookID;
-    });
-}
-function addUserBook(bookObj) {
-    // console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookObj) => {
-        // console.log("use book obj", bookObj);
-        return bookObj;
-    });
-}
-
-function editBook(bookObj, bookId) {
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
-        type: 'PUT',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((data) => {
-        return data;
-    });
-}
 // This module makes a call to the Open Library API
 
 module.exports = {
-    getReadBook,
-    getDueBook,
     getBook,
-    getLibBook,
-    getUserBook,
-    ajaxCalls,
     addBook,
-    addUserBook,
     deleteBook,
     editBook,
-    getBrBook,
-    getBuyBook,
+    // getReadBook,
+    // getDueBook,
+    // getLibBook,
+    // getUserBook,
+    // ajaxCalls,
+    // addUserBook,
+    // getBrBook,
+    // getBuyBook,
     // booksGetter,
     // getebook
 };
@@ -10772,210 +10774,125 @@ let bookDisplay = (arrayBooks) => {
 
 
 
-function makeDueList(bookList) {
-    let bookDisplay = $(`
-                 <h1 class="text-center">Due Books</h1>
-    <div class="row" id="toprint">
-           </div>`);
-    $(".myNbook4").html(bookDisplay);
-     for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-md-3 card" }),
-            bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
 
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p >
-                           </div>
-                        <div class="modal-footer">
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-    }
-
-
-   //book not read
-function makeBookReadList(bookList) {
-    let bookDisplay = $(`
-      <h1 class="text-center">Books Ready to Read</h1>
-      <div class="row" id="toprint">
-    </div>
-                      `);
-    $(".myNbook4").html(bookDisplay);
-     for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
-            bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
-
-                                  </div>
-                                 <div class="modal-body">
-                                <p class="text-left">${book.description}</p >
-                           </div>
-                        <div class="modal-footer">
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-    }
-
-
-     //Library
-
-function makeLiBookList(bookList) {
-    let bookDisplay = $(`
-<h1 clas="text-center">A Collection of Library Books</h1>
-      <div class="row" id="toprint">
-      </div>
-                      `);
-    $(".myNbook4").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
-            bookListData = $("<div>", { class: "card-body"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p>
-                           </div>
-                        <div class="modal-footer">
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-    }
-
-
-
-//Borrowed
-
-function makeBrBookList(bookList) {
-    let bookDisplay = $(`
-<h1 clas="text-center">A Collection of Borrowed Books</h1>
-      <div class="row" id="toprint"></div>
-                      `);
-    $(".myNbook4").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
-            bookListData = $("<div>", { class: "card" }),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-        bookListData.append(
-            `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
-
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p >
-                           </div>
-                        <div class="modal-footer">
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-
-}
-//bought
-
-function makeBoBookList(bookList) {
-    let bookDisplay = $(`
-<h1 clas="text-center">A Collection of Bought Books</h1>
-    <div class="row" id="toprint">
-
-    </div>`);
-    $(".myNbook4").html(bookDisplay);
-    for (let book in bookList) {
-        let currentBook = bookList[book],
-            bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card " }),
-            bookListData = $("<div>", { class: "card"}),
-            bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
-            bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
-            bookListData.append(
-                `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
-                   <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
-                          <div class="modal-dialog ">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
-                                   <h4 class="modal-title">${currentBook.title}</h4>
-                                  </div>
-                                 <div class="modal-body">
-                                <p>${book.description}</p >
-                           </div>
-                        <div class="modal-footer">
-                      </div>
-                  </div >
-              </div>
-            </div>`);
-        $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
-    }
-
-}
  //all books
- let output=document.getElementById("myNbook");
-let makeBookList=(bookarray)=>{
-// console.log("make my bookarray",bookarray);
-     let bookList='';
-     let books;
-  for(books in bookarray) {
-     let currentBook=bookarray[books];
-     console.log(currentBook);
-          bookList += `<div class= "col-sm-2 col-md-2">`;
-     //   bookList += `<div class= "card ">`;
-          bookList += `<img class="img-thumbnail" src="imgs/${currentBook.image}"/>`;
-        //   bookList +=`</div>`;
-        bookList += `<p class="text-left">${currentBook.title}</p>`;
-        bookList += `<p class="text-left">${currentBook.author}</p>`;
-        bookList +=`</div>`;
-      output.innerHTML = bookList;
+
+// let output = document.getElementById("myNbook");
+// const makeBookList=(bookarray)=> {
+//     let bookList = "";
+//     bookarray.forEach((books)=>{
+//         let currentBook = bookarray[books];
+//         console.log(currentBook);
+//         bookList += `<p class="text-left">${currentBook.title}</p>`;
+//         bookList += `<img src="imgs/${currentBook.image}" id="${books}-infobtn"  class="info-btn img-thumbnail" alt="image" data-toggle ="modal" data-target="#${books}-infoModal" >`;
+
+//     });
+//     $("#myNbook").html(bookList);
+
+// }
+
+const outputDiv = document.getElementById('myNbook');
+
+
+function makeBookList(bookarray){
+  // console.log("line29",bookarray);
+let strang = '';
+ for(let books in bookarray){
+   let currentBook=bookarray[books];
+  //  console.log('line33', currentBook);
+   strang += `<div class="col-md-3 col-sm-3">`;
+   strang += `<img src="imgs/${currentBook.image}" id="${books}-infobtn"  class="info-btn img-thumbnail" alt="image" data-toggle ="modal" data-target="#${books}-infoModal" >`;
+   strang += `<h3  class="text-left"> ${currentBook.title}</h3>`;
+   strang += `<p  class="text-left"> ${currentBook.author}</p>`;
+  //  strang += `<p  class="text-left"> ${currentBook.description}</p>`;
+   strang += `</div>`;
+   strang += `<div class="modal fade modalStyle" id="${books}-infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">`;
+   strang += `<div class="modal-dialog" role="document">`;
+   strang += `<div class="modal-content">`;
+   strang += '<div class="modal-header">';
+   strang += `<h5 class="modal-title" id="exampleModalLabel">${currentBook.title}</h5>`;
+   strang += `<button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
+   strang += `<span aria-hidden="true">&times;</span>`;
+   strang += `</button>`;
+   strang += `</div>`;
+strang += `<div class="modal-body" background='blue'>`;
+   strang +=`<div class="container">`;
+   strang += `<div class="row">`;
+   strang += `<div class="col-md-4">`;
+   strang += `<img src="imgs/${currentBook.image}" alt="a copy of your book" class="img-thumbanil" width='250px'>`;
+   strang +=`</div>`;
+   strang += `<div class="col-md-4 ml-auto">`;
+   strang += `<p  class="text-left"> ${currentBook.author}</p>`;
+   strang += `<p  class="text-left"> ${currentBook.description}</p>`;
+
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `<div class="modal-footer">`;
+   strang += `<p class="text-left">${currentBook.due}</p>`;
+   strang += `<button type="button" id="${books}" class="btn btn-danger deleteItem-btn" data-dismiss="modal">Delete</button>`;
+   strang += `<button id="${books}" data-toggle="modal" data-target="#${books}-editItemModal" class="btn btn-success">Edit Book</button>`;
+  //  strang += `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+
+   strang += `<div class="modal fade modalStyle" id="${books}-editItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">`;
+   strang += `<div class="modal-dialog" role="document">`;
+   strang += `<div class="modal-content">`;
+   strang += `<div class="modal-header">`;
+   strang +=`<h5 class="modal-title" id="exampleModalLabel">You are Editing a book title <em> "${currentBook.title}"</em></h5>`;
+   strang += `<button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
+   strang += `<span aria-hidden="true">&times;</span>`;
+   strang += `</button>`;
+   strang += `</div>`;
+   strang += `<div class="modal-body">`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<input class="form-control" type ="text" id ="form-title" placeholder="Title" value="${currentBook.title}"></input>`;
+   strang += `</div>`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<input class="form-control" type="text" id="form-author" placeholder="Author" value="${currentBook.author}"></input>`;
+   strang += `</div>`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${currentBook.image}"></input>`;
+   strang += `</div>`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<select class="form-control" name="Type" id="form-type" value="${currentBook.type}">`;
+   strang += `<option value="option">Book Type</option>`;
+   strang += `<option value="library">library</option>`;
+   strang += `<option value="borrow">borrow</option>`;
+   strang += `<option value="bought">bought</option>`;
+   strang += `<option value="e-mail">e-book</option>`;
+   strang += `</select>`;
+   strang += `<select class="form-control" name="Type" id="form-read" value="${currentBook.read}">`;
+   strang += `<option value="option">Have you read this book?</option>`;
+   strang += `<option value="library">Yes</option>`;
+   strang += `<option value="borrow">No</option>`;
+   strang += `</select>`;
+   strang += `</div>`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<input class="form-control" type="date" id="date"  placeholder="Due Date" value="${currentBook.due}"></input>`;
+   strang += `</div>`;
+   strang += `<div class="input-group mb-3">`;
+   strang += `<textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${currentBook.description}" row="5"> </textarea>`;
+   
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `<div class="modal-footer">`;
+   strang += `<button type="button" id="${books}" class="btn btn-secondary btn-outline-danger_delete">Delete</button>`;
+   strang +=`<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>`;
+   strang += ` <button type="submit" id="${books}" class="btn btn-primary save_edit_btn" data-dismiss="modal">Submit</button>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+   strang += `</div>`;
+ 
+   $("#myNbook").html(strang);
+ }
+
 }
-
-};
-
-
 
 
 
@@ -10987,7 +10904,7 @@ function bookForm(book, bookId) {
                    uid:"",
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-                    dueDate: book ? book.due : "",
+                    dueDate: book ? book.due : "you don't set due date",
                     image: book ? book.image : "",
                     place: book ? book.place : "",
                     type: book ? book.type : "",
@@ -11049,15 +10966,202 @@ function bookForm(book, bookId) {
 
 
          module.exports = {
-                            makeDueList,
-                            makeBookReadList,
+                            // makeDueList,
+                            // makeBookReadList,
                             makeBookList,
-                            makeLiBookList,
-                            makeBrBookList,
-                            makeBoBookList,
+                            // makeLiBookList,
+                            // makeBrBookList,
+                            // makeBoBookList,
                             bookForm
                            };
 {/* <button type="button" class="btn btn-default">${bookItem.btnText}</button> */}
+
+
+
+
+
+// function makeDueList(bookList) {
+//     let bookDisplay = $(`
+//                  <h1 class="text-center">Due Books</h1>
+//     <div class="row" id="toprint">
+//            </div>`);
+//     $(".myNbook4").html(bookDisplay);
+//      for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<div>", { class: "col-md-3 card" }),
+//             bookListData = $("<div>", { class: "card"}),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//             bookListData.append(
+//                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+//                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+//                           <div class="modal-dialog ">
+//                             <div class="modal-content">
+//                                 <div class="modal-header">
+//                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+//                                    <h4 class="modal-title">${currentBook.title}</h4>
+//
+//                                   </div>
+//                                  <div class="modal-body">
+//                                 <p>${book.description}</p >
+//                            </div>
+//                         <div class="modal-footer">
+//                       </div>
+//                   </div >
+//               </div>
+//             </div>`);
+//         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//     }
+//     }
+
+
+   //book not read
+// function makeBookReadList(bookList) {
+//     let bookDisplay = $(`
+//       <h1 class="text-center">Books Ready to Read</h1>
+//       <div class="row" id="toprint">
+//     </div>
+//                       `);
+//     $(".myNbook4").html(bookDisplay);
+//      for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
+//             bookListData = $("<div>", { class: "card"}),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//             bookListData.append(
+//                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+//                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+//                           <div class="modal-dialog ">
+//                             <div class="modal-content">
+//                                 <div class="modal-header">
+//                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+//                                    <h4 class="modal-title">${currentBook.title}</h4>
+//
+//                                   </div>
+//                                  <div class="modal-body">
+//                                 <p class="text-left">${book.description}</p >
+//                            </div>
+//                         <div class="modal-footer">
+//                       </div>
+//                   </div >
+//               </div>
+//             </div>`);
+//         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//     }
+//     }
+
+
+     //Library
+
+// function makeLiBookList(bookList) {
+//     let bookDisplay = $(`
+// <h1 clas="text-center">A Collection of Library Books</h1>
+//       <div class="row" id="toprint">
+//       </div>
+//                       `);
+//     $(".myNbook4").html(bookDisplay);
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
+//             bookListData = $("<div>", { class: "card-body"}),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//             bookListData.append(
+//                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+//                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+//                           <div class="modal-dialog ">
+//                             <div class="modal-content">
+//                                 <div class="modal-header">
+//                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+//                                    <h4 class="modal-title">${currentBook.title}</h4>
+//                                   </div>
+//                                  <div class="modal-body">
+//                                 <p>${book.description}</p>
+//                            </div>
+//                         <div class="modal-footer">
+//                       </div>
+//                   </div >
+//               </div>
+//             </div>`);
+//         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//     }
+//     }
+
+
+
+//Borrowed
+
+// function makeBrBookList(bookList) {
+//     let bookDisplay = $(`
+// <h1 clas="text-center">A Collection of Borrowed Books</h1>
+//       <div class="row" id="toprint"></div>
+//                       `);
+//     $(".myNbook4").html(bookDisplay);
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<div>", { class: "col-sm-3 col-md-3 card" }),
+//             bookListData = $("<div>", { class: "card" }),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//         bookListData.append(
+//             `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+//                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+//                           <div class="modal-dialog ">
+//                             <div class="modal-content">
+//                                 <div class="modal-header">
+//                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+//                                    <h4 class="modal-title">${currentBook.title}</h4>
+//
+//                                   </div>
+//                                  <div class="modal-body">
+//                                 <p>${book.description}</p >
+//                            </div>
+//                         <div class="modal-footer">
+//                       </div>
+//                   </div >
+//               </div>
+//             </div>`);
+//         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//     }
+//
+// }
+//bought
+
+// function makeBoBookList(bookList) {
+//     let bookDisplay = $(`
+// <h1 clas="text-center">A Collection of Bought Books</h1>
+//     <div class="row" id="toprint">
+//
+//     </div>`);
+//     $(".myNbook4").html(bookDisplay);
+//     for (let book in bookList) {
+//         let currentBook = bookList[book],
+//             bookListItem = $("<div>", { class: "col-sm-4 col-md-4 card " }),
+//             bookListData = $("<div>", { class: "card"}),
+//             bookListEdit = $("<a>", { "data-edit-id": book, class: "edit-btn waves-effect waves-light btn", text: "Edit" }),
+//             bookListDelete = $("<a>", { "data-delete-id": book, class: "delete-btn waves-effect waves-light btn", text: "Delete" });
+//             bookListData.append(
+//                 `<img class="img-fluid" data-toggle ="modal" data-target ="#myMoal_${currentBook.uid}" src="imgs/${currentBook.image}">
+//                    <div class="modal fade" id="myMoal_${currentBook.uid}" role="dialog">
+//                           <div class="modal-dialog ">
+//                             <div class="modal-content">
+//                                 <div class="modal-header">
+//                                 <img class = "img-thumbnail" src="imgs/${currentBook.image}"/>
+//                                    <h4 class="modal-title">${currentBook.title}</h4>
+//                                   </div>
+//                                  <div class="modal-body">
+//                                 <p>${book.description}</p >
+//                            </div>
+//                         <div class="modal-footer">
+//                       </div>
+//                   </div >
+//               </div>
+//             </div>`);
+//         $("#toprint").append(bookListItem.append(bookListData).append(bookListEdit).append(bookListDelete));
+//     }
+//
+// }
 
 },{"jquery":1}],8:[function(require,module,exports){
 "use strict";
@@ -11095,6 +11199,7 @@ firebase.getFBsettings = () => {
 
 
 module.exports = firebase;
+
 },{"./api":3,"firebase/app":122,"firebase/auth":123,"firebase/database":124}],9:[function(require,module,exports){
 "use strict";
 // console.log("event listners for book");
@@ -11106,158 +11211,63 @@ let $ = require('jquery'),
     search =require("./search"),
     user = require("./user");
 
+// ================================
 
-function buildBookObj() {
-    let bookObj = {
-        title: $("#form-title").val(),
-        author: $("#form-author").val(),
-        // due: $("#date").val(),
-        image: $("#form-image").val(),
-        place: $("#form-place").val(),
-        read: $("#form-read").val(),
-        type: $("#form-type").val(),
-        description: $("#form-desc").val(),
-        status: false,
-        uid: user.getUser()
-    };
-    return bookObj;
-}
-      //loading all books
-
-function loadBookToDOM(){
+    //   loading all books
+    function loadBookToDOM(){
     let currentUser=user.getUser();
         bookInter.getBook(currentUser)
            .then((bookData)=>{
                booksDom.makeBookList(bookData);
     });
 }
-        //loaing ready to read
 
-  function loadToReadDOM() {
-      let currentUser = user.getUser();
-        bookInter.getReadBook(currentUser)
-          .then((bookData) => {
-              booksDom.makeBookReadList(bookData);
-        });
-    }
-
-           //loaing bought books
-
-function loadBoughtBookToDOM(){
-    let currentUser=user.getUser();
-    bookInter.getBuyBook(currentUser)
-            .then((bookData)=>{
-                booksDom.makeBoBookList(bookData);
-            });
-}
-         //loaing borrow books
-
-function loadBorrowBookToDOM() {
-  console.log("borrow book clicked");
-    let currentUser = user.getUser();
-    bookInter.getBrBook(currentUser)
-        .then((bookData) => {
-            booksDom.makeBrBookList(bookData);
-        });
-}
-
-          //loaing library books
-
-function loadLibBookToDOM() {
-  console.log("library button clicked");
-    let currentUser = user.getUser();
-    bookInter.getLibBook(currentUser)
-        .then((bookData) => {
-            booksDom.makeLiBookList(bookData);
-        });
-}
-    //   loading edit books
-function loadDueBooksDOM() {
-    let currentUser = user.getUser();
-    bookInter.getDueBook(currentUser)
-        .then((bookData) => {
-            booksDom.makeDueList(bookData);
-        });
-}
-
-              //save about edit
-
-
-// $(document).on("click", ".edit-btn", function () {
-//  console.log("edit button clicked");
-//     let bookID = $(this).data("edit-id");
-//     bookInter.getBook(bookID)
-//         .then((book) => {
-//             const key = Object.keys(book)[0];
-//             return booksDom.bookForm(book[key], bookID);
-//         })
-//         .then((finishedForm) => {
-// $(".container-fluid_add ").html(finishedForm);
-//         });
-// });
-
-
-           // delete
-$(document).on("click", ".btn-outline-danger_delete", function () {
-    console.log("you are about to delete a book", $(this).data("delete-id"));
-    let bookID = $(this).data("delete-id");
-    bookInter.deleteBook(bookID);
-        });
-
-       //ready to read
-     $("#read-book").click(function () {
-         $(".myNbook").remove();
-            $(".myNbook1").html("");
-            loadToReadDOM();
-
-        });
-
-       // library listner
-    $("#library").click(function () {
-        $(".myNbook").html("");
-              $(".myNbook1").remove();
-               loadLibBookToDOM();
-                  });
-
-        //bought listner
-    $("#bought").click(function () {
-        $(".myNbook1").remove();
-               $(".myNbook3").html("");
-                loadBoughtBookToDOM();
-                });
-
-        //borrow listner
-    $("#borrowed").click(function () {
-        $(".myNbook1").remove();
-        $(".myNbook2").html("");
-                loadBorrowBookToDOM();
-         });
-
-        //view all books to dom
-    $("#all-book").click(function () {
-$(".myNbook1").remove();
-        $(".myNbook4de").html("");
-            loadBookToDOM();
-        });
-
-   //due books li
-$("#over-book").click(function () {
-     $(".myNbook1").remove();
-    $("..myNbook").html("");
-              loadDueBooksDOM();
-    // $("#login").addClass("is-hidden");
-        });
-
-$(document).on("click", ".save_edit_btn", function () {
-    let bookObj = buildBookObj(),
-        bookID = $(this).attr("id");
-    bookInter.editBook(bookObj, bookID)
-        .then((data) => {
-            loadBookToDOM();
-        });
+//view all books to dom
+$("#all-book").click(function () {
+    $(".myNbook").html();
+  loadBookToDOM();
 });
 
-//save listner
+//clicked the main edit button
+$(document).on("click", ".edit-btn", function () {
+    let bookObj = buildEditBookObj(this.id);
+      bookInter.editBook(bookObj,this.id);
+});
+// ==============================================
+// create Edit book
+function buildEditBookObj(uid, fbId) {
+    let editbookObj = {
+        title: $(`#${fbId}title`).val(),
+        author: $(`#${fbId}form-author`).val(),
+        due: $(`#${fbId}form-date`).val(),
+        image: $(`#${fbId}form-image`).val(),
+        place: $(`#${fbId}form-place`).val(),
+        read: $(`#${fbId}form-read`).val(),
+        type: $(`#${fbId}form-type`).val(),
+        description: $(`#${fbId}form-desc`).val(),
+        status: false,
+        uid: uid ? uid : ""
+    };
+    console.log("editbookObj", editbookObj);
+    return editbookObj;
+}
+
+
+
+
+         // delete
+$(document).on("click", ".btn-outline-danger_delete", function () {
+    console.log("Good by mr bookiy", $(this).data("id"));
+      let bookId = $(this).data("id");
+    bookInter.deleteBook(bookId)
+    .then(()=>{
+        loadBookToDOM();
+    });
+        });
+
+
+
+//saves New Book
 
 $(document).on("click", ".save_new_btn", function () {
     console.log("click and save new book");
@@ -11267,29 +11277,10 @@ $(document).on("click", ".save_new_btn", function () {
             loadBookToDOM();
         });
 });
-//edit listner
 
-$(document).on("click", ".edit-btn", function () {
-  // console.log("edit button clicked");
-    let bookID = $(this).data("edit-id");
-    // console.log("edit-id", bookID);
-    bookInter.getBook(bookID)
-        .then((book) => {
-          // console.log("book tobe edited",book);
-            const key = Object.keys(book)[0];
-            var finishedForm=booksDom.bookForm(book[key], bookID);
 
-        // .then((finishedForm) => {
-            $("#edit").html(finishedForm);
-        })
-        .catch((error)=>{
-          console.log("error edit",error);
-        });
-
-});
 //addbooks listner
-$("#add-book")
-    .click(function () {
+$("#add-book").click(function () {
         console.log("clicked to add book");
         var bookForm = booksDom
             .bookForm()
@@ -11299,9 +11290,168 @@ $("#add-book")
         // setTimeout(callback, 1000);
     });
 
-module.exports={loadBookToDOM,
-                 loadBorrowBookToDOM,
+
+    // save after editing button
+    $(document).on("click", ".save_edit_btn", function () {
+        console.log("save edit-button clicked");    
+        let bookObj = buildBookObj(),
+                bookID = $(this).attr("id");
+            bookInter.editBook(bookObj, bookID)
+                .then((data) => {
+                    loadBookToDOM();
+                });
+        });
+
+        function buildBookObj() {
+            let bookObj = {
+
+                title: $("#form-title").val(),
+                author: $("#form-author").val(),
+                due: $("#date").val(),
+                image: $("#form-image").val(),
+                place: $("#form-place").val(),
+                read: $("#form-read").val(),
+                type: $("#form-type").val(),
+                description: $("#form-desc").val(),
+                status: false,
+                uid: user.getUser()
+            };
+            // console.log("bookObj",bookObj);
+            return bookObj;
+        }
+        buildBookObj();
+
+        function editbookForm(uid,book) {
+                    let editbookItem = {
+                            uid:uid ? uid:"",
+                            title: book ? book.title : "",
+                            author: book ? book.author : "",
+                            dueDate: book ? book.due : "",
+                            image: book ? book.image : "",
+                            place: book ? book.place : "",
+                            type: book ? book.type : "",
+                            read: book ? book.read : "",
+                            description: book ? book.description : "",
+
+                        };
+                        return editbookItem;
+                      }
+
+
+
+
+
+
+module.exports={
+    loadBookToDOM,
+
                 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //due books li
+             // $("#over-book").click(function () {
+             //      $(".myNbook1").remove();
+             //     $("..myNbook").html("");
+             //               loadDueBooksDOM();
+             //     // $("#login").addClass("is-hidden");
+             //         });
+             //ready to read
+          //  $("#read-book").click(function () {
+          //      $(".myNbook").remove();
+          //         $(".myNbook1").html("");
+          //         loadToReadDOM();
+
+          //     });
+
+             // library listner
+          // $("#library").click(function () {
+          //     $(".myNbook").html("");
+          //           $(".myNbook1").remove();
+          //            loadLibBookToDOM();
+          //               });
+
+              //bought listner
+          // $("#bought").click(function () {
+          //     $(".myNbook1").remove();
+          //            $(".myNbook3").html("");
+          //             loadBoughtBookToDOM();
+          //             });
+
+              //borrow listner
+          // $("#borrowed").click(function () {
+          //     $(".myNbook1").remove();
+          //     $(".myNbook2").html("");
+          //             loadBorrowBookToDOM();
+          //      });
+
+                     //loaing bought books
+
+          // function loadBoughtBookToDOM(){
+          //     let currentUser=user.getUser();
+          //     bookInter.getBuyBook(currentUser)
+          //             .then((bookData)=>{
+          //                 booksDom.makeBoBookList(bookData);
+          //             });
+          // }
+                   //loaing borrow books
+
+          // function loadBorrowBookToDOM() {
+          //   console.log("borrow book clicked");
+          //     let currentUser = user.getUser();
+          //     bookInter.getBrBook(currentUser)
+          //         .then((bookData) => {
+          //             booksDom.makeBrBookList(bookData);
+          //         });
+          // }
+
+                    //loaing library books
+
+          // function loadLibBookToDOM() {
+          //   console.log("library button clicked");
+          //     let currentUser = user.getUser();
+          //     bookInter.getLibBook(currentUser)
+          //         .then((bookData) => {
+          //             booksDom.makeLiBookList(bookData);
+          //         });
+          // }
+              //   loading due books
+          // function loadDueBooksDOM() {
+          //     let currentUser = user.getUser();
+          //     bookInter.getDueBook(currentUser)
+          //         .then((bookData) => {
+          //             booksDom.makeDueList(bookData);
+          //         });
+          // }
+
+          //       //loaing ready to read
+          //
+          // function loadToReadDOM() {
+          //     let currentUser = user.getUser();
+          //       bookInter.getReadBook(currentUser)
+          //         .then((bookData) => {
+          //             booksDom.makeBookReadList(bookData);
+          //       });
+          //   }
 
 },{"./books-interaction":5,"./booksDom":7,"./config":8,"./search":11,"./user":13,"./user-interaction":12,"jquery":1}],10:[function(require,module,exports){
 'use strict';
@@ -11618,7 +11768,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                       displayName:null,
                       email: null,
                       bookId: null,
-                      fbID:null
+                      fbId:null
                };
 
     firebase.auth().onAuthStateChanged(function (user) {  
@@ -11630,7 +11780,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                     currentUser.displayName = null;
                     currentUser.email = null;
                     currentUser.bookId = null;
-                    currentUser.fbID=null;
+                    currentUser.fbId=null;
             
                     // console.log("NO USER LOGGED IN", currentUser);
                }
@@ -11652,7 +11802,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
             return new Promise((resolve, reject) => {
                     currentUser.displayName = obj.displayName ? obj.displayName : currentUser.displayName;
                     currentUser.email = obj.email ? obj.email : currentUser.email;
-                    currentUser.fbID = obj.fbID ? obj.fbID : currentUser.fbID;
+                    currentUser.fbId = obj.fbId ? obj.fbId : currentUser.fbId;
                     currentUser.uid = obj.uid ? obj.uid : currentUser.uid;
                     currentUser.book = obj.book ? obj.book : currentUser.book;
                     resolve(currentUser);
@@ -11674,7 +11824,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                .then((result) => {
         //    console.log("user: user added", uid, result.name);
        let tmpUser = {
-            fbID: result.name,
+            fbId: result.name,
             uid: uid
              };
     return tmpUser;
@@ -11684,7 +11834,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
     } else {
         // console.log("user: already a user", data);
             var key = Object.keys(result);
-                data[0].fbID = key[0];
+                data[0].fbId = key[0];
                 setUserVars(data[0]);
                 }
             // $("#zip-container").removeClass("is-hidden");
@@ -11697,7 +11847,7 @@ module.exports = { addUser, getFBDetails, updateUserFB, createUser, loginUser };
                 uid: null,
         displayName: currentUser.displayName,
                 email: currentUser.email,
-                fbID: null
+                fbId: null
             };
     // console.log("userObj", userObj);
     return userObj;

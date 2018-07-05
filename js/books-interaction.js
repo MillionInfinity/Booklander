@@ -4,13 +4,55 @@
 let $ = require('jquery'),
 firebase = require("./config");
 
+
+
 function getBook() {
     return $.ajax({
        url: `${firebase.getFBsettings().databaseURL}/book.json`
             }).done((bookData) => {
+                // console.log("book-int line-11",bookData);
                 return bookData;
     }).fail((error)=>{
         return error;
+    });
+}
+
+function addBook(bookObj) {
+    console.log("addBook", bookObj);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book.json`,
+        type: 'POST',
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
+    }).done((bookID) => {
+        
+        return bookID;
+    });
+}
+
+function deleteBook(bookId) {
+    // console.log("deletebook line-30",bookId);
+        return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        method: "DELETE"
+    }).done((bookData) => {
+        console.log("book-interaction line-35",bookData);
+        return bookData;
+
+    });
+}
+deleteBook();
+
+
+function editBook(bookObj, bookId) {
+    console.log("edit button clicked", bookObj);
+    return $.ajax({
+        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
+        type: 'PUT',
+        data: JSON.stringify(bookObj),
+        dataType: 'json'
+    }).done((data) => {
+        return data;
     });
 }
 
@@ -31,15 +73,15 @@ function getDueBook() {
 
          //book with userId
 
-function getUserBook(user) {
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
-            }).done((bookData) => {
-                return bookData;
-            }).fail((error) => {
-                return error;
-            });
-}
+// function getUserBook(user) {
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book.json?orderBy="uid"&equalTo="${user}"`
+//             }).done((bookData) => {
+//                 return bookData;
+//             }).fail((error) => {
+//                 return error;
+//             });
+// }
 
 //read books
 function getReadBook() {
@@ -100,80 +142,50 @@ function getBrBook() {
 
     });
 }
-          //ajaxCall
 
 
-function ajaxCalls(book) {
-    // console.log("myBooks", book);
-     let myBookArr = [];
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${book.fbID}.json?`
-    }).done((bookData) => {
-        // console.log("calling + ajax + users book",bookData);
-        myBookArr.push(myBookArr);
-        return myBookArr;
-    });
-}
+// function addUserBook(bookObj) {
+//     // console.log("addBook", bookObj);
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/user.json`,
+//         type: 'POST',
+//         data: JSON.stringify(bookObj),
+//         dataType: 'json'
+//     }).done((bookObj) => {
+//         // console.log("use book obj", bookObj);
+//         return bookObj;
+//     });
+// }
 
+    //ajaxCall
 
-function deleteBook(bookId) {
-    $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
-        method: "DELETE"
-    }).done((data) => {
-        return data;
-    });
-}
+// function ajaxCalls(book) {
+//     console.log("myBooks", book);
+//      let myBookArr = [];
+//     return $.ajax({
+//         url: `${firebase.getFBsettings().databaseURL}/book/${book.fbId}.json?`
+//     }).done((bookData) => {
+//         // console.log("calling + ajax + users book",bookData);
+//         myBookArr.push(myBookArr);
+//         return myBookArr;
+//     });
+// }
 
-function addBook(bookObj) {
-    // console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookID) => {
-        return bookID;
-    });
-}
-function addUserBook(bookObj) {
-    // console.log("addBook", bookObj);
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/user.json`,
-        type: 'POST',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((bookObj) => {
-        // console.log("use book obj", bookObj);
-        return bookObj;
-    });
-}
-
-function editBook(bookObj, bookId) {
-    return $.ajax({
-        url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
-        type: 'PUT',
-        data: JSON.stringify(bookObj),
-        dataType: 'json'
-    }).done((data) => {
-        return data;
-    });
-}
 // This module makes a call to the Open Library API
 
 module.exports = {
-    getReadBook,
-    getDueBook,
     getBook,
-    getLibBook,
-    getUserBook,
-    ajaxCalls,
     addBook,
-    addUserBook,
     deleteBook,
     editBook,
-    getBrBook,
-    getBuyBook,
+    // getReadBook,
+    // getDueBook,
+    // getLibBook,
+    // getUserBook,
+    // ajaxCalls,
+    // addUserBook,
+    // getBrBook,
+    // getBuyBook,
     // booksGetter,
     // getebook
 };

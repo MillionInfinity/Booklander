@@ -90,3 +90,117 @@
 // $('.carousel').carousel({
 //   interval: 2000
 // });
+
+
+
+
+//all books
+ let output=document.getElementById("myNbook");
+let makeBookList=(bookarray)=>{
+ console.log("make my bookarray",bookarray);
+     let bookList='';
+     let books;
+  for(books in bookarray) {
+     let currentBook=bookarray[books];
+      console.log(currentBook);
+          bookList += `<div class= "col-sm-3 col-md-3">`;
+          bookList += `<div class= "card ">`;
+          bookList += `<img src="imgs/${currentBook.image}" id="${books}-infobtn"  class="info-btn img-thumbnail" alt="image" data-toggle ="modal" data-target="#${books}-infoModal" >`;
+          bookList += `<p class="text-left">${currentBook.title}</p>`;
+          bookList += `<p class="text-left">${currentBook.author}</p>`;
+          bookList +=`<div class="row justify-content-around">`;
+          bookList += `<button id="data-edit-id" class="edit-btn ">Edit </button>`;
+          bookList += `<button id="delete-id" class="btn-outline-danger_delete">Delete</button>`;
+          bookList += `</div>`;
+          bookList +=`</div>`;
+          bookList +=`</div>`;
+
+}
+    output.innerHTML = bookList;
+};
+!-- More Info Modal -->
+                     bookList +=`<div class="modal fade modalStyle" id="${books}-infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">`;
+                     bookList +=`<div class="modal-dialog" role="document">`;
+                     bookList +=`<div class="modal-content">`;
+                     bookList +=`<div class="modal-header">`;
+                     bookList +=`<div class="modal-title" id="exampleModalLabel">`;
+                     bookList +=`<h4>${currentBook.title}</h4>`;
+
+                     bookList +=`</div>`;
+                     bookList +=`<button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
+                     bookList +=`<span aria-hidden="true">&times;</span>`;
+                     bookList +=`</button>`;
+                     bookList +=`</div>`;
+                     bookList +=`<div class="modal-body">`;
+                     bookList +=`<div>`;
+                     bookList +=`<img src="imgs/${currentBook.image}" class="img-thumbnail" alt="image">`;
+                     bookList +=`<h5 class="infoModal-h5">Note about the</h5>`;
+                     bookList +=`<p>${currentBook.description}</p></div>`;
+
+                     bookList +=`</div>`;
+
+                     bookList +=`<div class="modal-footer">`;
+
+                     bookList +=`<button type="button" id="${books}" class="btn btn-danger deleteItem-btn" data-dismiss="modal">Delete</button>`;
+                     bookList +=`<button id="${books}" data-toggle="modal" data-target="#${books}-editItemModal" class="btn btn-success">Edit Item</button>`;
+                     bookList +=`<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+                     bookList +=`</div>`;
+                     bookList +=`</div>`;
+                     bookList +=`</div>`;
+
+                                    <!-- Edit Item Modal -->
+                     strang +=`<div class="modal fade modalStyle" id="${books}-editItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">`;
+                      strang +=`<div class="modal-dialog" role="document">`;
+                      strang +=`<div class="modal-content">`;
+                     strang +=`<div class="modal-header">`;
+                     strang +=`<h5 class="modal-title" id="exampleModalLabel">Edit Your Item</h5>`;
+                      strang +=`<button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
+                      strang +=`<span aria-hidden="true">&times;</span>
+                      strang +=`</button>
+                       strang +=`</div>
+                       strang +=`<div>
+                       strang +=`<p>This will be one of your favorite book</p>
+                        strang +=`<div class="input-group mb-3">`;
+                        strang +=`<input class="form-control" type ="text" id ="form-title" placeholder="Title" value="${currentBook.title}"></input>`;
+                       strang +=`</div>`;
+                       strang +=`<div class="input-group mb-3">`;
+                       strang +=`<input class="form-control" type="text" id="form-author" placeholder="Author" value="${currentBook.author}"></input>`;
+                       strang+=`</div>`;
+                       strang +=`<div class="input-group mb-3">`;
+                       strang+=`<input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${currentBook.image}"></input>`;
+                       strang +=`</div>`;
+                       strang +=`<div class="input-group mb-3">`;
+                      strang +=`<select class="form-control" name="Type" id="form-type" value="${currentBook.type}">`;
+                       strang +=`<option value="option">Book Type</option>`;
+                       strang +=`<option value="library">library</option>`;
+                        strang +=`<option value="borrow">borrow</option>`;
+                       strang +=`<option value="bought">bought</option>`;
+                        strang +=`<option value="e-mail">e-book</option>`;
+                       strang +=`</select>`;
+                       strang +=`<select class="form-control" name="Type" id="form-read" value="${currentBook.read}">`;
+                       strang +=`<option value="option">Have you read this book?</option>`;
+                        strang +=`<option value="library">Yes</option>`;
+                        strang +=`<option value="borrow">No</option>`;
+                        strang +=`</select>`;
+                        strang +=`</div>`;
+                         strang+=`<div class="input-group mb-3">`;
+                         strang +=`<input class="form-control" type="date" id="date"  placeholder="Due Date" value="${currentBook.due}"></input>`;
+                         strang +=`</div>`;
+                         strang +=`<div class="input-group mb-3">`;
+                         strang +=`<textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${currentBook.description}" row="5"> </textarea> <br/>`;
+                         strang +=`</div>`;
+                         strang +=`</div>`;
+                         strang +=`<div class="modal-footer">`;
+
+                                      </div>
+
+
+                                         </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="${books}" class="btn btn-secondary deleteItem-btn">Delete</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" id="${books}" class="btn btn-primary submitEdit-btn" data-dismiss="modal">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>

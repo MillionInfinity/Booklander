@@ -26,37 +26,22 @@ $("#all-book").click(function () {
 });
 
 //clicked the main edit button
-$(document).on("click", ".edit-btn", function () {
-    let bookObj = buildEditBookObj(this.id);
-      bookInter.editBook(bookObj,this.id);
-});
+// $(document).on("click", ".edit-btn", function () {
+//     console.log("edit button clicked");
+//     let bookObj = buildEditBookObj(this.id);
+//       bookInter.editBook(bookObj,this.id);
+// });
 // ==============================================
 // create Edit book
-function buildEditBookObj(uid, fbId) {
-    let editbookObj = {
-        title: $(`#${fbId}title`).val(),
-        author: $(`#${fbId}form-author`).val(),
-        due: $(`#${fbId}form-date`).val(),
-        image: $(`#${fbId}form-image`).val(),
-        place: $(`#${fbId}form-place`).val(),
-        read: $(`#${fbId}form-read`).val(),
-        type: $(`#${fbId}form-type`).val(),
-        description: $(`#${fbId}form-desc`).val(),
-        status: false,
-        uid: uid ? uid : ""
-    };
-    console.log("editbookObj", editbookObj);
-    return editbookObj;
-}
+
 
 
 
 
          // delete
 $(document).on("click", ".btn-outline-danger_delete", function () {
-    console.log("Good by mr bookiy", $(this).data("id"));
-      let bookId = $(this).data("id");
-    bookInter.deleteBook(bookId)
+    console.log("Good by mr bookiy",this.id);
+          bookInter.deleteBook(this.id)
     .then(()=>{
         loadBookToDOM();
     });
@@ -90,12 +75,12 @@ $("#add-book").click(function () {
 
     // save after editing button
     $(document).on("click", ".save_edit_btn", function () {
-        console.log("save edit-button clicked");    
-        let bookObj = buildBookObj(),
-                bookID = $(this).attr("id");
-            bookInter.editBook(bookObj, bookID)
+        let bookObj = buildBookObj(this.id);
+        console.log("bookObj", bookObj);
+                bookInter.editBook(bookObj,this.id)
                 .then((data) => {
-                    loadBookToDOM();
+                   console.log("save edit data", data);
+                   loadBookToDOM();
                 });
         });
 
@@ -104,39 +89,35 @@ $("#add-book").click(function () {
 
                 title: $("#form-title").val(),
                 author: $("#form-author").val(),
-                due: $("#date").val(),
+                due: $("#form-date").val(),
                 image: $("#form-image").val(),
                 place: $("#form-place").val(),
                 read: $("#form-read").val(),
                 type: $("#form-type").val(),
                 description: $("#form-desc").val(),
-                status: false,
+                // status: false,
                 uid: user.getUser()
             };
             // console.log("bookObj",bookObj);
             return bookObj;
         }
-        buildBookObj();
-
-        function editbookForm(uid,book) {
-                    let editbookItem = {
-                            uid:uid ? uid:"",
-                            title: book ? book.title : "",
-                            author: book ? book.author : "",
-                            dueDate: book ? book.due : "",
-                            image: book ? book.image : "",
-                            place: book ? book.place : "",
-                            type: book ? book.type : "",
-                            read: book ? book.read : "",
-                            description: book ? book.description : "",
-
-                        };
-                        return editbookItem;
-                      }
-
-
-
-
+   
+// let buildEditBookObj = (uid) => {
+//     let bookObj = {
+//         title: $("#title").val(),
+//         author: $("#form-author").val(),
+//         due: $("#form-date").val(),
+//         image: $("#form-image").val(),
+//         place: $("#form-place").val(),
+//         read: $("#form-read").val(),
+//         type: $("#form-type").val(),
+//         description: $("#form-desc").val(),
+//         uid: uid ? uid : ""
+//     };
+//     console.log("editbookObj", bookObj);
+//     return bookObj;
+// };
+      
 
 
 module.exports={

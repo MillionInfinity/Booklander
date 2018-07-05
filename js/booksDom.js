@@ -62,7 +62,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</div>`;
    strang += `<div class="modal-footer">`;
    strang += `<p class="text-left">${currentBook.due}</p>`;
-   strang += `<button type="button" id="${books}" class="btn btn-danger deleteItem-btn" data-dismiss="modal">Delete</button>`;
+   strang += `<button type="button" id="${books}" class="btn btn-secondary btn-outline-danger_delete">Delete</button>`;
    strang += `<button id="${books}" data-toggle="modal" data-target="#${books}-editItemModal" class="btn btn-success">Edit Book</button>`;
   //  strang += `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
    strang += `</div>`;
@@ -74,7 +74,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `<div class="modal-dialog" role="document">`;
    strang += `<div class="modal-content">`;
    strang += `<div class="modal-header">`;
-   strang +=`<h5 class="modal-title" id="exampleModalLabel">You are Editing a book title <em> "${currentBook.title}"</em></h5>`;
+   strang += `<h5 class="modal-title" id="exampleModalLabel">You are Editing a book title <em> "${currentBook.title}"</em></h5>`;
    strang += `<button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
    strang += `<span aria-hidden="true">&times;</span>`;
    strang += `</button>`;
@@ -87,10 +87,10 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `<input class="form-control" type="text" id="form-author" placeholder="Author" value="${currentBook.author}"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${currentBook.image}"></input>`;
+   strang += `<input class="form-control" type="text" id="form-image" placeholder="Photo Name"  value="${currentBook.image}"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<select class="form-control" name="Type" id="form-type" value="${currentBook.type}">`;
+   strang += `<select class="form-control" name="Type" id="form-type" name="No" value="${currentBook.type}">`;
    strang += `<option value="option">Book Type</option>`;
    strang += `<option value="library">library</option>`;
    strang += `<option value="borrow">borrow</option>`;
@@ -99,15 +99,15 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</select>`;
    strang += `<select class="form-control" name="Type" id="form-read" value="${currentBook.read}">`;
    strang += `<option value="option">Have you read this book?</option>`;
-   strang += `<option value="library">Yes</option>`;
-   strang += `<option value="borrow">No</option>`;
+   strang += `<option value="Yes">Yes</option>`;
+   strang += `<option value="No">No</option>`;
    strang += `</select>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<input class="form-control" type="date" id="date"  placeholder="Due Date" value="${currentBook.due}"></input>`;
+   strang += `<input class="form-control" type="date" id="form-due"  placeholder="Due Date" value="${currentBook.due}"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${currentBook.description}" row="5"> </textarea>`;
+   strang += `<textarea class="form-control" type="text" id ="form-desc" placeholder="Description" value="${currentBook.description}" row="5"> </textarea>`;
    
    strang += `</div>`;
    strang += `</div>`;
@@ -135,12 +135,12 @@ function bookForm(book, bookId) {
                    uid:"",
                     title: book ? book.title : "",
                     author: book ? book.author : "",
-                    dueDate: book ? book.due : "you don't set due date",
+                  due: book ? book.due : "you don't set due date" ? book.due :"",
                     image: book ? book.image : "",
                     place: book ? book.place : "",
                     type: book ? book.type : "",
-                    read: book ? book.read : "",
-                    description: book ? book.description : "",
+                    read: book ? book.read : "No",
+                    description: book ? book.description : "hi",
                     formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
                     btnText: book ? "Save Changes" : "Save Book",
                     btnId: book ? "save_edit_btn" : "save_new_btn"
@@ -173,12 +173,12 @@ function bookForm(book, bookId) {
                                                             </select>
                                                             <select class="form-control" name="Type" id="form-read" value="${bookItem.read}">
                                                                     <option value="option">Have you read this book?</option>
-                                                                    <option value="library">Yes</option>
-                                                                    <option value="borrow">No</option>
+                                                                    <option value="Yes">Yes</option>
+                                                                    <option value="No">No</option>
                                                             </select>
                                                       </div>
                                                     <div class="input-group mb-3">
-                                                <input class="form-control" type="date" id="date"  placeholder="Due Date" value="${bookItem.due}"></input>
+                                                <input class="form-control" type="date" id="form-due"  placeholder="Due Date" value="${bookItem.due}"></input>
                                            </div>
                                            <div class="input-group mb-3">
                                            <textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${bookItem.description}" row="5"> </textarea> <br/>

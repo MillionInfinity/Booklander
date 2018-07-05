@@ -4,6 +4,8 @@
 let $ = require('jquery'),
 firebase = require("./config");
 
+
+
 function getBook() {
     return $.ajax({
        url: `${firebase.getFBsettings().databaseURL}/book.json`
@@ -32,7 +34,7 @@ function deleteBook(bookId) {
     // console.log("deletebook line-30",bookId);
         return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
-        // method: "DELETE"
+        method: "DELETE"
     }).done((bookData) => {
         console.log("book-interaction line-35",bookData);
         return bookData;

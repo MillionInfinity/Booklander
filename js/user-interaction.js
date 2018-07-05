@@ -13,7 +13,6 @@ function getFBDetails(user) {
     // console.log("user", user);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json?orderBy="uid"&equalTo="${user}"`
-
     }).done((resolve) => {
         return resolve;
     }).fail((error) => {
@@ -27,12 +26,11 @@ function addUser(userObj) {
     // console.log("add user tofirebase", userObj);
     return $.ajax({
         url: `${firebase.getFBsettings().databaseURL}/user.json`,
-
         type: 'POST',
         data: JSON.stringify(userObj),
         dataType: 'json'
     }).done((userID) => {
-        // console.log("userID",userID);
+        // console.log("userID line-33",userID);
         return userID;
     });
 }

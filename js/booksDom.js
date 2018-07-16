@@ -1,8 +1,8 @@
       'use strict';
            // console.log("print on to dom");
-           let $ = require('jquery');
-
-
+           let $ = require('jquery'),
+          bookInt=require('./books-interaction'),
+          firebase = require("./config");
 
 
 
@@ -31,11 +31,14 @@ let strang = '';
  for(let books in bookarray){
    let currentBook=bookarray[books];
   //  console.log('line33', currentBook);
-   strang += `<div class="col-md-3 col-sm-3">`;
+   strang += `<div id="bookcolor"class="col-md-3 col-sm-3">`;
    strang += `<img src="imgs/${currentBook.image}" id="${books}-infobtn"  class="info-btn img-thumbnail" alt="image" data-toggle ="modal" data-target="#${books}-infoModal" >`;
    strang += `<h3  class="text-left"> ${currentBook.title}</h3>`;
    strang += `<p  class="text-left"> ${currentBook.author}</p>`;
+
   //  strang += `<p  class="text-left"> ${currentBook.description}</p>`;
+   strang +=`<hr>`;
+   strang +=`<vr>`;
    strang += `</div>`;
    strang += `<div class="modal fade modalStyle" id="${books}-infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">`;
    strang += `<div class="modal-dialog" role="document">`;
@@ -61,8 +64,8 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</div>`;
    strang += `</div>`;
    strang += `<div class="modal-footer">`;
-   strang += `<p class="text-left">${currentBook.due}</p>`;
-   strang += `<button type="button" id="${books}" class="btn btn-secondary btn-outline-danger_delete">Delete</button>`;
+   strang += `<p class="text-left">${currentBook.alarm}</p>`;
+   strang += `<button type="button" id="${books}" class="btn btn-outline-secondary btn-outline-danger_delete">Delete</button>`;
    strang += `<button id="${books}" data-toggle="modal" data-target="#${books}-editItemModal" class="btn btn-success">Edit Book</button>`;
   //  strang += `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
    strang += `</div>`;
@@ -81,7 +84,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</div>`;
    strang += `<div class="modal-body">`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<input class="form-control" type ="text" id ="form-title" placeholder="Title" value="${currentBook.title}"></input>`;
+strang += `<input class="form-control" type ="text" id ="form-title" placeholder="Title" value="${currentBook.title}"maxlength="17"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
    strang += `<input class="form-control" type="text" id="form-author" placeholder="Author" value="${currentBook.author}"></input>`;
@@ -90,7 +93,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `<input class="form-control" type="text" id="form-image" placeholder="Photo Name"  value="${currentBook.image}"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<select class="form-control" name="Type" id="form-type" name="No" value="${currentBook.type}">`;
+   strang += `<select class="form-control" name="Type" id="form-type" value="${currentBook.type}">`;
    strang += `<option value="option">Book Type</option>`;
    strang += `<option value="library">library</option>`;
    strang += `<option value="borrow">borrow</option>`;
@@ -104,7 +107,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</select>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
-   strang += `<input class="form-control" type="date" id="form-due"  placeholder="Due Date" value="${currentBook.due}"></input>`;
+   strang += `<input class="form-control" type="date" id="form-alarm"  placeholder="Due Date" value="${currentBook.alarm}"></input>`;
    strang += `</div>`;
    strang += `<div class="input-group mb-3">`;
    strang += `<textarea class="form-control" type="text" id ="form-desc" placeholder="Description" value="${currentBook.description}" row="5"> </textarea>`;
@@ -112,7 +115,7 @@ strang += `<div class="modal-body" background='blue'>`;
    strang += `</div>`;
    strang += `</div>`;
    strang += `<div class="modal-footer">`;
-   strang += `<button type="button" id="${books}" class="btn btn-secondary btn-outline-danger_delete">Delete</button>`;
+   strang += `<button type="button" id="${books}" class="btn btn-outline-secondary btn-outline-danger_delete">Delete</button>`;
    strang +=`<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>`;
    strang += ` <button type="submit" id="${books}" class="btn btn-primary save_edit_btn" data-dismiss="modal">Submit</button>`;
    strang += `</div>`;
@@ -125,27 +128,109 @@ strang += `<div class="modal-body" background='blue'>`;
 
 }
 
+function getAlarm() {
+  // console.log("alarm books", books.getBook());
+  return bookInt.getBook().then((ala) => {
+    let alarms = [];
+    for (let alarmbook in ala) {
+      // console.log(alarmbook);
+      let currentalarm = ala[alarmbook];
+      // console.log("line 80 main", currentalarm.alarm);
+      // alarms +=`<P>hi alarm</P>`;
+    
+      alarms += `<div class="col-md-3 col-sm-3">`;
+      alarms += `<img src="imgs/${currentalarm.image}" id="${alarmbook}-infobtn"  class="info-btn img-thumbnail" alt="image" data-toggle ="modal" data-target="#${alarmbook}-infoModal" >`;
+      alarms +=`<div>`;
+      alarms += `<h3  class="text-left_title"> ${currentalarm.title}</h3>`;
+      alarms += `<p  class="text-left"> ${currentalarm.author}</p>`;
+      alarms += `</div>`;
+      alarms += `<p>Due on ${currentalarm.alarm}</p>`;
+      let duedate = `${currentalarm.alarm}`;
+      let newDate = new Date(duedate);
+      let today = new Date();
+      // console.log("duedate", today);
+    
+      //  console.log(colors);
+      
+      if (newDate > today) {
+             alarms += `<p>you have more days</p>`;
 
+             }
+      else if(newDate < today){
+        alarms += `<p>you book is due.</p>`;
+          }
+       else {
+            alarms += `<p>today</p>`;
+           }
+      //  strang += `<p  class="text-left"> ${currentBook.description}</p>`;
+      alarms += `<hr>`;
+      alarms += `<vr>`;
+      alarms += `</div>`;
+      $("#myNbook").html(alarms);
+    }
+   
+  }
+  );
+}
 
+///////////////reAD/////////////////////////////////////////
+function getReadbook() {
+  return $.ajax({
+    url: `${firebase.getFBsettings().databaseURL}/book.json`
+  }).then((reading) => {
+    let re = [];
+    for (let reads in reading) {
+         if (reading[reads].read === "No"){ 
+          //  console.log("reERE",reading[reads]);
+            re.push(reading[reads]);
+         }
+      // console.log("getreadbook:", re);
+      // return re;
+     
+    }
+    
+    console.log("getreadb:", re);
+    return re;
+  }
+    );
+}
 
+function readclick(){
+  return getReadbook().then((reads)=>{
+    console.log("line 199",reads);
+    let readu=[];
+    for (let bookr in reads){
+       let readers=reads[bookr];
+        console.log("reading-203", readers);
+      readu += `<div id="bookcolor"class="col-md-3 col-sm-3">`;
+      readu += `<img src="imgs/${readers.image}" class="img-thumbnail" alt="image">`;
+      readu += `<h3  class="text-left"> ${readers.title}</h3>`;
+      readu += `<p  class="text-left"> ${readers.author}</p>`;
+//       //  strang += `<p  class="text-left"> ${currentBook.description}</p>`;
+      readu += `<hr>`;
+      readu += `<vr>`;
+      readu += `</div>`;
+    }
+    $("#myNbook").html(readu);
+  });
+}
+readclick();
 
 function bookForm(book, bookId) {
-            return new Promise((resolve, reject) => {
-                let bookItem = {
-                   uid:"",
-                    title: book ? book.title : "",
-                    author: book ? book.author : "",
-                  due: book ? book.due : "you don't set due date" ? book.due :"",
-                    image: book ? book.image : "",
-                    place: book ? book.place : "",
-                    type: book ? book.type : "",
-                    read: book ? book.read : "No",
-                    description: book ? book.description : "hi",
-                    formTitle: book ? `Edit "${book.title}"` : "Add Fresh Book",
-                    btnText: book ? "Save Changes" : "Save Book",
-                    btnId: book ? "save_edit_btn" : "save_new_btn"
-                },
-                form = `<div class="modal fade" id="mModal_a" role="dialog">
+  return new Promise((resolve, reject) => {
+    let bookItem = {
+      uid: "",
+      title: book ? book.title : "",
+      author: book ? book.author : "",
+      alarm: book ? book.alarm : "",
+      image: book ? book.image : "",
+      place: book ? book.place : "home",
+      type: book ? book.type : "",
+      read: book ? book.read : "",
+      description: book ? book.description : "",
+
+    },
+      form = `<div class="modal fade" id="mModal_a" role="dialog">
                                     <div class="modal-dialog">
                                      <div class="modal-content">
                                         <div class="modal-header">
@@ -161,7 +246,8 @@ function bookForm(book, bookId) {
                                              <input class="form-control" type="text" id="form-author" placeholder="Author" value="${bookItem.author}"></input>
                                            </div>
                                           <div class="input-group mb-3">
-                                               <input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
+                      
+                                          <input class="form-control" type="text" id="form-image" placeholder="Photo Name" value="${bookItem.image}"></input>
                                                   </div>
                                                       <div class="input-group mb-3">
                                                             <select class="form-control" name="Type" id="form-type" value="${bookItem.type}">
@@ -178,37 +264,133 @@ function bookForm(book, bookId) {
                                                             </select>
                                                       </div>
                                                     <div class="input-group mb-3">
-                                                <input class="form-control" type="date" id="form-due"  placeholder="Due Date" value="${bookItem.due}"></input>
+                                                <input class="form-control" type="date" id="form-alarm"  placeholder="Due Date" value=""${bookItem.alarm}""></input>
                                            </div>
                                            <div class="input-group mb-3">
                                            <textarea class="form-control" type="text" id ="form-desc" placeholder = "Description" value = "${bookItem.description}" row="5"> </textarea> <br/>
                                            </div>
                                          </div>
                                        <div class="modal-footer">
-                                        <button id="${bookId}" class=${bookItem.btnId}>${bookItem.btnText}</button>
+                                        <button id="${bookId}" class="btn btn-outline-secondary save_new_btn">Save</button>
                                       </div>
                                     </div>
                                      </div>
                                  </div>`;
 
-                                resolve(form);
-                           });
-                        }
+    resolve(form);
+  });
+}
 
 
-         module.exports = {
-                            // makeDueList,
-                            // makeBookReadList,
-                            makeBookList,
-                            // makeLiBookList,
-                            // makeBrBookList,
-                            // makeBoBookList,
-                            bookForm
-                           };
+module.exports = {
+  getAlarm,
+  getReadbook,
+  makeBookList,
+  bookForm,
+  // readclick
+};
+
+
+
+
+
+      // let datedue=duedate.toString();
+      // var countDownDate = new Date(duedate).getTime();
+      // console.log("countdate",countDownDate);
+       
+          //  // Update the count down every 1 second
+          // // let x = setInterval(function () {
+          //   // console.log("counterdate")
+          //     // Get todays date and time
+          //     var now = new Date().getTime();
+          //     // Find the distance between now an the count down date
+          //     var distance = countDownDate - now;
+          //     // Time calculations for days, hours, minutes and seconds
+          //     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          //     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          //     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          //     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          //     // Output the result in an element with id="demo"
+          //     document.getElementById("myNbook").innerHTML = "you left" + days + "Days " + hours + "h " + minutes + "m " + seconds + "s ";
+          //     // If the count down is over, write some text 
+          //     // if (distance < 0) {
+          //     //     clearInterval(x);
+          //     //     document.getElementById("myNbook").innerHTML = "You will pay for your lost";
+          //     // }
+          // // }, 1000);
+
+
+
+
+  
+
+
+// function getReadBook() {
+//   return getBook().then((rea) => {
+//     const read = [];
+//     for (let key in rea) {
+//       if (rea[key].read === "No") {
+//         read.push(rea[key]);
+
+//       }
+//     } return read;
+
+//   });
+// }
+
+
+
+
+
+// function getReadbook(){
+//   return getBook().then((reading) =>{
+//     let read='';
+//     for (let key in reading){
+//       // console.log("read",key);
+//     }
+
+//   }
+// );
+// }
+
+
+
+
+
+
+
+
+
+
+
 {/* <button type="button" class="btn btn-default">${bookItem.btnText}</button> */}
 
 
+// let alarms = bookInt.getBook(book);
+// console.log("alarms",alarms);
 
+// var countDownDate = new Date("Jul 21, 2018 15:37:25").getTime();
+// // Update the count down every 1 second
+// var x = setInterval(function () {
+//     // Get todays date and time
+//     var now = new Date().getTime();
+//     // Find the distance between now an the count down date
+//     var distance = countDownDate - now;
+//     // Time calculations for days, hours, minutes and seconds
+//     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//     // Output the result in an element with id="demo"
+//     document.getElementById("myNbook").innerHTML = "you left" + days + "Days " + hours + "h " + minutes + "m " + seconds + "s ";
+//     // If the count down is over, write some text 
+//     if (distance < 0) {
+//         clearInterval(x);
+//         document.getElementById("myNbook").innerHTML = "You will pay for your lost";
+//     }
+// }, 1000);
+
+// 
 
 
 // function makeDueList(bookList) {

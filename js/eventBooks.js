@@ -24,20 +24,31 @@ $("#all-book").click(function () {
     $(".myNbook").html();
   loadBookToDOM();
 });
+//   loading due books
+          function loadDueBooksDOM() {
+              let currentUser = user.getUser();
+              booksDom.getAlarm(currentUser);
+                          }
 
-//clicked the main edit button
-// $(document).on("click", ".edit-btn", function () {
-//     console.log("edit button clicked");
-//     let bookObj = buildEditBookObj(this.id);
-//       bookInter.editBook(bookObj,this.id);
-// });
-// ==============================================
-// create Edit book
+                //due books li
+             $("#over-book").click(function () {
+                     $(".myNbook").html("");
+                 $('#bcolor div').css({'background-color':'red'});
+                           loadDueBooksDOM();
+                 });
 
-
-
-
-
+                //  loading read books
+               function loadReadBooksDOM(){
+                let currentUser=user.getUser();
+                   booksDom.readclick(currentUser);
+               }
+            //    read books 
+            $("#read-book").click(function(){
+                // console.log("read book clicked");
+                $(".myNbook").html("");
+                       loadReadBooksDOM();
+            });  
+        
          // delete
 $(document).on("click", ".btn-outline-danger_delete", function () {
     console.log("Good by mr bookiy",this.id);
@@ -49,39 +60,33 @@ $(document).on("click", ".btn-outline-danger_delete", function () {
 
 
 
-//saves New Book
-
-$(document).on("click", ".save_new_btn", function () {
-    console.log("click and save new book");
-    let bookObj = buildBookObj();
-    bookInter.addBook(bookObj)
-        .then((bookId) => {
-            loadBookToDOM();
-        });
-});
-
-
-//addbooks listner
-$("#add-book").click(function () {
+//addbooks brings the module to the front
+$("#add-book").click(function (event) {
         console.log("clicked to add book");
-        var bookForm = booksDom
-            .bookForm()
+        let bookForm = booksDom.bookForm()
             .then((bookForm) => {
                 $(".container-fluid_add").html(bookForm);
+                event.preventDefault();
             });
-        // setTimeout(callback, 1000);
+     
+    });
+
+// takes/saves the add module content
+$(document).on("click", ".save_new_btn", function () {
+       let bookObj = buildBookObj();
+        bookInter.addBook(bookObj).then(() => {
+                loadBookToDOM();
+            });
     });
 
 
     // save after editing button
-    $(document).on("click", ".save_edit_btn", function () {
+    $(document).on("click", ".save_edit_btn", function (event) {
         let bookObj = buildBookObj(this.id);
-        console.log("bookObj", bookObj);
-                bookInter.editBook(bookObj,this.id)
-                .then((data) => {
-                   console.log("save edit data", data);
-                   loadBookToDOM();
-                });
+           bookInter.editBook(bookObj,this.id);
+               loadBookToDOM();
+        event.preventDefault();
+              
         });
 
         function buildBookObj() {
@@ -89,35 +94,19 @@ $("#add-book").click(function () {
 
                 title: $("#form-title").val(),
                 author: $("#form-author").val(),
-                due: $("#form-date").val(),
+                alarm: $("#form-alarm").val(),
                 image: $("#form-image").val(),
                 place: $("#form-place").val(),
                 read: $("#form-read").val(),
                 type: $("#form-type").val(),
                 description: $("#form-desc").val(),
-                // status: false,
                 uid: user.getUser()
             };
             // console.log("bookObj",bookObj);
             return bookObj;
         }
    
-// let buildEditBookObj = (uid) => {
-//     let bookObj = {
-//         title: $("#title").val(),
-//         author: $("#form-author").val(),
-//         due: $("#form-date").val(),
-//         image: $("#form-image").val(),
-//         place: $("#form-place").val(),
-//         read: $("#form-read").val(),
-//         type: $("#form-type").val(),
-//         description: $("#form-desc").val(),
-//         uid: uid ? uid : ""
-//     };
-//     console.log("editbookObj", bookObj);
-//     return bookObj;
-// };
-      
+     
 
 
 module.exports={
@@ -153,6 +142,8 @@ module.exports={
              //               loadDueBooksDOM();
              //     // $("#login").addClass("is-hidden");
              //         });
+
+
              //ready to read
           //  $("#read-book").click(function () {
           //      $(".myNbook").remove();

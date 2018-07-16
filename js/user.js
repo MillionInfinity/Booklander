@@ -32,6 +32,7 @@
         });
 
     function getUser() {
+        // console.log ('getuser', getUser);
             return currentUser.uid;
         }
     

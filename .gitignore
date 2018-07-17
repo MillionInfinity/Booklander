@@ -2,3 +2,5 @@
 package-lock.json
 package.json
 js/api.js
+lib/.sass-cache
+lib/node_modules

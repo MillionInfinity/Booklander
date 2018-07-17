@@ -10,25 +10,28 @@ let $ = require('jquery'),
 
 // ================================
 
-    //   loading all books
-    function loadBookToDOM(){
-    let currentUser=user.getUser();
-        bookInter.getBook(currentUser)
-           .then((bookData)=>{
-               booksDom.makeBookList(bookData);
-    });
-}
+            //   loading all books
+     function loadBookToDOM(){
+            let currentUser=user.getUser();
+                bookInter.getBook(currentUser)
+                .then((bookData)=>{
+                    booksDom.makeBookList(bookData);
+            });
+        }
 
-//view all books to dom
-$("#all-book").click(function () {
-    $(".myNbook").html();
-  loadBookToDOM();
-});
-//   loading due books
-          function loadDueBooksDOM() {
-              let currentUser = user.getUser();
-              booksDom.getAlarm(currentUser);
-                          }
+        //view all books to dom
+        $("#all-book").click(function () {
+            $(".myNbook").html();
+        loadBookToDOM();
+        });
+//===================================
+        
+        //   loading due books
+        
+     function loadDueBooksDOM() {
+         let currentUser = user.getUser();
+          booksDom.getAlarm(currentUser);
+       }
 
                 //due books li
              $("#over-book").click(function () {
@@ -36,9 +39,11 @@ $("#all-book").click(function () {
                  $('#bcolor div').css({'background-color':'red'});
                            loadDueBooksDOM();
                  });
-
-                //  loading read books
-               function loadReadBooksDOM(){
+//====================================
+        
+//  loading read books
+     
+  function loadReadBooksDOM(){
                 let currentUser=user.getUser();
                    booksDom.readclick(currentUser);
                }
@@ -48,7 +53,44 @@ $("#all-book").click(function () {
                 $(".myNbook").html("");
                        loadReadBooksDOM();
             });  
-        
+//=================================     
+  function loadboughtBooksDOM(){
+       let currentUser=user.getUser();
+            booksDom.boughtclick(currentUser);
+               }
+            //    read books 
+            $("#bought").click(function(){
+                // console.log("read book clicked");
+                $(".myNbook").html("");
+                       loadboughtBooksDOM();
+            }); 
+
+//==========================
+function loadborrowBooksDOM() {
+    let currentUser = user.getUser();
+    booksDom.borrowclick(currentUser);
+}
+//    read books 
+$("#borrow").click(function () {
+    // console.log("read book clicked");
+    $(".myNbook").html("");
+    loadborrowBooksDOM();
+}); 
+
+//==========================
+function loadlibraryBooksDOM() {
+    let currentUser = user.getUser();
+    booksDom.libraryclick(currentUser);
+}
+//    read books 
+$("#library").click(function () {
+    // console.log("read book clicked");
+    $(".myNbook").html("");
+    loadlibraryBooksDOM();
+}); 
+
+
+//=========================
          // delete
 $(document).on("click", ".btn-outline-danger_delete", function () {
     console.log("Good by mr bookiy",this.id);
@@ -122,102 +164,3 @@ module.exports={
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //due books li
-             // $("#over-book").click(function () {
-             //      $(".myNbook1").remove();
-             //     $("..myNbook").html("");
-             //               loadDueBooksDOM();
-             //     // $("#login").addClass("is-hidden");
-             //         });
-
-
-             //ready to read
-          //  $("#read-book").click(function () {
-          //      $(".myNbook").remove();
-          //         $(".myNbook1").html("");
-          //         loadToReadDOM();
-
-          //     });
-
-             // library listner
-          // $("#library").click(function () {
-          //     $(".myNbook").html("");
-          //           $(".myNbook1").remove();
-          //            loadLibBookToDOM();
-          //               });
-
-              //bought listner
-          // $("#bought").click(function () {
-          //     $(".myNbook1").remove();
-          //            $(".myNbook3").html("");
-          //             loadBoughtBookToDOM();
-          //             });
-
-              //borrow listner
-          // $("#borrowed").click(function () {
-          //     $(".myNbook1").remove();
-          //     $(".myNbook2").html("");
-          //             loadBorrowBookToDOM();
-          //      });
-
-                     //loaing bought books
-
-          // function loadBoughtBookToDOM(){
-          //     let currentUser=user.getUser();
-          //     bookInter.getBuyBook(currentUser)
-          //             .then((bookData)=>{
-          //                 booksDom.makeBoBookList(bookData);
-          //             });
-          // }
-                   //loaing borrow books
-
-          // function loadBorrowBookToDOM() {
-          //   console.log("borrow book clicked");
-          //     let currentUser = user.getUser();
-          //     bookInter.getBrBook(currentUser)
-          //         .then((bookData) => {
-          //             booksDom.makeBrBookList(bookData);
-          //         });
-          // }
-
-                    //loaing library books
-
-          // function loadLibBookToDOM() {
-          //   console.log("library button clicked");
-          //     let currentUser = user.getUser();
-          //     bookInter.getLibBook(currentUser)
-          //         .then((bookData) => {
-          //             booksDom.makeLiBookList(bookData);
-          //         });
-          // }
-              //   loading due books
-          // function loadDueBooksDOM() {
-          //     let currentUser = user.getUser();
-          //     bookInter.getDueBook(currentUser)
-          //         .then((bookData) => {
-          //             booksDom.makeDueList(bookData);
-          //         });
-          // }
-
-          //       //loaing ready to read
-          //
-          // function loadToReadDOM() {
-          //     let currentUser = user.getUser();
-          //       bookInter.getReadBook(currentUser)
-          //         .then((bookData) => {
-          //             booksDom.makeBookReadList(bookData);
-          //       });
-          //   }

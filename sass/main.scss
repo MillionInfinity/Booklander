@@ -3,7 +3,7 @@
   background-color: #546E7A;
 }
 body{
-  background-color: rgb(199, 207, 211);
+  background-color: rgb(229, 234, 236);
 }
 h1{
   font-family: 'Montserrat', sans-serif;
@@ -17,11 +17,7 @@ h1{
 .is-hidden{
    display: none;
 }
-#sixth-sec,
-#fourth-sec,
-#second-sec{
-    // background-color: #546E7A;
-  }
+
 #sixth-sec,
 #fiveth-sec,
 #fourth-sec,
@@ -39,9 +35,7 @@ div.card {
 }
 
 .d-block.w-100{
-
-margin-top: 100px;
-
+ margin-top: 100px;
 }
 #search-bar{
   margin-top:1%;
@@ -56,7 +50,6 @@ margin-top: 100px;
   grid-row-end: 2;
 }
 
-
 div.modal-dialog{
 width:50% !important;
 height:900px;
@@ -68,55 +61,17 @@ img.img-fluid{
   position: absolute;
   left:0px;
 }
-
-.col-sm-3, .col-md-3{
-  // background-color:#546E7A;
-  border-radius: 5px;
-  margin-right: 18px;
-    margin-bottom: 18px;
-    border:1px solid rgb(145, 161, 168);
-    -webkit-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
-    -moz-box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
-    box-shadow: 0 10px 6px -6px rgb(54, 51, 51);
-
-// &:hover{
-//   -webkit-transform: scale(1.1);
-//   -moz-transform: scale(1.1);
-//   -ms-transform: scale(1.1);
-//   transform: scale(1.1);
-//   opacity: 1;
-// }
-}
-
-.col-sm-3:nth-child(1){
-  margin-left: 80px;
-
-}
 .edit-btn{
 position: absolute;
 min-width: 90px;
 max-width: 91px;
-// left:15px;
-// top:350px;
-// // margin-right: 15px;
-// // padding-left: 20px;
-//    padding-right: 20px;
-// border:1px solid rgb(166, 179, 186);
 background-color: rgb(166, 179, 186);
 }
 .delete-btn.waves-effect{
   position: absolute;
-  // left:55px;
-  // top:280px;
-  // padding-left: 2px;
-  // padding-right: 2px;
-  // border:1px solid rgb(166, 179, 186);
   background-color: rgb(166, 179, 186);
 }
 
-// .book-search-result{
-//   min-height: 300px;
-// }
 @media (max-width: 414px) {
 
 #search-bar{
@@ -140,3 +95,4 @@ background-color: rgb(166, 179, 186);
       margin-bottom: 5px;
 }
 }
+

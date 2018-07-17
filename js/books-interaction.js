@@ -36,7 +36,7 @@ function deleteBook(bookId) {
         url: `${firebase.getFBsettings().databaseURL}/book/${bookId}.json`,
         method: "DELETE"
     }).done((bookData) => {
-        console.log("book-interaction line-35",bookData);
+        // console.log("book-interaction line-35",bookData);
         return bookData;
 
     });
@@ -84,18 +84,7 @@ function getDueBook() {
 // }
 
 //read books
-function getReadBook() {
-    return getBook().then((rea) => {
-        const read = [];
-        for (let key in rea) {
-if (rea[key].read === "No") {
-                read.push(rea[key]);
 
-            }
-        } return read;
-
-    });
-}
          //Library books
 
 function getLibBook(){
@@ -189,3 +178,7 @@ module.exports = {
     // booksGetter,
     // getebook
 };
+
+
+// https://developer.mozilla.org/en-US/Apps/Fundamentals/User_notifications/Check
+// ing_when_a_deadline_is_due

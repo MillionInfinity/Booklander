@@ -67,5 +67,12 @@ function sendToFirebase() {
 // home page
 
 // =============LOGIN AND LOGOUT ENDS======================//
+/////////timer////////
 
-//==========================================//
+// Set the date we're counting down to
+
+
+
+
+
+
